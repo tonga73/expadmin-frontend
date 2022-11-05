@@ -1,4 +1,6 @@
-import { Box } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Typography } from "@mui/material";
 import { DataGrid, esES, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
@@ -6,52 +8,60 @@ import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 
+import { selectRecords } from "../../store/slices/records.slice";
+import { getRecords } from "../../store/actions/records.actions";
+
 const RecordsList = () => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const records = useSelector(selectRecords);
+
+  console.log(records, "RECO");
+
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Registrar ID" },
+    { field: "id", headerName: "ID" },
     {
       field: "name",
       headerName: "Name",
-      flex: 1,
+      flex: 2,
       cellClassName: "name-column--cell",
     },
+    { field: "order", headerName: "N° EXP", flex: 1 },
     {
-      field: "age",
-      headerName: "Age",
-      type: "Number",
-      headerAlign: "left",
-      align: "left",
+      field: "tracing",
+      headerName: "Estado",
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
+      field: "priority",
+      headerName: "Prioridad",
+    },
+    {
+      field: "archive",
+      headerName: "Archivado",
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "defendant",
+      headerName: "Actora",
       flex: 1,
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "prosecutor",
+      headerName: "Demandado",
       flex: 1,
     },
     {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
-    {
-      field: "zipCode",
-      headerName: "ZipCode",
+      field: "insurance",
+      headerName: "Seguro",
       flex: 1,
     },
   ];
+
+  useEffect(() => {
+    dispatch(getRecords({}));
+  }, []);
 
   return (
     <Box m="20px">
@@ -88,7 +98,7 @@ const RecordsList = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={records}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
