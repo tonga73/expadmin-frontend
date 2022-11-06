@@ -18,7 +18,7 @@ const HotRecords = () => {
   return (
     <Box
       gridColumn="span 4"
-      gridRow="span 2"
+      gridRow="span 4"
       backgroundColor={colors.primary[400]}
       overflow="auto"
     >

@@ -18,10 +18,10 @@ const routes = [
     icon: <HomeOutlinedIcon />,
   },
   {
-    label: "Crear",
+    label: "Crear Expediente",
     path: "/crear-expediente",
     icon: <PeopleOutlinedIcon />,
-    sectionHeader: "Manejo de Expedientes",
+    sectionHeader: "Gestión de Expedientes",
   },
   {
     label: "Vista de Lista",

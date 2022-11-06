@@ -1,42 +1,44 @@
-import { Box, Button, TextField } from "@mui/material";
-import { Formik } from "formik";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Button, TextField, Select, MenuItem } from "@mui/material";
+import { Formik, Field } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 
+import { getCourts } from "../../store/actions/courts.actions";
+import { selectCourts } from "../../store/slices/courts.slice";
+
+import { dataPriorities, dataTracings } from "../../data/enumsData";
+
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  contact: "",
-  address1: "",
-  address2: "",
+  name: "",
+  order: "",
+  priority: "NULA",
+  tracing: "ACEPTA_CARGO",
+  court: 1,
 };
 
-const phoneRegExp =
-  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-
 const userSchema = yup.object().shape({
-  firstName: yup.string().required("Este campo es obligatorio."),
-  lastName: yup.string().required("Este campo es obligatorio."),
-  email: yup
-    .string()
-    .email("invalid email")
-    .required("Este campo es obligatorio."),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("Este campo es obligatorio."),
-  address1: yup.string().required("Este campo es obligatorio."),
-  address2: yup.string().required("Este campo es obligatorio."),
+  name: yup.string().required("Este campo es obligatorio."),
+  order: yup.string().required("Este campo es obligatorio."),
+  priority: yup.string().required("Este campo es obligatorio."),
+  tracing: yup.string().required("Este campo es obligatorio."),
 });
 
 const RecordCreateForm = () => {
+  const dispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+
+  const courts = useSelector(selectCourts);
 
   const handleFormSubmit = (values) => {
     console.log(values);
   };
+
+  useEffect(() => {
+    dispatch(getCourts({}));
+  }, []);
 
   return (
     <Box m="20px">
@@ -68,83 +70,80 @@ const RecordCreateForm = () => {
               }}
             >
               <TextField
+                id="state"
+                select
+                label="Prioridad"
+                value={values.priority}
+                onChange={handleChange("priority")}
+                margin="normal"
+                fullWidth
+                sx={{ gridColumn: "span 2" }}
+              >
+                {dataPriorities.map((e) => (
+                  <MenuItem key={e} value={e}>
+                    {e}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                id="state"
+                select
+                label="Estado"
+                value={values.tracing}
+                onChange={handleChange("tracing")}
+                margin="normal"
+                fullWidth
+                sx={{ gridColumn: "span 2" }}
+              >
+                {dataTracings.map((e) => (
+                  <MenuItem key={e} value={e}>
+                    {e}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="N° de Expediente"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                value={values.order}
+                name="order"
+                error={!!touched.order && !!errors.order}
+                helperText={touched.order && errors.order}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Last Name"
+                label="Carátula del Expediente"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
+                value={values.name}
+                name="name"
+                error={!!touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
+                id="state"
+                select
+                label="Juzgado"
+                value={values.court}
+                onChange={handleChange("court")}
+                margin="normal"
                 fullWidth
-                variant="filled"
-                type="text"
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Contact Number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 1"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
-                sx={{ gridColumn: "span 4" }}
-              />
+                sx={{ gridColumn: "span 2" }}
+              >
+                {courts !== undefined &&
+                  courts.map((e, index) => (
+                    <MenuItem key={index} value={e.id}>
+                      {e.name}
+                    </MenuItem>
+                  ))}
+              </TextField>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
