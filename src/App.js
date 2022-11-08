@@ -7,6 +7,8 @@ import SidebarNavigation from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import RecordCreateForm from "./scenes/record-create-form";
 import RecordsList from "./scenes/records-list";
+import Record from "./scenes/record/Record";
+
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
 import Contacts from "./scenes/contacts";
@@ -33,6 +35,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/crear-expediente" element={<RecordCreateForm />} />
               <Route path="/listado-expedientes" element={<RecordsList />} />
+              <Route path="/expedientes/:id" element={<Record />} />
 
               <Route path="/team" element={<Team />} />
               <Route path="/contacts" element={<Contacts />} />

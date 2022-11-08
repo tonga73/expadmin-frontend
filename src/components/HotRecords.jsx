@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import EmailIcon from "@mui/icons-material/Email";
@@ -12,13 +15,24 @@ import ProgressCircle from "./ProgressCircle";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import { mockTransactions } from "../data/mockData";
 
+import { selectRecords } from "../store/slices/records.slice";
+import { getRecords } from "../store/actions/records.actions";
+
 const HotRecords = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const records = useSelector(selectRecords);
+
+  useEffect(() => {
+    dispatch(getRecords({}));
+  }, []);
   return (
     <Box
       gridColumn="span 4"
-      gridRow="span 4"
+      gridRow={{ xs: "span 2", xl: "span 4" }}
       backgroundColor={colors.primary[400]}
       overflow="auto"
     >
@@ -31,17 +45,20 @@ const HotRecords = () => {
         p="15px"
       >
         <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-          Recientes
+          Recientes [{records.length}]
         </Typography>
       </Box>
-      {mockTransactions.map((transaction, i) => (
+      {records.map(({ id, order, name }, i) => (
         <Box
-          key={`${transaction.txId}-${i}`}
+          key={`${id}-${i}`}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           borderBottom={`4px solid ${colors.primary[500]}`}
           p="15px"
+          onClick={() => {
+            navigate(`/expedientes/${id}`);
+          }}
         >
           <Box>
             <Typography
@@ -49,11 +66,9 @@ const HotRecords = () => {
               variant="h5"
               fontWeight="600"
             >
-              1234/4321
+              {order}
             </Typography>
-            <Typography color={colors.grey[100]}>
-              Primer Persona c/ Segunda Entidad
-            </Typography>
+            <Typography color={colors.grey[100]}>{name}</Typography>
           </Box>
           <Box
             backgroundColor={colors.greenAccent[500]}
