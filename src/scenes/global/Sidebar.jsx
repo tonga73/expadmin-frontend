@@ -25,10 +25,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import routes from "../../app/routes";
 
 const Sidebar = () => {
-  const isNonMobile = useMediaQuery("(min-width: 961px)");
+  const isNonTablet = useMediaQuery("(min-width: 961px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(isNonMobile ? false : true);
+  const [isCollapsed, setIsCollapsed] = useState(isNonTablet ? false : true);
   const [selected, setSelected] = useState("Dashboard");
 
   const location = useLocation().pathname;
