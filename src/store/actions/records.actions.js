@@ -22,9 +22,11 @@ export const getRecords = createAsyncThunk(
 export const getRecord = createAsyncThunk(
   "records/fetchGetRecord",
   async (record, { dispatch }) => {
+    dispatch(setRecordsStatus("loading"));
     const response = await fetchGetRecord(record);
 
     dispatch(setRecord(response));
+    dispatch(setRecordsStatus("success"));
     return response;
   }
 );
@@ -43,6 +45,7 @@ export const newRecord = createAsyncThunk(
 export const removeRecord = createAsyncThunk(
   "records/fetchDeleteRecord",
   async (recordId, { rejectWithValue, dispatch }) => {
+    dispatch(setRecordsStatus("loading"));
     const response = await fetchDeleteRecord(recordId);
 
     if (response.status === "error") {
