@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 import { DataGrid, esES, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
@@ -18,28 +20,26 @@ const RecordsList = () => {
 
   const records = useSelector(selectRecords);
 
-  console.log(records, "RECO");
+  const dataRecords = records.map(
+    (el) => el.tracing && { ...el, tracing: el.tracing.replaceAll("_", " ") }
+  );
 
   const columns = [
-    { field: "id", headerName: "ID" },
+    { field: "order", headerName: "N° EXP", flex: 1 },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Carátula del Expediente",
       flex: 2,
       cellClassName: "name-column--cell",
     },
-    { field: "order", headerName: "N° EXP", flex: 1 },
     {
       field: "tracing",
       headerName: "Estado",
+      flex: 2,
     },
     {
       field: "priority",
       headerName: "Prioridad",
-    },
-    {
-      field: "archive",
-      headerName: "Archivado",
       flex: 1,
     },
     {
@@ -70,10 +70,14 @@ const RecordsList = () => {
         subtitle="Lista filtrable de todos los expedientes."
       />
       <Box
-        height="56vw"
+        height="70vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? colors.blueAccent[900]
+                : colors.blueAccent[600],
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "none",
@@ -82,11 +86,17 @@ const RecordsList = () => {
             color: colors.greenAccent[300],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? colors.blueAccent[800]
+                : colors.blueAccent[500],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? colors.primary[400]
+                : colors.primary[900],
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
@@ -98,9 +108,10 @@ const RecordsList = () => {
         }}
       >
         <DataGrid
-          rows={records}
+          loading
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          rows={dataRecords}
+          components={{ LoadingOverlay: LinearProgress, Toolbar: GridToolbar }}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </Box>
