@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { tokens } from "../../theme";
+import { useTheme } from "@mui/material/";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
@@ -14,13 +20,15 @@ import PieChartOutlinedIcon from "@mui/icons-material/PieChartOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import routes from "../../app/routes";
 
 const Sidebar = () => {
+  const isNonMobile = useMediaQuery("(min-width: 961px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(isNonMobile ? false : true);
   const [selected, setSelected] = useState("Dashboard");
 
   const location = useLocation().pathname;
@@ -50,49 +58,93 @@ const Sidebar = () => {
             ADMINISTRACION
           </Typography>
         )}
-        <IconButton onClick={() => setIsCollapsed(!isCollapsed)} type="button">
+        <IconButton
+          size="large"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          type="button"
+        >
           <MenuOutlinedIcon />
         </IconButton>
       </Box>
-      <Box width="100%">
-        {routes.map((route, index) => (
-          <Box key={index}>
-            {route.sectionHeader ? (
-              <Box mt={1.5}>
+      {isCollapsed ? (
+        routes.map((route, index) => {
+          return (
+            <Tooltip
+              placement="left"
+              title={
                 <Typography
                   variant="caption"
-                  color={colors.grey[500]}
-                  fontWeight={700}
+                  fontWeight="bold"
                   textTransform="uppercase"
                 >
-                  {route.sectionHeader}
+                  {route.label}
                 </Typography>
-              </Box>
-            ) : null}
-            <Button
-              component={Link}
-              to={route.path}
-              disableRipple
-              size="large"
-              variant="text"
-              startIcon={route.icon}
-              fullWidth={true}
-              sx={{
-                justifyContent: "flex-start",
-                color:
-                  location === route.path
-                    ? colors.blueAccent[500]
-                    : colors.grey[300],
-                "&:hover": {
-                  color: colors.grey[100],
-                },
-              }}
+              }
             >
-              {route.label}
-            </Button>
-          </Box>
-        ))}
-      </Box>
+              <IconButton
+                component={Link}
+                to={route.path}
+                disableRipple
+                size="large"
+                key={index}
+                sx={{
+                  mt: 1,
+                  justifyContent: "flex-start",
+                  color:
+                    location === route.path
+                      ? colors.blueAccent[500]
+                      : colors.grey[300],
+                  "&:hover": {
+                    color: colors.grey[100],
+                  },
+                }}
+              >
+                {route.icon}
+              </IconButton>
+            </Tooltip>
+          );
+        })
+      ) : (
+        <Box width="100%">
+          {routes.map((route, index) => (
+            <Box key={index}>
+              {route.sectionHeader ? (
+                <Box mt={1.5}>
+                  <Typography
+                    variant="caption"
+                    color={colors.grey[500]}
+                    fontWeight={700}
+                    textTransform="uppercase"
+                  >
+                    {route.sectionHeader}
+                  </Typography>
+                </Box>
+              ) : null}
+              <Button
+                component={Link}
+                to={route.path}
+                disableRipple
+                size="large"
+                variant="text"
+                startIcon={route.icon}
+                fullWidth={true}
+                sx={{
+                  justifyContent: "flex-start",
+                  color:
+                    location === route.path
+                      ? colors.blueAccent[500]
+                      : colors.grey[300],
+                  "&:hover": {
+                    color: colors.grey[100],
+                  },
+                }}
+              >
+                {route.label}
+              </Button>
+            </Box>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };
