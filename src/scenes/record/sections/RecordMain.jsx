@@ -29,6 +29,7 @@ const RecordMain = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const [isRecordEdit, setIsRecordEdit] = useState(false);
   const [isMounted, toggle] = useReducer((p) => !p, true);
   const [elementRect, setElementRect] = useState();
   const handleRect = useCallback((node) => {
@@ -39,11 +40,15 @@ const RecordMain = () => {
   const record = useSelector(selectRecord);
 
   const initialValues = {
+    name: record.name || "",
+    order: record.order || "",
     priority: record.priority || "",
     tracing: record.tracing || "",
   };
 
   const userSchema = yup.object().shape({
+    name: yup.string(),
+    order: yup.string(),
     priority: yup.string(),
     tracing: yup.string(),
   });
@@ -51,6 +56,19 @@ const RecordMain = () => {
   const handleFormSubmit = async (values) => {
     try {
       const { id } = params;
+      if (!!values.order && values.order !== record.order) {
+        dispatch(editRecord({ id: id, req: { order: values.order } }));
+      }
+      if (!!values.order && values.name !== record.name) {
+        dispatch(editRecord({ id: id, req: { name: values.name } }));
+      }
+      // if (values.tracing !== record.tracing) {
+      //   console.log("ACA");
+      //   // dispatch(editRecord({ id: id, req: { tracing: values.tracing } }));
+      // }
+      // if (values.priority !== record.priority) {
+      //   // dispatch(editRecord({ id: id, req: { priority: values.priority } }));
+      // }
       dispatch(editRecord({ id: id, req: values }));
     } catch (error) {
       console.log(error);
@@ -84,12 +102,19 @@ const RecordMain = () => {
     if (recordsStatus === "edited") {
       priorityInput.blur();
       tracingInput.blur();
+      setIsRecordEdit(false);
     }
   }, [recordsStatus]);
 
   return recordsStatus !== "loading" && record !== undefined && isMounted ? (
     <>
-      <Box display="flex" flexDirection="column" rowGap={1} p={1.5}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        rowGap={1}
+        p={1.5}
+        sx={{ height: "100%" }}
+      >
         <Formik
           innerRef={handleRect}
           // enableReinitialize={true}
@@ -108,7 +133,7 @@ const RecordMain = () => {
             <form action="" onSubmit={handleSubmit}>
               <Box
                 display="grid"
-                gap={"30px"}
+                gap={"15px 30px"}
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                 sx={{
                   "& > div": {
@@ -156,14 +181,104 @@ const RecordMain = () => {
                     </MenuItem>
                   ))}
                 </TextField>
+                {isRecordEdit ? (
+                  recordsStatus !== "editing" ? (
+                    <Box gridColumn="span 4" display="grid" rowGap={3}>
+                      <TextField
+                        placeholder="EJ: 1234/4321, 65574/2019, ..."
+                        color="warning"
+                        fullWidth
+                        type="text"
+                        label="N° de Expediente"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.order}
+                        name="order"
+                        error={!!touched.order && !!errors.order}
+                        helperText={touched.order && errors.order}
+                        sx={{ gridColumn: "span 2" }}
+                      />
+                      <TextField
+                        placeholder="EJ: Martinez c/ Empresa Explotadora, ..."
+                        color="warning"
+                        fullWidth
+                        type="text"
+                        label="Carátula del Expediente"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.name}
+                        name="name"
+                        error={!!touched.name && !!errors.name}
+                        helperText={touched.name && errors.name}
+                        sx={{ gridColumn: "span 2" }}
+                      />
+                    </Box>
+                  ) : (
+                    <Box
+                      gridColumn="span 4"
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
+                      alignItems="center"
+                      rowGap={1}
+                      sx={{ py: 3 }}
+                    >
+                      <Spinner size="45" />
+                      <Typography variant="h3">
+                        Editando expediente...
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        color="secondary"
+                        textTransform="uppercase"
+                      >
+                        Aguarde unos instantes
+                      </Typography>
+                    </Box>
+                  )
+                ) : (
+                  <Box
+                    gridColumn="span 4"
+                    display="flex"
+                    flexDirection="column"
+                    rowGap={1}
+                  >
+                    <Typography variant="h2" fontWeight={700}>
+                      {record.order}
+                    </Typography>
+                    <Typography variant="h1">{record.name}</Typography>
+                  </Box>
+                )}
+                {recordsStatus !== "editing" ? (
+                  <Box
+                    gridColumn="span 4"
+                    display="flex"
+                    justifyContent="space-between"
+                  >
+                    <Button
+                      color={isRecordEdit ? "neutral" : "secondary"}
+                      variant={isRecordEdit ? "contained" : "outlined"}
+                      size="small"
+                      onClick={() => setIsRecordEdit(!isRecordEdit)}
+                    >
+                      {isRecordEdit ? "Cancelar" : "Editar"}
+                    </Button>
+                    {isRecordEdit ? (
+                      <Button
+                        type="submit"
+                        color="warning"
+                        variant="outlined"
+                        size="small"
+                      >
+                        Guardar Cambios
+                      </Button>
+                    ) : undefined}
+                  </Box>
+                ) : undefined}
               </Box>
             </form>
           )}
         </Formik>
-        <Typography variant="h2" fontWeight={700}>
-          {record.order}
-        </Typography>
-        <Typography variant="h1">{record.name}</Typography>
       </Box>
     </>
   ) : (
