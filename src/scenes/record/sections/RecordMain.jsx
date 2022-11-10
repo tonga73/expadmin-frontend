@@ -25,7 +25,7 @@ import {
 
 import { dataPriorities, dataTracings } from "../../../data/enumsData";
 
-const RecordMain = () => {
+const RecordMain = ({ record }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
@@ -37,7 +37,6 @@ const RecordMain = () => {
   }, []);
 
   const recordsStatus = useSelector(selectRecordsStatus);
-  const record = useSelector(selectRecord);
 
   const initialValues = {
     name: record.name || "",
@@ -105,7 +104,7 @@ const RecordMain = () => {
         display="flex"
         flexDirection="column"
         rowGap={1}
-        p={1.5}
+        px={1.5}
         sx={{ height: "100%" }}
       >
         <Formik
@@ -136,7 +135,7 @@ const RecordMain = () => {
               >
                 <TextField
                   id="record-form-priority_input"
-                  color="secondary"
+                  color="warning"
                   select
                   value={values.priority}
                   name="priority"
@@ -156,7 +155,7 @@ const RecordMain = () => {
                 </TextField>
                 <TextField
                   id="record-form-tracing_input"
-                  color="secondary"
+                  color="warning"
                   select
                   value={values.tracing}
                   name="tracing"
@@ -242,21 +241,32 @@ const RecordMain = () => {
                     <Typography variant="h1">{record.name}</Typography>
                   </Box>
                 )}
-                {recordsStatus !== "editing" ? (
-                  <Box
-                    gridColumn="span 4"
-                    display="flex"
-                    justifyContent="space-between"
-                  >
-                    <Button
-                      color={isRecordEdit ? "neutral" : "secondary"}
-                      variant={isRecordEdit ? "contained" : "outlined"}
-                      size="small"
-                      onClick={() => setIsRecordEdit(!isRecordEdit)}
-                    >
-                      {isRecordEdit ? "Cancelar" : "Editar"}
-                    </Button>
-                    {isRecordEdit ? (
+                <Box
+                  gridColumn="span 4"
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  {isRecordEdit ? (
+                    <>
+                      <Button
+                        color="neutral"
+                        variant="contained"
+                        size="small"
+                        onClick={() => setIsRecordEdit(!isRecordEdit)}
+                      >
+                        Cancelar
+                      </Button>
+                      <Typography
+                        variant="caption"
+                        fontWeight={700}
+                        textTransform="uppercase"
+                        sx={{
+                          color: "warning",
+                        }}
+                      >
+                        Editando Expediente
+                      </Typography>
                       <Button
                         type="submit"
                         color="warning"
@@ -265,9 +275,18 @@ const RecordMain = () => {
                       >
                         Guardar Cambios
                       </Button>
-                    ) : undefined}
-                  </Box>
-                ) : undefined}
+                    </>
+                  ) : (
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      size="small"
+                      onClick={() => setIsRecordEdit(!isRecordEdit)}
+                    >
+                      Editar
+                    </Button>
+                  )}
+                </Box>
               </Box>
             </form>
           )}

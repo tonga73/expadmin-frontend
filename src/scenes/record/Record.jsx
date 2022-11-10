@@ -13,9 +13,9 @@ import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import RecordMain from "./sections/RecordMain";
+import RecordDetails from "./sections/RecordDetails";
 
 import Spinner from "../../components/Spinner";
-import CustomizedAccordions from "../../components/CustomizedAccordions";
 
 import { getRecord } from "../../store/actions/records.actions";
 import {
@@ -39,7 +39,7 @@ const Record = () => {
   useEffect(() => {
     dispatch(setRecords([]));
     dispatch(getRecord(params.id));
-  }, [params]);
+  }, [params.id]);
 
   useEffect(() => {
     if (recordsStatus === "success" || recordsStatus === "edited") {
@@ -66,25 +66,18 @@ const Record = () => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(5, minmax(0, 1fr))"
-      gridAutoRows="130px"
-      gap="20px"
+      gridAutoRows="min-content"
+      rowGap={5}
       p="0 15px"
+      sx={{ minHeight: "85vh" }}
     >
-      <Box gridColumn="span 3" gridRow="span 2">
-        <RecordMain />
+      <Box gridColumn="span 3">
+        <RecordMain record={record} />
       </Box>
-      <Box
-        gridColumn="span 2"
-        gridRow="span 2"
-        sx={{ height: "100%", bgcolor: "blue" }}
-      >
-        "RECORD PAGE"
+      <Box gridColumn="span 2" sx={{ height: "100" }}>
+        <RecordDetails record={record} />
       </Box>
-      <Box
-        gridColumn="span 5"
-        gridRow="span 2"
-        sx={{ height: "100%", bgcolor: "blue" }}
-      >
+      <Box gridColumn="span 5" sx={{ height: "100%", bgcolor: "blue" }}>
         "RECORD PAGE"
       </Box>
     </Box>

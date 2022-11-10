@@ -26,6 +26,7 @@ const Sidebar = () => {
       flexDirection="column"
       alignItems="center"
       sx={{
+        position: isCollapsed ? "inherit" : "absolute",
         background: `${
           theme.palette.mode === "light"
             ? colors.primary[900]
@@ -38,6 +39,7 @@ const Sidebar = () => {
         width: "100%",
         maxWidth: isCollapsed ? "0px" : "235px",
         minHeight: "100vh",
+        zIndex: 99,
       }}
     >
       <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
