@@ -25,20 +25,25 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
 import RecordModalDelete from "./RecordModalDelete";
+import RecordMain from "../scenes/record/sections/RecordMain";
+import RecordDetails from "../scenes/record/sections/RecordDetails";
 
 import {
   selectRecords,
   selectRecord,
   selectRecordsStatus,
   setRecordsStatus,
+  setRecord,
 } from "../store/slices/records.slice";
 import { getRecords, getRecord } from "../store/actions/records.actions";
 
 const HotRecords = ({ dense }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // THEME UTILS
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [contextMenuPosition, setContextMenuPosition] = useState({});
   const [modal, setModal] = useState(false);
@@ -66,9 +71,10 @@ const HotRecords = ({ dense }) => {
     setContextMenuPosition({});
   };
 
-  // useEffect(() => {
-  //   dispatch(getRecords({}));
-  // }, []);
+  useEffect(() => {
+    dispatch(setRecord({}));
+    dispatch(getRecords({}));
+  }, []);
 
   useEffect(() => {
     if (recordsStatus === "success") {
@@ -247,45 +253,39 @@ const HotRecords = ({ dense }) => {
         ) : (
           <>
             <Box
-              display="grid"
-              gridTemplateColumns="repeat(5, minmax(0, 1fr))"
-              gridAutoRows="110px"
-              gap="10px"
+              display="flex"
               p="0 15px"
+              sx={{
+                bgcolor: colors.primary[600],
+                height: "100%",
+                width: "100%",
+              }}
             >
               <Box
-                display="flex"
-                flexDirection="column"
+                display="grid"
                 rowGap={1}
-                p={1}
-                gridColumn="span 3"
-                gridRow="span 2"
-                sx={{ height: "100%", bgcolor: "brown" }}
+                pr={3}
+                py={1}
+                sx={{
+                  height: "inherit",
+                  width: "inherit",
+                  overflow: "scroll",
+                }}
               >
-                <Typography variant="h3">{selectedRecord.priority}</Typography>
+                <Box>
+                  <RecordMain
+                    isDashboard
+                    onClose={() => setSelectedRecord({})}
+                    record={selectedRecord}
+                  />
+                </Box>
+                <Box>
+                  <RecordDetails record={selectedRecord} />
+                </Box>
+                {/* <Typography variant="h3">{selectedRecord.priority}</Typography>
                 <Typography variant="h3">{selectedRecord.tracing}</Typography>
                 <Typography variant="h2">{selectedRecord.order}</Typography>
-                <Typography variant="h3">{selectedRecord.name}</Typography>
-              </Box>
-              <Box
-                gridColumn="span 2"
-                gridRow="span 2"
-                sx={{ height: "100%", bgcolor: "gray" }}
-              >
-                <Button
-                  onClick={() => navigate(`/expedientes/${selectedRecord.id}`)}
-                  size="large"
-                  variant="contained"
-                >
-                  "RECORD PAGE2"
-                </Button>
-              </Box>
-              <Box
-                gridColumn="span 5"
-                gridRow="span 1"
-                sx={{ height: "100%", bgcolor: "gray" }}
-              >
-                "RECORD PAGE3"
+                <Typography variant="h3">{selectedRecord.name}</Typography> */}
               </Box>
             </Box>
           </>

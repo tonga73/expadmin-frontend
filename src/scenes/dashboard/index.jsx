@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
 import { tokens } from "../../theme";
+import Toolbar from "@mui/material/Toolbar";
+import SvgIcon from "@mui/material/SvgIcon";
+
 import Header from "../../components/Header";
+
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -78,13 +81,13 @@ const Dashboard = () => {
           display="grid"
           gridTemplateColumns="repeat(12, 1fr)"
           columnGap="20px"
-          onClick={
-            isDense
-              ? () => {
-                  setIsDense(!isDense);
-                }
-              : null
-          }
+          sx={{
+            color: colors.grey[500],
+            "&:hover": {
+              color: colors.greenAccent[500],
+            },
+          }}
+          onClick={() => setIsDense(!isDense)}
         >
           {mainStatsData.map(({ title, subtitle, icon, progress }, index) => (
             <Box
@@ -109,11 +112,11 @@ const Dashboard = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            sx={{ bgColor: "red" }}
+            py={0.5}
           >
-            <IconButton size="small" onClick={() => setIsDense(!isDense)}>
+            <SvgIcon onClick={() => setIsDense(!isDense)}>
               {isDense ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-            </IconButton>
+            </SvgIcon>
           </Box>
         </Box>
         <Box

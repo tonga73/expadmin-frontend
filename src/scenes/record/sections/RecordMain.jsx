@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import Box from "@mui/material/Box";
@@ -8,11 +8,15 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
+
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import CloseIcon from "@mui/icons-material/Close";
 
 import Spinner from "../../../components/Spinner";
 
@@ -25,10 +29,16 @@ import {
 
 import { dataPriorities, dataTracings } from "../../../data/enumsData";
 
-const RecordMain = ({ record }) => {
+const RecordMain = ({ record, isDashboard, onClose }) => {
+  // THEME UTILS
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+
   const [isRecordEdit, setIsRecordEdit] = useState(false);
   const [isMounted, toggle] = useReducer((p) => !p, true);
   const [elementRect, setElementRect] = useState();
@@ -104,9 +114,49 @@ const RecordMain = ({ record }) => {
         display="flex"
         flexDirection="column"
         rowGap={1}
-        px={1.5}
+        px={isDashboard ? 0 : 1.5}
         sx={{ height: "100%" }}
       >
+        {isDashboard ? (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            sx={{ width: "100%" }}
+          >
+            <Tooltip
+              placement="right"
+              title={
+                <Typography
+                  variant="caption"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                >
+                  Vista Completa
+                </Typography>
+              }
+            >
+              <IconButton onClick={() => navigate(`/expedientes/${record.id}`)}>
+                <FullscreenIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              placement="left"
+              title={
+                <Typography
+                  variant="caption"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                >
+                  Cerrar
+                </Typography>
+              }
+            >
+              <IconButton onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ) : undefined}
         <Formik
           innerRef={handleRect}
           // enableReinitialize={true}
@@ -277,14 +327,16 @@ const RecordMain = ({ record }) => {
                       </Button>
                     </>
                   ) : (
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      size="small"
-                      onClick={() => setIsRecordEdit(!isRecordEdit)}
-                    >
-                      Editar
-                    </Button>
+                    !isDashboard && (
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        size="small"
+                        onClick={() => setIsRecordEdit(!isRecordEdit)}
+                      >
+                        Editar
+                      </Button>
+                    )
                   )}
                 </Box>
               </Box>

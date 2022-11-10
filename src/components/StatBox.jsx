@@ -41,7 +41,7 @@ const StatBox = ({ title, subtitle, icon, progress, dense }) => {
       </Box>
     </Box>
   ) : (
-    <Box width="100%" p="15px 30px">
+    <Box width="100%" p="15px 30px" sx={{ userSelect: "none" }}>
       <Box display="grid" gridTemplateColumns="repeat(2, minmax(0, 1fr))">
         <Box>
           {icon}
