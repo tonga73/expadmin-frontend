@@ -120,7 +120,7 @@ const RecordMain = () => {
                   id="record-form-priority_input"
                   color="secondary"
                   select
-                  value={values.priority || record.priority}
+                  value={values.priority}
                   name="priority"
                   error={!!touched.priority && !!errors.priority}
                   helperText={touched.priority && errors.priority}
@@ -140,7 +140,7 @@ const RecordMain = () => {
                   id="record-form-tracing_input"
                   color="secondary"
                   select
-                  value={values.tracing || record.tracing}
+                  value={values.tracing}
                   name="tracing"
                   error={!!touched.tracing && !!errors.tracing}
                   helperText={touched.tracing && errors.tracing}
