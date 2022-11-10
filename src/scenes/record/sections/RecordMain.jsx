@@ -78,24 +78,28 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { priority, tracing } = await record;
+    if (isDashboard) {
+      return;
+    } else {
+      const fetchData = async () => {
+        const { priority, tracing } = await record;
 
-      if (elementRect !== undefined && priority !== undefined) {
-        if (priority !== elementRect.priority) {
-          handleFormSubmit({ priority: elementRect.priority });
+        if (elementRect !== undefined && priority !== undefined) {
+          if (priority !== elementRect.priority) {
+            handleFormSubmit({ priority: elementRect.priority });
+          }
         }
-      }
-      if (elementRect !== undefined && tracing !== undefined) {
-        if (tracing !== elementRect.tracing) {
-          handleFormSubmit({ tracing: elementRect.tracing });
+        if (elementRect !== undefined && tracing !== undefined) {
+          if (tracing !== elementRect.tracing) {
+            handleFormSubmit({ tracing: elementRect.tracing });
+          }
         }
-      }
-    };
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
-  }, [elementRect, record]);
+      };
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }
+  }, [elementRect, record, isDashboard]);
 
   useEffect(() => {
     // Input IDs to handle blur
@@ -184,6 +188,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                 }}
               >
                 <TextField
+                  disabled={isDashboard}
                   id="record-form-priority_input"
                   color="warning"
                   select
@@ -204,6 +209,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   ))}
                 </TextField>
                 <TextField
+                  disabled={isDashboard}
                   id="record-form-tracing_input"
                   color="warning"
                   select
