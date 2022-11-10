@@ -47,7 +47,7 @@ const Record = () => {
     }
   }, [recordsStatus]);
 
-  return recordsStatus !== "" ? (
+  return Object.values(record).length < 1 ? (
     <Box
       display="flex"
       justifyContent="center"
