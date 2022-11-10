@@ -25,8 +25,6 @@ export default function RecordDetailsAccordion({ title, content }) {
   const colors = tokens(theme.palette.mode);
   const [expanded, setExpanded] = React.useState(false);
 
-  console.log(content);
-
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
