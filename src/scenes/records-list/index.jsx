@@ -70,7 +70,7 @@ const RecordsList = () => {
         subtitle="Lista filtrable de todos los expedientes."
       />
       <Box
-        height="70vh"
+        height="69vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",

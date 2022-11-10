@@ -2,6 +2,8 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import TableRowsIcon from "@mui/icons-material/TableRows";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
@@ -20,19 +22,19 @@ const routes = [
   {
     label: "Crear Expediente",
     path: "/crear-expediente",
-    icon: <PeopleOutlinedIcon />,
+    icon: <AddBoxIcon />,
     sectionHeader: "Gestión de Expedientes",
   },
   {
-    label: "Vista de Lista",
+    label: "Listar Expedientes",
     path: "/listado-expedientes",
-    icon: <ContactsOutlinedIcon />,
+    icon: <TableRowsIcon />,
   },
-  {
-    label: "Vista Avanzada",
-    path: "/invoices",
-    icon: <ReceiptOutlinedIcon />,
-  },
+  // {
+  //   label: "Vista Avanzada",
+  //   path: "/invoices",
+  //   icon: <ReceiptOutlinedIcon />,
+  // },
   //   {
   //     label: "Manage Team",
   //     path: "/team",

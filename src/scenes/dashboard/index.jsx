@@ -118,16 +118,10 @@ const Dashboard = () => {
         </Box>
         <Box
           display="grid"
-          gridTemplateColumns="repeat(12, minmax(0, 1fr))"
+          gridAutoColumns
           gridAutoRows={isDense ? "175px" : "115px"}
-          columnGap="20px"
         >
-          <HotRecords />
-          <Box
-            gridColumn="span 9"
-            gridRow="span 2"
-            sx={{ bgcolor: "blue" }}
-          ></Box>
+          <HotRecords dense={isDense} />
         </Box>
       </Box>
     </Box>

@@ -32,7 +32,6 @@ export async function fetchNewRecord(req) {
 export async function fetchEditRecord({ id, req }) {
   try {
     const { data } = await axiosClient.patch(`/records/${id}`, req);
-
     return data;
   } catch (error) {
     console.log(error);

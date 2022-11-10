@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Typography,
-  MenuList,
-  MenuItem,
-  Modal,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  useTheme,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import Modal from "@mui/material/Modal";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
 import { tokens } from "../theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 
 import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
@@ -32,7 +32,7 @@ import {
 } from "../store/slices/records.slice";
 import { getRecords, getRecord } from "../store/actions/records.actions";
 
-const HotRecords = () => {
+const HotRecords = ({ dense }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -43,12 +43,12 @@ const HotRecords = () => {
 
   const recordsStatus = useSelector(selectRecordsStatus);
   const records = useSelector(selectRecords);
+  const [selectedRecord, setSelectedRecord] = useState({});
 
   const handleContextMenu = async (e) => {
-    console.log(e.target.id.replace("record-", ""), "LA E");
+    e.preventDefault();
     const recordId = await e.target.id.replace("record-", "");
     dispatch(getRecord(recordId));
-    e.preventDefault();
     const xPos = e.pageX - 50 + "px";
     const yPos = e.pageY - 50 + "px";
 
@@ -79,104 +79,187 @@ const HotRecords = () => {
 
   return (
     <Box
-      gridColumn={{ xs: "span 12", sm: "span 3" }}
-      gridRow={{ xs: "span 2", sm: "span 2" }}
-      backgroundColor={colors.primary[400]}
-      overflow="auto"
+      display="grid"
+      gridTemplateColumns="repeat(12, minmax(0, 1fr))"
+      gridAutoRows={dense ? "175px" : "130px"}
+      columnGap="20px"
     >
       <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom={`4px solid ${colors.primary[500]}`}
-        colors={colors.grey[100]}
-        p="15px"
+        gridColumn={{ xs: "span 12", sm: "span 4" }}
+        gridRow={{ xs: "span 2", sm: "span 2" }}
+        backgroundColor={colors.primary[400]}
+        overflow="auto"
       >
-        <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-          Recientes [{records.length}]
-        </Typography>
-      </Box>
-      {records.map(({ id, order, name }, i) => (
         <Box
-          id={`record-${id}`}
-          key={`${id}-${i}`}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           borderBottom={`4px solid ${colors.primary[500]}`}
+          colors={colors.grey[100]}
           p="15px"
-          sx={{
-            userSelect: "none",
-            "&:hover": {
-              backgroundColor: colors.primary[300],
-            },
-          }}
-          onClick={() => {
-            if (Object.values(contextMenuPosition).length > 0) {
-              setContextMenuPosition({});
-            } else {
-              navigate(`/expedientes/${id}`);
-            }
-          }}
-          onContextMenu={handleContextMenu}
-          onBlur={() => setContextMenuPosition({})}
         >
-          <Box sx={{ pointerEvents: "none" }}>
-            <Typography
-              color={colors.greenAccent[500]}
-              variant="h5"
-              fontWeight="600"
-            >
-              {order}
-            </Typography>
-            <Typography fontWeight="600" color={colors.grey[100]}>
-              {name}
-            </Typography>
-          </Box>
-          <Box
-            sx={{ pointerEvents: "none" }}
-            backgroundColor={colors.greenAccent[500]}
-            p="7px 7px"
-            borderRadius="50%"
-          ></Box>
+          <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+            Recientes [{records.length}]
+          </Typography>
         </Box>
-      ))}
-      <RecordContextMenu
-        position={contextMenuPosition}
-        onClickAway={handleClickAway}
-      >
-        <MenuList dense>
-          <MenuItem disabled={recordsStatus === "loading"}>
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            <ListItemText>Editar</ListItemText>
-          </MenuItem>
-          <Divider />
-          <MenuItem disabled={recordsStatus === "loading"}>
-            <ListItemIcon>
-              <ArchiveIcon />
-            </ListItemIcon>
-            <ListItemText>Archivar</ListItemText>
-          </MenuItem>
-          <MenuItem
-            disabled={recordsStatus === "loading"}
-            onClick={() => {
-              setContextMenuPosition({});
-              setModal(!modal);
+        {records.map((record, i) => (
+          <Box
+            id={`record-${record.id}`}
+            key={`${record.id}-${i}`}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            p="15px"
+            sx={{
+              userSelect: "none",
+              backgroundColor:
+                selectedRecord.id === record.id ? colors.primary[300] : "",
+              "&:hover": {
+                backgroundColor: colors.primary[300],
+              },
             }}
+            onClick={() => {
+              if (Object.values(contextMenuPosition).length > 0) {
+                setContextMenuPosition({});
+              } else {
+                setSelectedRecord(record);
+              }
+            }}
+            onContextMenu={handleContextMenu}
+            onBlur={() => setContextMenuPosition({})}
           >
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText>Eliminar</ListItemText>
-          </MenuItem>
-        </MenuList>
-      </RecordContextMenu>
-      <RecordModalDelete
-        isOpen={modal}
-        handleOnClose={() => setModal(!modal)}
-      />
+            <Box sx={{ pointerEvents: "none" }}>
+              <Typography
+                color={colors.greenAccent[500]}
+                variant="h5"
+                fontWeight="600"
+              >
+                {record.order}
+              </Typography>
+              <Typography fontWeight="600" color={colors.grey[100]}>
+                {record.name}
+              </Typography>
+            </Box>
+            <Box
+              sx={{ pointerEvents: "none" }}
+              backgroundColor={colors.greenAccent[500]}
+              p="7px 7px"
+              borderRadius="50%"
+            ></Box>
+          </Box>
+        ))}
+        <RecordContextMenu
+          position={contextMenuPosition}
+          onClickAway={handleClickAway}
+        >
+          <MenuList dense>
+            <MenuItem disabled={recordsStatus === "loading"}>
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
+              <ListItemText>Editar</ListItemText>
+            </MenuItem>
+            <Divider />
+            <MenuItem disabled={recordsStatus === "loading"}>
+              <ListItemIcon>
+                <ArchiveIcon />
+              </ListItemIcon>
+              <ListItemText>Archivar</ListItemText>
+            </MenuItem>
+            <MenuItem
+              disabled={recordsStatus === "loading"}
+              onClick={() => {
+                setContextMenuPosition({});
+                setModal(!modal);
+              }}
+            >
+              <ListItemIcon>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText>Eliminar</ListItemText>
+            </MenuItem>
+          </MenuList>
+        </RecordContextMenu>
+        <RecordModalDelete
+          isOpen={modal}
+          handleOnClose={() => setModal(!modal)}
+        />
+      </Box>
+      <Box
+        gridColumn={{ xs: "span 12", sm: "span 8" }}
+        gridRow={{ xs: "span 2", sm: "span 2" }}
+      >
+        {Object.values(selectedRecord).length <= 0 ? (
+          <>
+            <Box
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              columnGap={3}
+              px={3}
+              sx={{ bgcolor: colors.primary[600], height: "100%" }}
+            >
+              <SvgIcon color="secondary" sx={{ fontSize: 35 }}>
+                <ReplyAllIcon />
+              </SvgIcon>
+              <Typography
+                variant="h5"
+                color={colors.grey[500]}
+                fontWeight={700}
+                textTransform="uppercase"
+              >
+                SELECCIONA ALGÚN EXPEDIENTE DE LA LISTA
+              </Typography>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Box
+              display="grid"
+              gridTemplateColumns="repeat(5, minmax(0, 1fr))"
+              gridAutoRows="110px"
+              gap="10px"
+              p="0 15px"
+            >
+              <Box
+                display="flex"
+                flexDirection="column"
+                rowGap={1}
+                p={1}
+                gridColumn="span 3"
+                gridRow="span 2"
+                sx={{ height: "100%", bgcolor: "brown" }}
+              >
+                <Typography variant="h3">{selectedRecord.priority}</Typography>
+                <Typography variant="h3">{selectedRecord.tracing}</Typography>
+                <Typography variant="h2">{selectedRecord.order}</Typography>
+                <Typography variant="h3">{selectedRecord.name}</Typography>
+              </Box>
+              <Box
+                gridColumn="span 2"
+                gridRow="span 2"
+                sx={{ height: "100%", bgcolor: "gray" }}
+              >
+                <Button
+                  onClick={() => navigate(`/expedientes/${selectedRecord.id}`)}
+                  size="large"
+                  variant="contained"
+                >
+                  "RECORD PAGE2"
+                </Button>
+              </Box>
+              <Box
+                gridColumn="span 5"
+                gridRow="span 1"
+                sx={{ height: "100%", bgcolor: "gray" }}
+              >
+                "RECORD PAGE3"
+              </Box>
+            </Box>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

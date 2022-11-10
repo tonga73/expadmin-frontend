@@ -60,10 +60,10 @@ export const removeRecord = createAsyncThunk(
 export const editRecord = createAsyncThunk(
   "records/fetchEditRecord",
   async (record, { dispatch }) => {
+    dispatch(setRecordsStatus("editing"));
     const response = await fetchEditRecord(record);
 
     dispatch(setRecordsStatus("edited"));
-    dispatch(getRecords({}));
     dispatch(setRecord(response));
   }
 );

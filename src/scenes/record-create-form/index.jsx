@@ -171,7 +171,7 @@ const RecordCreateForm = () => {
                 >
                   {dataTracings.map((e) => (
                     <MenuItem key={e} value={e}>
-                      {e}
+                      {e.replaceAll("_", " ")}
                     </MenuItem>
                   ))}
                 </TextField>
