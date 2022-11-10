@@ -62,13 +62,6 @@ const RecordMain = () => {
       if (!!values.order && values.name !== record.name) {
         dispatch(editRecord({ id: id, req: { name: values.name } }));
       }
-      // if (values.tracing !== record.tracing) {
-      //   console.log("ACA");
-      //   // dispatch(editRecord({ id: id, req: { tracing: values.tracing } }));
-      // }
-      // if (values.priority !== record.priority) {
-      //   // dispatch(editRecord({ id: id, req: { priority: values.priority } }));
-      // }
       dispatch(editRecord({ id: id, req: values }));
     } catch (error) {
       console.log(error);
