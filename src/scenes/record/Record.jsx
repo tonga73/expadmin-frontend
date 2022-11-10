@@ -47,7 +47,7 @@ const Record = () => {
     }
   }, [recordsStatus]);
 
-  return recordsStatus === "loading" ? (
+  return recordsStatus !== "" ? (
     <Box
       display="flex"
       justifyContent="center"
@@ -66,7 +66,7 @@ const Record = () => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(5, minmax(0, 1fr))"
-      gridAutoRows="min-content"
+      gridAutoRows="auto"
       rowGap={5}
       p="0 15px"
       sx={{ minHeight: "85vh" }}
@@ -77,8 +77,16 @@ const Record = () => {
       <Box gridColumn="span 2" sx={{ height: "100" }}>
         <RecordDetails record={record} />
       </Box>
-      <Box gridColumn="span 5" sx={{ height: "100%", bgcolor: "blue" }}>
-        "RECORD PAGE"
+      <Box
+        gridColumn="span 5"
+        display="grid"
+        gridTemplateColumns="repeat(3, minmax(0, 1fr))"
+        gap={1.5}
+        sx={{ height: "100%" }}
+      >
+        <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+        <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+        <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
       </Box>
     </Box>
   );
