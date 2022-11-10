@@ -15,10 +15,12 @@ import Paper from "@mui/material/Paper";
 import { useTheme } from "@mui/material";
 import SvgIcon from "@mui/material/SvgIcon";
 import { tokens } from "../theme";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
@@ -64,9 +66,9 @@ const HotRecords = ({ dense }) => {
     setContextMenuPosition({});
   };
 
-  useEffect(() => {
-    dispatch(getRecords({}));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getRecords({}));
+  // }, []);
 
   useEffect(() => {
     if (recordsStatus === "success") {
@@ -102,53 +104,82 @@ const HotRecords = ({ dense }) => {
             Recientes [{records.length}]
           </Typography>
         </Box>
-        {records.map((record, i) => (
+        {/* LIST RECORDS (Button Reload prints if no records.) */}
+        {records.length <= 0 ? (
           <Box
-            id={`record-${record.id}`}
-            key={`${record.id}-${i}`}
             display="flex"
-            justifyContent="space-between"
+            flexDirection="column"
+            rowGap={1}
+            justifyContent="center"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            p="15px"
-            sx={{
-              userSelect: "none",
-              backgroundColor:
-                selectedRecord.id === record.id ? colors.primary[300] : "",
-              "&:hover": {
-                backgroundColor: colors.primary[300],
-              },
-            }}
-            onClick={() => {
-              if (Object.values(contextMenuPosition).length > 0) {
-                setContextMenuPosition({});
-              } else {
-                setSelectedRecord(record);
-              }
-            }}
-            onContextMenu={handleContextMenu}
-            onBlur={() => setContextMenuPosition({})}
+            sx={{ height: "75%" }}
           >
-            <Box sx={{ pointerEvents: "none" }}>
-              <Typography
-                color={colors.greenAccent[500]}
-                variant="h5"
-                fontWeight="600"
-              >
-                {record.order}
-              </Typography>
-              <Typography fontWeight="600" color={colors.grey[100]}>
-                {record.name}
-              </Typography>
-            </Box>
-            <Box
-              sx={{ pointerEvents: "none" }}
-              backgroundColor={colors.greenAccent[500]}
-              p="7px 7px"
-              borderRadius="50%"
-            ></Box>
+            <Typography variant="caption" textTransform="uppercase">
+              No se cargaron expedientes
+            </Typography>
+            <Button
+              onClick={() => dispatch(getRecords({}))}
+              variant="contained"
+              endIcon={
+                recordsStatus === "loading" ? (
+                  <Spinner size="17" />
+                ) : (
+                  <ReplayIcon />
+                )
+              }
+            >
+              Recargar Lista
+            </Button>
           </Box>
-        ))}
+        ) : (
+          records.map((record, i) => (
+            <Box
+              id={`record-${record.id}`}
+              key={`${record.id}-${i}`}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              p="15px"
+              sx={{
+                userSelect: "none",
+                backgroundColor:
+                  selectedRecord.id === record.id ? colors.primary[300] : "",
+                "&:hover": {
+                  backgroundColor: colors.primary[300],
+                },
+              }}
+              onClick={() => {
+                if (Object.values(contextMenuPosition).length > 0) {
+                  setContextMenuPosition({});
+                } else {
+                  setSelectedRecord(record);
+                }
+              }}
+              onContextMenu={handleContextMenu}
+              onBlur={() => setContextMenuPosition({})}
+            >
+              <Box sx={{ pointerEvents: "none" }}>
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {record.order}
+                </Typography>
+                <Typography fontWeight="600" color={colors.grey[100]}>
+                  {record.name}
+                </Typography>
+              </Box>
+              <Box
+                sx={{ pointerEvents: "none" }}
+                backgroundColor={colors.greenAccent[500]}
+                p="7px 7px"
+                borderRadius="50%"
+              ></Box>
+            </Box>
+          ))
+        )}
         <RecordContextMenu
           position={contextMenuPosition}
           onClickAway={handleClickAway}
