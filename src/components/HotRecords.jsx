@@ -89,7 +89,11 @@ const HotRecords = ({ dense }) => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(12, minmax(0, 1fr))"
-      gridAutoRows={dense ? "175px" : "130px"}
+      gridAutoRows={{
+        xs: dense ? "175px" : "130px",
+        lg: dense ? "200px" : "155px",
+        xl: dense ? "370px" : "335px",
+      }}
       columnGap="20px"
     >
       <Box
