@@ -122,27 +122,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
         sx={{ height: "100%" }}
       >
         {isDashboard ? (
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            sx={{ width: "100%" }}
-          >
-            <Tooltip
-              placement="right"
-              title={
-                <Typography
-                  variant="caption"
-                  fontWeight="bold"
-                  textTransform="uppercase"
-                >
-                  Vista Completa
-                </Typography>
-              }
-            >
-              <IconButton onClick={() => navigate(`/expedientes/${record.id}`)}>
-                <FullscreenIcon />
-              </IconButton>
-            </Tooltip>
+          <Box display="flex" sx={{ width: "100%" }}>
             <Tooltip
               placement="left"
               title={
@@ -157,6 +137,22 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
             >
               <IconButton onClick={onClose}>
                 <CloseIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              placement="right"
+              title={
+                <Typography
+                  variant="caption"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                >
+                  Vista Completa
+                </Typography>
+              }
+            >
+              <IconButton onClick={() => navigate(`/expedientes/${record.id}`)}>
+                <FullscreenIcon />
               </IconButton>
             </Tooltip>
           </Box>
@@ -294,7 +290,14 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                     <Typography variant="h2" fontWeight={700}>
                       {record.order}
                     </Typography>
-                    <Typography variant="h1">{record.name}</Typography>
+                    <Typography
+                      variant="h1"
+                      textTransform="uppercase"
+                      fontWeight={700}
+                      color={colors.grey[500]}
+                    >
+                      {record.name}
+                    </Typography>
                   </Box>
                 )}
                 <Box
@@ -302,6 +305,14 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
+                  sx={{
+                    bgcolor: colors.primary[600],
+                    pt: 3,
+                    pb: 1,
+                    px: 1,
+                    borderBottomLeftRadius: theme.shape.borderRadius,
+                    borderBottomRightRadius: theme.shape.borderRadius,
+                  }}
                 >
                   {isRecordEdit ? (
                     <>
@@ -335,7 +346,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   ) : (
                     !isDashboard && (
                       <Button
-                        color="secondary"
+                        color="warning"
                         variant="outlined"
                         size="small"
                         onClick={() => setIsRecordEdit(!isRecordEdit)}

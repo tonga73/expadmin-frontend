@@ -266,9 +266,9 @@ const HotRecords = ({ dense }) => {
               }}
             >
               <Box
-                display="grid"
-                rowGap={1}
-                pr={3}
+                display="flex"
+                flexDirection="column"
+                columnGap={3}
                 py={1}
                 sx={{
                   height: "inherit",
@@ -276,20 +276,14 @@ const HotRecords = ({ dense }) => {
                   overflow: "scroll",
                 }}
               >
-                <Box>
-                  <RecordMain
-                    isDashboard
-                    onClose={() => setSelectedRecord({})}
-                    record={selectedRecord}
-                  />
-                </Box>
-                <Box>
-                  <RecordDetails record={selectedRecord} />
-                </Box>
-                {/* <Typography variant="h3">{selectedRecord.priority}</Typography>
-                <Typography variant="h3">{selectedRecord.tracing}</Typography>
+                <Typography variant="h3">
+                  Prioridad: {selectedRecord.priority}
+                </Typography>
+                <Typography variant="h3">
+                  Estado: {selectedRecord.tracing}
+                </Typography>
                 <Typography variant="h2">{selectedRecord.order}</Typography>
-                <Typography variant="h3">{selectedRecord.name}</Typography> */}
+                <Typography variant="h3">{selectedRecord.name}</Typography>
               </Box>
             </Box>
           </>
