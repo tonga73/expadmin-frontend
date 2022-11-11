@@ -278,9 +278,8 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   justifyContent="space-between"
                   alignItems="center"
                   sx={{
-                    bgcolor: colors.primary[600],
-                    pt: 3,
-                    pb: 1,
+                    borderBottom: `15px solid ${colors.primary[600]}`,
+                    py: 3,
                     px: 1,
                     borderBottomLeftRadius: theme.shape.borderRadius,
                     borderBottomRightRadius: theme.shape.borderRadius,
