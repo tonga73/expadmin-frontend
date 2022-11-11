@@ -39,7 +39,7 @@ const Form = () => {
   };
 
   return (
-    <Box m="20px">
+    <Box>
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
       <Formik

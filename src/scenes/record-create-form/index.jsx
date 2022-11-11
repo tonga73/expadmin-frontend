@@ -107,7 +107,7 @@ const RecordCreateForm = () => {
   }, [recordsStatus, courtsStatus, officesStatus]);
 
   return (
-    <Box m="20px">
+    <Box>
       <Header
         title="CREAR EXPEDIENTE"
         subtitle="Formulario para la creación de un Nuevo Expediente."

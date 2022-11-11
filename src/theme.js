@@ -66,6 +66,22 @@ export const tokens = (mode) => ({
           800: "#013349",
           900: "#011a24",
         },
+        priorityColors: {
+          NULA: "#577590",
+          BAJA: "#90BE6D",
+          MEDIA: "#F8961E",
+          ALTA: "#F3722C",
+          URGENTE: "#F94144",
+        },
+        tracingColors: {
+          ACEPTA_CARGO: "#001219",
+          ACTO_PERICIAL_REALIZADO: "#90BE6D",
+          PERICIA_REALIZADA: "#oa9396",
+          SENTENCIA_O_CONVENIO_DE_PARTES: "#005f73",
+          HONORARIOS_REGULADOS: "#ee9b00",
+          EN_TRATATIVA_DE_COBRO: "#ae2012",
+          COBRADO: "#9b2226",
+        },
       }
     : {
         grey: {
@@ -122,6 +138,13 @@ export const tokens = (mode) => ({
           700: "#68b3d3",
           800: "#9acce2",
           900: "#cde6f0",
+        },
+        priorityColors: {
+          NULA: "#577590",
+          BAJA: "#90BE6D",
+          MEDIA: "#F8961E",
+          ALTA: "#F3722C",
+          URGENTE: "#F94144",
         },
       }),
 });

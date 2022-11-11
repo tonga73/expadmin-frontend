@@ -72,7 +72,7 @@ const Dashboard = () => {
   useEffect(() => {}, []);
 
   return (
-    <Box m="0 20px 0 20px">
+    <Box>
       <Header title="INICIO" subtitle="Bienvenido al tablero de estadísticas" />
 
       {/* GRID & CHARTS */}

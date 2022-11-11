@@ -8,15 +8,11 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
-
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import CloseIcon from "@mui/icons-material/Close";
 
 import Spinner from "../../../components/Spinner";
 
@@ -63,12 +59,24 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
   });
 
   const handleFormSubmit = async (values) => {
+    const { name, order, priority, tracing } = record;
+    console.log(
+      JSON.stringify(values) ===
+        JSON.stringify({ name, order, priority, tracing })
+    );
     try {
       const { id } = params;
+      if (
+        JSON.stringify(values) ===
+        JSON.stringify({ name, order, priority, tracing })
+      ) {
+        setIsRecordEdit(false);
+        return;
+      }
       if (!!values.order && values.order !== record.order) {
         dispatch(editRecord({ id: id, req: { order: values.order } }));
       }
-      if (!!values.order && values.name !== record.name) {
+      if (!!values.name && values.name !== record.name) {
         dispatch(editRecord({ id: id, req: { name: values.name } }));
       }
       dispatch(editRecord({ id: id, req: values }));
@@ -121,42 +129,6 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
         px={isDashboard ? 0 : 1.5}
         sx={{ height: "100%" }}
       >
-        {isDashboard ? (
-          <Box display="flex" sx={{ width: "100%" }}>
-            <Tooltip
-              placement="left"
-              title={
-                <Typography
-                  variant="caption"
-                  fontWeight="bold"
-                  textTransform="uppercase"
-                >
-                  Cerrar
-                </Typography>
-              }
-            >
-              <IconButton onClick={onClose}>
-                <CloseIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              placement="right"
-              title={
-                <Typography
-                  variant="caption"
-                  fontWeight="bold"
-                  textTransform="uppercase"
-                >
-                  Vista Completa
-                </Typography>
-              }
-            >
-              <IconButton onClick={() => navigate(`/expedientes/${record.id}`)}>
-                <FullscreenIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        ) : undefined}
         <Formik
           innerRef={handleRect}
           // enableReinitialize={true}
@@ -317,6 +289,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   {isRecordEdit ? (
                     <>
                       <Button
+                        disabled={recordsStatus === "editing"}
                         color="neutral"
                         variant="contained"
                         size="small"
@@ -335,6 +308,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                         Editando Expediente
                       </Typography>
                       <Button
+                        disabled={recordsStatus === "editing"}
                         type="submit"
                         color="warning"
                         variant="outlined"
@@ -346,6 +320,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   ) : (
                     !isDashboard && (
                       <Button
+                        disabled={recordsStatus === "editing"}
                         color="warning"
                         variant="outlined"
                         size="small"

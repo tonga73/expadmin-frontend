@@ -64,7 +64,7 @@ const RecordsList = () => {
   }, []);
 
   return (
-    <Box m="20px">
+    <Box>
       <Header
         title="LISTADO DE EXPEDIENTES"
         subtitle="Lista filtrable de todos los expedientes."

@@ -20,7 +20,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 
 import Spinner from "./Spinner";
 
-import { removeRecord } from "../store/actions/records.actions";
+import { getRecord, removeRecord } from "../store/actions/records.actions";
 
 import {
   selectRecords,
@@ -29,7 +29,7 @@ import {
   setRecordsStatus,
 } from "../store/slices/records.slice";
 
-const RecordModalDelete = ({ isOpen, handleOnClose }) => {
+const RecordModalDelete = ({ isOpen, handleOnClose, recordId }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -39,10 +39,16 @@ const RecordModalDelete = ({ isOpen, handleOnClose }) => {
 
   useEffect(() => {
     if (recordsStatus === "deleted") {
-      dispatch(setRecordsStatus(""));
       handleOnClose();
+      dispatch(setRecordsStatus(""));
     }
   }, [recordsStatus]);
+
+  useEffect(() => {
+    if (isOpen) {
+      dispatch(getRecord(recordId));
+    }
+  }, [isOpen, recordId]);
 
   return record !== undefined ? (
     <Modal
@@ -100,7 +106,9 @@ const RecordModalDelete = ({ isOpen, handleOnClose }) => {
           Se eliminará definitivamente el expediente:{" "}
         </Typography>
         <Paper sx={{ p: 1.5 }}>
-          {recordsStatus !== "loading" && Object.values(record).length > 0 ? (
+          {recordsStatus !== "loading" &&
+          recordsStatus !== "deleting" &&
+          Object.values(record).length > 0 ? (
             <>
               <Typography
                 variant="h3"
@@ -128,7 +136,10 @@ const RecordModalDelete = ({ isOpen, handleOnClose }) => {
               py={1}
             >
               <Spinner size="50" />
-              <Typography variant="h3">Eliminando expediente...</Typography>
+              <Typography variant="h3">
+                {recordsStatus === "deleting" ? "Eliminando" : "Cargando"}{" "}
+                expediente...
+              </Typography>
               <Typography
                 variant="h6"
                 color="secondary"
@@ -139,7 +150,7 @@ const RecordModalDelete = ({ isOpen, handleOnClose }) => {
             </Box>
           )}
         </Paper>
-        {recordsStatus !== "loading" ? (
+        {recordsStatus !== "loading" && recordsStatus !== "deleting" ? (
           <Box display="flex" justifyContent="space-between" sx={{ py: 1 }}>
             <Button
               onClick={handleOnClose}

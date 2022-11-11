@@ -63,32 +63,37 @@ const Record = () => {
       </Typography>
     </Box>
   ) : (
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(5, minmax(0, 1fr))"
-      gridAutoRows="auto"
-      rowGap={5}
-      p="0 15px"
-      sx={{ minHeight: "85vh" }}
-    >
-      <Box gridColumn="span 3">
-        <RecordMain record={record} />
-      </Box>
-      <Box gridColumn="span 2" sx={{ height: "100" }}>
-        <RecordDetails record={record} />
-      </Box>
+    <>
       <Box
         gridColumn="span 5"
+        sx={{ height: 15, bgcolor: colors.primary[600], mb: 1 }}
+      ></Box>
+      <Box
         display="grid"
-        gridTemplateColumns="repeat(3, minmax(0, 1fr))"
-        gap={1.5}
-        sx={{ height: "100%" }}
+        gridTemplateColumns="repeat(5, minmax(0, 1fr))"
+        rowGap={5}
+        p="0 15px"
+        sx={{ minHeight: "85vh", height: "100%" }}
       >
-        <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
-        <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
-        <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+        <Box gridColumn="span 3">
+          <RecordMain record={record} />
+        </Box>
+        <Box gridColumn="span 2" sx={{ height: "100" }}>
+          <RecordDetails record={record} />
+        </Box>
+        <Box
+          gridColumn="span 5"
+          display="grid"
+          gridTemplateColumns="repeat(3, minmax(0, 1fr))"
+          gap={1.5}
+          sx={{ height: "300px" }}
+        >
+          <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+          <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+          <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

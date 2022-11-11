@@ -45,7 +45,7 @@ export const newRecord = createAsyncThunk(
 export const removeRecord = createAsyncThunk(
   "records/fetchDeleteRecord",
   async (recordId, { rejectWithValue, dispatch }) => {
-    dispatch(setRecordsStatus("loading"));
+    dispatch(setRecordsStatus("deleting"));
     const response = await fetchDeleteRecord(recordId);
 
     if (response.status === "error") {

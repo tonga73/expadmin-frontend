@@ -5,28 +5,28 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import SvgIcon from "@mui/material/SvgIcon";
 import { tokens } from "../theme";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import ReplayIcon from "@mui/icons-material/Replay";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
 import RecordModalDelete from "./RecordModalDelete";
-import RecordMain from "../scenes/record/sections/RecordMain";
-import RecordDetails from "../scenes/record/sections/RecordDetails";
 
 import {
   selectRecords,
@@ -46,6 +46,7 @@ const HotRecords = ({ dense }) => {
   const navigate = useNavigate();
 
   const [contextMenuPosition, setContextMenuPosition] = useState({});
+  const [contextMenuObjId, setContextMenuObjId] = useState(null);
   const [modal, setModal] = useState(false);
 
   const recordsStatus = useSelector(selectRecordsStatus);
@@ -55,9 +56,9 @@ const HotRecords = ({ dense }) => {
   const handleContextMenu = async (e) => {
     e.preventDefault();
     const recordId = await e.target.id.replace("record-", "");
-    dispatch(getRecord(recordId));
+    setContextMenuObjId(recordId);
     const xPos = e.pageX - 50 + "px";
-    const yPos = e.pageY - 50 + "px";
+    const yPos = e.pageY - 100 + "px";
 
     if (recordId !== "") {
       setContextMenuPosition({
@@ -195,24 +196,25 @@ const HotRecords = ({ dense }) => {
           onClickAway={handleClickAway}
         >
           <MenuList dense>
-            <MenuItem disabled={recordsStatus === "loading"}>
+            <MenuItem
+              onClick={() => navigate(`/expedientes/${contextMenuObjId}`)}
+            >
               <ListItemIcon>
-                <EditIcon />
+                <FileOpenIcon />
               </ListItemIcon>
-              <ListItemText>Editar</ListItemText>
+              <ListItemText>Abrir</ListItemText>
             </MenuItem>
             <Divider />
-            <MenuItem disabled={recordsStatus === "loading"}>
+            <MenuItem>
               <ListItemIcon>
                 <ArchiveIcon />
               </ListItemIcon>
               <ListItemText>Archivar</ListItemText>
             </MenuItem>
             <MenuItem
-              disabled={recordsStatus === "loading"}
               onClick={() => {
                 setContextMenuPosition({});
-                setModal(!modal);
+                setModal(true);
               }}
             >
               <ListItemIcon>
@@ -224,8 +226,17 @@ const HotRecords = ({ dense }) => {
         </RecordContextMenu>
         <RecordModalDelete
           isOpen={modal}
-          handleOnClose={() => setModal(!modal)}
+          handleOnClose={() => setModal(false)}
+          recordId={contextMenuObjId}
         />
+        <Box
+          display="flex"
+          justifyContent="center"
+          py={1}
+          color={colors.grey[500]}
+        >
+          <Typography fontWeight={700}>·</Typography>
+        </Box>
       </Box>
       <Box
         gridColumn={{ xs: "span 12", sm: "span 8" }}
@@ -269,6 +280,7 @@ const HotRecords = ({ dense }) => {
                 display="flex"
                 flexDirection="column"
                 columnGap={3}
+                rowGap={1.5}
                 py={1}
                 sx={{
                   height: "inherit",
@@ -276,14 +288,102 @@ const HotRecords = ({ dense }) => {
                   overflow: "scroll",
                 }}
               >
-                <Typography variant="h3">
-                  Prioridad: {selectedRecord.priority}
+                <Box display="flex" columnGap={1} sx={{ width: "100%", mb: 1 }}>
+                  <Tooltip
+                    placement="left"
+                    title={
+                      <Typography
+                        variant="caption"
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                      >
+                        Cerrar
+                      </Typography>
+                    }
+                  >
+                    <IconButton
+                      color="neutral"
+                      onClick={() => {
+                        setSelectedRecord({});
+                      }}
+                    >
+                      <ArrowBackIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip
+                    placement="right"
+                    title={
+                      <Typography
+                        variant="caption"
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                      >
+                        Vista Completa
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      color="neutral"
+                      startIcon={<FileOpenIcon />}
+                      onClick={() =>
+                        navigate(`/expedientes/${selectedRecord.id}`)
+                      }
+                    >
+                      Abrir
+                    </Button>
+                  </Tooltip>
+                </Box>
+                <Box display="flex" columnGap={3}>
+                  <Typography
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
+                    variant="h3"
+                    sx={{
+                      color: colors.priorityColors[selectedRecord.priority],
+                    }}
+                  >
+                    <Typography
+                      color={colors.grey[500]}
+                      variant="caption"
+                      fontWeight={600}
+                      textTransform="uppercase"
+                    >
+                      Prioridad:{" "}
+                    </Typography>
+                    {selectedRecord.priority}
+                  </Typography>
+                  <Typography
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
+                    variant="h3"
+                    sx={{
+                      color: colors.tracingColors[selectedRecord.tracing],
+                    }}
+                  >
+                    <Typography
+                      color={colors.grey[500]}
+                      variant="caption"
+                      fontWeight={600}
+                      textTransform="uppercase"
+                    >
+                      Estado:{" "}
+                    </Typography>
+                    {selectedRecord.tracing.replaceAll("_", " ")}
+                  </Typography>
+                </Box>
+                <Typography variant="h1" fontWeight={700}>
+                  {selectedRecord.order}
                 </Typography>
-                <Typography variant="h3">
-                  Estado: {selectedRecord.tracing}
+                <Typography
+                  variant="h3"
+                  fontWeight={700}
+                  textTransform="uppercase"
+                  color={colors.grey[500]}
+                >
+                  {selectedRecord.name}
                 </Typography>
-                <Typography variant="h2">{selectedRecord.order}</Typography>
-                <Typography variant="h3">{selectedRecord.name}</Typography>
               </Box>
             </Box>
           </>
