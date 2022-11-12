@@ -22,7 +22,6 @@ export const getRecords = createAsyncThunk(
 export const getRecord = createAsyncThunk(
   "records/fetchGetRecord",
   async (record, { dispatch }) => {
-    dispatch(setRecordsStatus("loading"));
     const response = await fetchGetRecord(record);
 
     dispatch(setRecord(response));

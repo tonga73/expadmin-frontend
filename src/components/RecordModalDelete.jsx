@@ -46,6 +46,7 @@ const RecordModalDelete = ({ isOpen, handleOnClose, recordId }) => {
 
   useEffect(() => {
     if (isOpen) {
+      dispatch(setRecordsStatus("loading"));
       dispatch(getRecord(recordId));
     }
   }, [isOpen, recordId]);

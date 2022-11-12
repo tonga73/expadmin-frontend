@@ -39,6 +39,7 @@ const Record = () => {
 
   useEffect(() => {
     dispatch(setRecords([]));
+    dispatch(setRecordsStatus("loading"));
     dispatch(getRecord(params.id));
   }, [params.id]);
 
@@ -81,7 +82,20 @@ const Record = () => {
         <Box gridColumn="span 2" sx={{ height: "100" }}>
           <RecordDetails record={record} />
         </Box>
-        <Box gridColumn="span 5" sx={{ pb: 5 }}>
+        <Box
+          gridColumn="span 5"
+          sx={{
+            pb: 5,
+            opacity:
+              recordsStatus === "loading-notes" || recordsStatus === "loading"
+                ? 0.5
+                : "initial",
+            pointerEvents:
+              recordsStatus === "loading-notes" || recordsStatus === "loading"
+                ? "none"
+                : "initial",
+          }}
+        >
           <RecordNotes notes={record.notes} recordId={record.id} />
         </Box>
       </Box>
