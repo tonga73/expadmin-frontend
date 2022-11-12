@@ -10,6 +10,8 @@ import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material";
+import { tokens } from "../theme";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,11 +23,19 @@ import Spinner from "./Spinner";
 import RecordNoteCard from "./RecordNoteCard";
 import RecordNoteNewCard from "./RecordNoteNewCard";
 
-import { selectNotesStatus, setNotesStatus } from "../store/slices/notes.slice";
+import {
+  selectNotesStatus,
+  setNotesStatus,
+  setNote,
+} from "../store/slices/notes.slice";
 
 import { setRecordNotes } from "../store/slices/records.slice";
 
 const RecordNotes = ({ notes }) => {
+  // THEME UTILS
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const dispatch = useDispatch();
   const [newNote, setNewNote] = useState(false);
   const [displayNotes, setDisplayNotes] = useState([]);
@@ -35,9 +45,15 @@ const RecordNotes = ({ notes }) => {
   useEffect(() => {
     if (notesStatus === "created") {
       setNewNote(false);
+      dispatch(setNotesStatus(""));
     }
     if (notesStatus === "edited") {
       setDisplayNotes(notes.slice(0, 3));
+    }
+    if (notesStatus === "deleted") {
+      setDisplayNotes(notes);
+      dispatch(setNote({}));
+      dispatch(setNotesStatus(""));
     }
     if (notesStatus === "cancel-create") {
       dispatch(setNotesStatus(""));
@@ -46,6 +62,9 @@ const RecordNotes = ({ notes }) => {
   }, [notesStatus]);
 
   useEffect(() => {
+    if (notes === []) {
+      setDisplayNotes([]);
+    }
     if (notes.length > 0) {
       setDisplayNotes(notes.slice(0, 3));
     }
@@ -92,9 +111,19 @@ const RecordNotes = ({ notes }) => {
             }}
           />
         ) : undefined}
-        {displayNotes.map((e, index) => (
-          <RecordNoteCard key={index} noteData={e} />
-        ))}
+        {!newNote && notes.length <= 0 ? (
+          <>
+            <Box gridColumn="span 3" sx={{ textAlign: "center", py: 0.5 }}>
+              <Typography fontWeight={700} color={colors.grey[500]}>
+                NO HAY NOTAS CREADAS
+              </Typography>
+            </Box>
+          </>
+        ) : (
+          displayNotes.map((e, index) => (
+            <RecordNoteCard key={index} noteData={e} />
+          ))
+        )}
       </Box>
     </Box>
   );

@@ -80,7 +80,6 @@ const RecordNoteCard = ({ noteData }) => {
     }
     if (notesStatus === "deleted") {
       setDeleteMode(false);
-      dispatch(setNotesStatus(""));
     }
   }, [notesStatus]);
 
@@ -162,7 +161,7 @@ const RecordNoteCard = ({ noteData }) => {
               color="error"
               size="small"
               onClick={() => {
-                dispatch(setNotesStatus("deleting"));
+                dispatch(setNotesStatus("delete-note"));
                 dispatch(setNote(noteData));
                 setDeleteMode(true);
               }}
@@ -194,6 +193,17 @@ const RecordNoteCard = ({ noteData }) => {
             px={2}
             sx={{ width: "30%", bgcolor: "background.paper" }}
           >
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              textTransform="uppercase"
+              component="h2"
+              sx={{
+                placeSelf: "center",
+              }}
+            >
+              Editar Nota
+            </Typography>
             {notesStatus === "editing" ? (
               <Box
                 display="flex"

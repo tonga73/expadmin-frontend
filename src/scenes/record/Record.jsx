@@ -27,12 +27,12 @@ import {
 } from "../../store/slices/records.slice";
 
 const Record = () => {
-  const dispatch = useDispatch();
-  const params = useParams();
-
   // THEME UTILS
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const dispatch = useDispatch();
+  const params = useParams();
 
   const recordsStatus = useSelector(selectRecordsStatus);
   const record = useSelector(selectRecord);
