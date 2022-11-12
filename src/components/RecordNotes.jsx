@@ -21,11 +21,12 @@ import Spinner from "./Spinner";
 import RecordNoteCard from "./RecordNoteCard";
 import RecordNoteNewCard from "./RecordNoteNewCard";
 
-import { selectNotesStatus } from "../store/slices/notes.slice";
+import { selectNotesStatus, setNotesStatus } from "../store/slices/notes.slice";
 
 import { setRecordNotes } from "../store/slices/records.slice";
 
 const RecordNotes = ({ notes }) => {
+  const dispatch = useDispatch();
   const [newNote, setNewNote] = useState(false);
   const [displayNotes, setDisplayNotes] = useState([]);
 
@@ -37,6 +38,10 @@ const RecordNotes = ({ notes }) => {
     }
     if (notesStatus === "edited") {
       setDisplayNotes(notes.slice(0, 3));
+    }
+    if (notesStatus === "cancel-create") {
+      dispatch(setNotesStatus(""));
+      setNewNote(false);
     }
   }, [notesStatus]);
 
@@ -62,7 +67,10 @@ const RecordNotes = ({ notes }) => {
           disabled={newNote}
           endIcon={<NoteAddIcon />}
           color="neutral"
-          onClick={() => setNewNote(true)}
+          onClick={() => {
+            dispatch(setNotesStatus("create-note"));
+            setNewNote(true);
+          }}
         >
           Crear Nota
         </Button>
@@ -77,7 +85,12 @@ const RecordNotes = ({ notes }) => {
         gap={1.5}
       >
         {newNote ? (
-          <RecordNoteNewCard onClose={() => setNewNote(false)} />
+          <RecordNoteNewCard
+            onClose={() => {
+              setNewNote(false);
+              dispatch(setNotesStatus(""));
+            }}
+          />
         ) : undefined}
         {displayNotes.map((e, index) => (
           <RecordNoteCard key={index} noteData={e} />

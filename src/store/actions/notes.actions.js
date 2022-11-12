@@ -4,10 +4,15 @@ import {
   fetchGetNotes,
   fetchNewNote,
   fetchEditNote,
+  fetchDeleteNote,
 } from "../../app/fetchAPI/notesAPI";
 
 import { setNotesStatus, setNote } from "../slices/notes.slice";
-import { setRecordNotes } from "../slices/records.slice";
+import {
+  setRecordNotes,
+  setRecordNewNote,
+  setRecordDeleteNote,
+} from "../slices/records.slice";
 
 export const getNotes = createAsyncThunk("notes/fetchGetNotes", async () => {
   const response = await fetchGetNotes();
@@ -18,10 +23,9 @@ export const getNotes = createAsyncThunk("notes/fetchGetNotes", async () => {
 export const createNote = createAsyncThunk(
   "notes/fetchNewNote",
   async (note, { dispatch }) => {
-    dispatch(setNotesStatus("creating"));
     const response = await fetchNewNote(note);
 
-    dispatch(setRecordNotes(response));
+    dispatch(setRecordNewNote(response));
     dispatch(setNotesStatus("created"));
   }
 );
@@ -29,10 +33,19 @@ export const createNote = createAsyncThunk(
 export const editNote = createAsyncThunk(
   "notes/fetchEditNote",
   async (note, { dispatch }) => {
-    dispatch(setNotesStatus("editing"));
     const response = await fetchEditNote(note);
 
     dispatch(setNote(response));
     dispatch(setNotesStatus("edited"));
+  }
+);
+
+export const deleteNote = createAsyncThunk(
+  "notes/fetchDeleteNote",
+  async (note, { dispatch }) => {
+    const response = await fetchDeleteNote(note);
+
+    dispatch(setRecordDeleteNote(response));
+    dispatch(setNotesStatus("deleted"));
   }
 );

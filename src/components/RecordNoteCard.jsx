@@ -19,7 +19,11 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 
 import Spinner from "./Spinner";
 
-import { createNote, editNote } from "../store/actions/notes.actions";
+import {
+  createNote,
+  editNote,
+  deleteNote,
+} from "../store/actions/notes.actions";
 import {
   selectNotesStatus,
   selectNote,
@@ -37,6 +41,7 @@ import {
 const RecordNoteCard = ({ noteData }) => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
   const [editedNote, setEditedNote] = useState({});
 
   const notesStatus = useSelector(selectNotesStatus);
@@ -44,14 +49,20 @@ const RecordNoteCard = ({ noteData }) => {
 
   const record = useSelector(selectRecord);
 
-  const handleEditNote = (e) => {
+  const handleEditNote = () => {
     if (editedNote.text === noteData.text) {
       setEditMode(false);
       return;
     }
 
+    dispatch(setNotesStatus("editing"));
     dispatch(editNote({ id: editedNote.id, req: { text: editedNote.text } }));
   };
+
+  const handleDeleteNote = () => {
+    dispatch(deleteNote(note.id));
+  };
+
   useEffect(() => {
     if (notesStatus === "edited") {
       const noteTextElement = document.getElementById(`note-text-${note.id}`);
@@ -67,6 +78,10 @@ const RecordNoteCard = ({ noteData }) => {
       dispatch(setNotesStatus(""));
       setEditMode(false);
     }
+    if (notesStatus === "deleted") {
+      setDeleteMode(false);
+      dispatch(setNotesStatus(""));
+    }
   }, [notesStatus]);
 
   return (
@@ -77,8 +92,43 @@ const RecordNoteCard = ({ noteData }) => {
           flexDirection: "column",
           justifyContent: "space-between",
           height: "165px",
+          position: "relative",
         }}
       >
+        {!deleteMode ? undefined : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            gap={1.5}
+            sx={{
+              position: "absolute",
+              bgcolor: "background.paper",
+              width: "100%",
+              height: "100%",
+              zIndex: 99,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="neutral"
+              onClick={() => {
+                dispatch(setNotesStatus(""));
+                dispatch(setNote({}));
+                setDeleteMode(false);
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              color="error"
+              endIcon={<DeleteIcon />}
+              onClick={handleDeleteNote}
+            >
+              Eliminar Nota
+            </Button>
+          </Box>
+        )}
         <CardContent>
           <Box sx={{ p: 1 }}>
             <Typography id={`note-text-${noteData.id}`} variant="h5">
@@ -108,7 +158,15 @@ const RecordNoteCard = ({ noteData }) => {
                 <EditIcon />
               </IconButton>
             </Box>
-            <IconButton color="error" size="small">
+            <IconButton
+              color="error"
+              size="small"
+              onClick={() => {
+                dispatch(setNotesStatus("deleting"));
+                dispatch(setNote(noteData));
+                setDeleteMode(true);
+              }}
+            >
               <DeleteIcon />
             </IconButton>
           </Box>

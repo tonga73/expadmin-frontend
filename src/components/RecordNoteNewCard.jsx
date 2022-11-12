@@ -38,7 +38,8 @@ const RecordNoteNewCard = ({ onClose }) => {
   const record = useSelector(selectRecord);
 
   const handleNewNote = () => {
-    if (!newNote) {
+    if (newNote === null) {
+      dispatch(setNotesStatus("cancel-create"));
       return;
     }
 
@@ -54,7 +55,7 @@ const RecordNoteNewCard = ({ onClose }) => {
         ) : (
           <TextField
             autoFocus
-            id="outlined-multiline-static"
+            id="create-note-textfield"
             variant="standard"
             multiline
             rows={4}
@@ -85,6 +86,7 @@ const RecordNoteNewCard = ({ onClose }) => {
               Cancelar
             </Button>
             <Button
+              id="create-note-button"
               onClick={handleNewNote}
               size="small"
               color="success"

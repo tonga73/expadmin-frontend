@@ -32,3 +32,13 @@ export async function fetchEditNote({ id, req }) {
     console.log(error);
   }
 }
+
+// ELMINAR NOTA
+export async function fetchDeleteNote(id) {
+  try {
+    const { data } = await axiosClient.delete(`/notes/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
