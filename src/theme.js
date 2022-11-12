@@ -169,21 +169,51 @@ export const tokens = (mode) => ({
           800: "#9acce2",
           900: "#cde6f0",
         },
-        priorityBgColors: {
-          NULA: "#577590",
-          BAJA: "#90BE6D",
-          MEDIA: "#F8961E",
-          ALTA: "#F3722C",
-          URGENTE: "#F94144",
+        priorityColors: {
+          NULA: {
+            background: "#626262",
+            text: "#494949",
+          },
+          BAJA: {
+            background: "#619b8a",
+          },
+          MEDIA: {
+            background: "#F8961E",
+          },
+          ALTA: {
+            text: "",
+            background: "#F3722C",
+          },
+          URGENTE: {
+            background: "#F94144",
+          },
+          INACTIVO: {
+            background: "#001219",
+            text: "#333",
+          },
         },
-        tracingBgColors: {
-          ACEPTA_CARGO: "#001219",
-          ACTO_PERICIAL_REALIZADO: "#90BE6D",
-          PERICIA_REALIZADA: "#oa9396",
-          SENTENCIA_O_CONVENIO_DE_PARTES: "#005f73",
-          HONORARIOS_REGULADOS: "#ee9b00",
-          EN_TRATATIVA_DE_COBRO: "#ae2012",
-          COBRADO: "#9b2226",
+        tracingColors: {
+          ACEPTA_CARGO: {
+            background: "#626262",
+          },
+          ACTO_PERICIAL_REALIZADO: {
+            background: "#619b8a",
+          },
+          PERICIA_REALIZADA: {
+            background: "#577590",
+          },
+          SENTENCIA_O_CONVENIO_DE_PARTES: {
+            background: "#005f73",
+          },
+          HONORARIOS_REGULADOS: {
+            background: "#F8961E",
+          },
+          EN_TRATATIVA_DE_COBRO: {
+            background: "#F94144",
+          },
+          COBRADO: {
+            background: "#9b2226",
+          },
         },
       }),
 });
