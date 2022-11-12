@@ -16,6 +16,7 @@ import RecordMain from "./sections/RecordMain";
 import RecordDetails from "./sections/RecordDetails";
 
 import Spinner from "../../components/Spinner";
+import RecordNotes from "../../components/RecordNotes";
 
 import { getRecord } from "../../store/actions/records.actions";
 import {
@@ -51,9 +52,9 @@ const Record = () => {
     <Box
       display="flex"
       justifyContent="center"
+      alignItems="center"
       flexDirection="column"
       rowGap={3}
-      alignItems="center"
       height="75vh"
     >
       <Spinner size="75" />
@@ -73,7 +74,6 @@ const Record = () => {
         gridTemplateColumns="repeat(5, minmax(0, 1fr))"
         rowGap={5}
         p="0 15px"
-        sx={{ minHeight: "85vh", height: "100%" }}
       >
         <Box gridColumn="span 3">
           <RecordMain record={record} />
@@ -81,16 +81,8 @@ const Record = () => {
         <Box gridColumn="span 2" sx={{ height: "100" }}>
           <RecordDetails record={record} />
         </Box>
-        <Box
-          gridColumn="span 5"
-          display="grid"
-          gridTemplateColumns="repeat(3, minmax(0, 1fr))"
-          gap={1.5}
-          sx={{ height: "300px" }}
-        >
-          <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
-          <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
-          <Box sx={{ bgcolor: "blue" }}>"RECORD PAGE"</Box>
+        <Box gridColumn="span 5" sx={{ pb: 5 }}>
+          <RecordNotes />
         </Box>
       </Box>
     </>
