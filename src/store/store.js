@@ -3,6 +3,7 @@ import counterReducer from "../features/counter/counterSlice";
 import recordsSlice from "./slices/records.slice";
 import courtsSlice from "./slices/courts.slice";
 import officesSlice from "./slices/offices.slice";
+import notesSlice from "./slices/notes.slice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     records: recordsSlice,
     courts: courtsSlice,
     offices: officesSlice,
+    notes: notesSlice,
   },
 });

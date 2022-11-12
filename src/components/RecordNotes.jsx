@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -14,36 +15,38 @@ import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import PushPinIcon from "@mui/icons-material/PushPin";
 
-const RecordNoteCard = ({ noteData }) => {
-  const [note, setNote] = useState(null);
+import Spinner from "./Spinner";
+
+import { createNote } from "../store/actions/notes.actions";
+import { selectNotesStatus } from "../store/slices/notes.slice";
+
+import { selectRecord, setRecordNotes } from "../store/slices/records.slice";
+
+const NewRecordNoteCard = ({ onClose }) => {
+  const dispatch = useDispatch();
   const [newNote, setNewNote] = useState(null);
 
-  console.log(note, "NOTE");
-  console.log(newNote, "NEWNOTE");
+  const notesStatus = useSelector(selectNotesStatus);
+
+  const record = useSelector(selectRecord);
 
   const handleNewNote = () => {
-    if (newNote.text === "") {
+    if (!newNote) {
       return;
     }
-    console.log(newNote, "DISPATCH");
+
+    newNote.recordId = record.id;
+    dispatch(createNote(newNote));
   };
 
-  useEffect(() => {
-    if (noteData && noteData.id) {
-      setNote(noteData);
-    } else if (noteData && noteData.text === "") {
-      setNewNote(noteData);
-    }
-  }, [noteData]);
   return (
-    <Card sx={{ minWidth: 275, opacity: !note ? 0.5 : 1 }}>
+    <Card sx={{ minWidth: 275, opacity: !newNote ? 0.5 : 1 }}>
       <CardContent>
-        {note ? (
-          <Paper sx={{ p: 1 }}>{note.text}</Paper>
+        {notesStatus === "creating" ? (
+          <Spinner size="50" />
         ) : (
           <TextField
             autoFocus
-            disabled={!newNote}
             id="outlined-multiline-static"
             variant="standard"
             multiline
@@ -56,61 +59,85 @@ const RecordNoteCard = ({ noteData }) => {
                 ? (e) => (e.target.value = "")
                 : undefined
             }
-            sx={{
-              pointerEvents: !newNote ? "none" : "initial",
-            }}
           />
         )}
       </CardContent>
       <CardActions>
         <Box
           display="flex"
-          justifyContent={note ? "space-between" : "flex-end"}
+          justifyContent={"flex-end"}
           sx={{ width: "100%", minHeight: 26 }}
         >
-          {note ? (
-            <Box>
-              <IconButton color="warning" size="small">
-                <PushPinIcon />
-              </IconButton>
-              <IconButton color="warning" size="small">
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          ) : undefined}
-          {!newNote ? undefined : (
-            <Box display="flex" columnGap={1}>
-              <Button
-                onClick={() => setNewNote(null)}
-                size="small"
-                color="neutral"
-                variant="contained"
-              >
-                Cancelar
-              </Button>
-              <Button
-                onClick={handleNewNote}
-                size="small"
-                color="success"
-                startIcon={<NoteAddIcon />}
-              >
-                Crear Nota
-              </Button>
-            </Box>
-          )}
+          <Box display="flex" columnGap={1}>
+            <Button
+              onClick={onClose}
+              size="small"
+              color="neutral"
+              variant="contained"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleNewNote}
+              size="small"
+              color="success"
+              startIcon={<NoteAddIcon />}
+            >
+              Crear Nota
+            </Button>
+          </Box>
         </Box>
       </CardActions>
     </Card>
   );
 };
 
-const RecordNotes = () => {
-  const [noteData, setNoteData] = useState(null);
-  const ExampleNote = {
-    id: 1,
-    name: "Titulo de la nota",
-    text: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita quidem modi pariatur deserunt porro illum maxime, voluptate, inventore soluta consequatur similique obcaecati aspernatur cupiditate. Dolorum maiores dolore vitae in culpa.",
-  };
+const RecordNoteCard = ({ noteData }) => {
+  const handleEditNote = () => {};
+
+  return (
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "165px",
+      }}
+    >
+      <CardContent>
+        <Paper sx={{ p: 1 }}>
+          <Typography variant="h5">{noteData.text}</Typography>
+        </Paper>
+      </CardContent>
+      <CardActions>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          sx={{ width: "100%", minHeight: 26 }}
+        >
+          <IconButton color="secondary" size="small">
+            <PushPinIcon />
+          </IconButton>
+          <IconButton color="error" size="small">
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      </CardActions>
+    </Card>
+  );
+};
+
+const RecordNotes = ({ notes }) => {
+  const [newNote, setNewNote] = useState(false);
+
+  const notesStatus = useSelector(selectNotesStatus);
+
+  useEffect(() => {
+    if (notesStatus === "created") {
+      setNewNote(false);
+    }
+  }, [notesStatus]);
+
   return (
     <Box
       display="grid"
@@ -124,9 +151,10 @@ const RecordNotes = () => {
         mb={0.5}
       >
         <Button
+          disabled={newNote}
           endIcon={<NoteAddIcon />}
           color="neutral"
-          onClick={() => setNoteData({ text: "" })}
+          onClick={() => setNewNote(true)}
         >
           Crear Nota
         </Button>
@@ -134,8 +162,18 @@ const RecordNotes = () => {
           Mostrar Todas (+5)
         </Button>
       </Box>
-      <Box gridColumn="span 4">
-        <RecordNoteCard noteData={noteData} />
+      <Box
+        gridColumn="span 12"
+        display="grid"
+        gridTemplateColumns="repeat(3, 1fr)"
+        columnGap={1.5}
+      >
+        {newNote ? (
+          <NewRecordNoteCard onClose={() => setNewNote(false)} />
+        ) : undefined}
+        {notes.map((note, index) => (
+          <RecordNoteCard key={index} noteData={note} />
+        ))}
       </Box>
     </Box>
   );

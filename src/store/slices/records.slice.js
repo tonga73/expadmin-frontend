@@ -16,6 +16,9 @@ export const recordsSlice = createSlice({
     setRecord: (state, action) => {
       state.record = action.payload;
     },
+    setRecordNotes: (state, action) => {
+      state.record.notes = [...state.record.notes, action.payload];
+    },
     setRecords: (state, action) => {
       state.records = action.payload;
     },
@@ -42,8 +45,13 @@ export const recordsSlice = createSlice({
   },
 });
 
-export const { setRecordsStatus, setFilteredRecords, setRecord, setRecords } =
-  recordsSlice.actions;
+export const {
+  setRecordsStatus,
+  setFilteredRecords,
+  setRecord,
+  setRecords,
+  setRecordNotes,
+} = recordsSlice.actions;
 
 export const selectRecordsStatus = (state) => state.records.status;
 

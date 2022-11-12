@@ -82,7 +82,7 @@ const Record = () => {
           <RecordDetails record={record} />
         </Box>
         <Box gridColumn="span 5" sx={{ pb: 5 }}>
-          <RecordNotes />
+          <RecordNotes notes={record.notes} recordId={record.id} />
         </Box>
       </Box>
     </>
