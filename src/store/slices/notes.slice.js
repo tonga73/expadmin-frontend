@@ -10,6 +10,9 @@ export const notesSlice = createSlice({
   name: "notes",
   initialState,
   reducers: {
+    setNote: (state, action) => {
+      state.note = action.payload;
+    },
     setNotes: (state, action) => {
       state.notes = action.payload;
     },
@@ -19,7 +22,7 @@ export const notesSlice = createSlice({
   },
 });
 
-export const { setNotesStatus, setNotes } = notesSlice.actions;
+export const { setNotesStatus, setNotes, setNote } = notesSlice.actions;
 
 export const selectNotes = (state) => state.notes.notes;
 

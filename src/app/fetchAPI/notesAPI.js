@@ -21,3 +21,14 @@ export async function fetchNewNote(req) {
     console.log(error);
   }
 }
+
+// EDITAR NOTA
+export async function fetchEditNote({ id, req }) {
+  try {
+    const { data } = await axiosClient.patch(`/notes/${id}`, req);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

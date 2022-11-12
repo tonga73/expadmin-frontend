@@ -17,7 +17,7 @@ export const recordsSlice = createSlice({
       state.record = action.payload;
     },
     setRecordNotes: (state, action) => {
-      state.record.notes = [...state.record.notes, action.payload];
+      state.record.notes = action.payload;
     },
     setRecords: (state, action) => {
       state.records = action.payload;
