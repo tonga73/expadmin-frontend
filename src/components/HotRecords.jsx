@@ -23,6 +23,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import ReplayIcon from "@mui/icons-material/Replay";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
@@ -126,20 +127,28 @@ const HotRecords = ({ dense }) => {
             sx={{ height: "75%" }}
           >
             <Typography variant="caption" textTransform="uppercase">
-              No se cargaron expedientes
+              {records.length <= 0
+                ? "No se encontraron expedientes"
+                : "Presiona para recargar"}
             </Typography>
             <Button
-              onClick={() => dispatch(getRecords({}))}
+              onClick={() =>
+                records.length <= 0
+                  ? navigate("/crear-expediente")
+                  : dispatch(getRecords({}))
+              }
               variant="contained"
               endIcon={
                 recordsStatus === "loading" ? (
                   <Spinner size="17" />
+                ) : records.length <= 0 ? (
+                  <AddBoxIcon />
                 ) : (
                   <ReplayIcon />
                 )
               }
             >
-              Recargar Lista
+              {records.length <= 0 ? "Crear Expediente" : "Recargar Lista"}
             </Button>
           </Box>
         ) : (
@@ -340,7 +349,9 @@ const HotRecords = ({ dense }) => {
                     gap={1}
                     variant="h3"
                     sx={{
-                      color: colors.priorityColors[selectedRecord.priority],
+                      color:
+                        colors.priorityColors[selectedRecord.priority]
+                          .background,
                     }}
                   >
                     <Typography
@@ -359,7 +370,8 @@ const HotRecords = ({ dense }) => {
                     gap={1}
                     variant="h3"
                     sx={{
-                      color: colors.tracingColors[selectedRecord.tracing],
+                      color:
+                        colors.tracingColors[selectedRecord.tracing].background,
                     }}
                   >
                     <Typography

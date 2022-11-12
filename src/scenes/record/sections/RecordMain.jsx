@@ -60,10 +60,6 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
 
   const handleFormSubmit = async (values) => {
     const { name, order, priority, tracing } = record;
-    console.log(
-      JSON.stringify(values) ===
-        JSON.stringify({ name, order, priority, tracing })
-    );
     try {
       const { id } = params;
       if (
@@ -156,9 +152,9 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                 }}
               >
                 <TextField
-                  disabled={isDashboard}
+                  disabled={recordsStatus === "editing"}
                   id="record-form-priority_input"
-                  color="warning"
+                  color="secondary"
                   select
                   value={values.priority}
                   name="priority"
@@ -168,7 +164,13 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   onBlur={handleBlur}
                   margin="normal"
                   fullWidth
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{
+                    input: {
+                      color: colors.priorityColors[values.priority].text,
+                    },
+                    gridColumn: "span 2",
+                    bgcolor: colors.priorityColors[values.priority].background,
+                  }}
                 >
                   {dataPriorities.map((e) => (
                     <MenuItem key={e} value={e}>
@@ -177,9 +179,9 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   ))}
                 </TextField>
                 <TextField
-                  disabled={isDashboard}
+                  disabled={recordsStatus === "editing"}
                   id="record-form-tracing_input"
-                  color="warning"
+                  color="secondary"
                   select
                   value={values.tracing}
                   name="tracing"
@@ -189,7 +191,10 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
                   onBlur={handleBlur}
                   margin="normal"
                   fullWidth
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{
+                    gridColumn: "span 2",
+                    bgcolor: colors.tracingColors[values.tracing].background,
+                  }}
                 >
                   {dataTracings.map((e) => (
                     <MenuItem key={e} value={e}>
