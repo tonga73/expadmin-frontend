@@ -96,7 +96,14 @@ const Record = () => {
                 : "initial",
           }}
         >
-          <RecordNotes notes={record.notes} recordId={record.id} />
+          <RecordNotes
+            notes={
+              !!record && record.notes !== undefined && record.notes.length > 0
+                ? record.notes
+                : []
+            }
+            recordId={record.id}
+          />
         </Box>
       </Box>
     </>
