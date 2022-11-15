@@ -31,7 +31,7 @@ function App() {
           <SidebarNavigation />
           <main className="content">
             <Topbar />
-            <Container disableGutters>
+            <Container>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route
