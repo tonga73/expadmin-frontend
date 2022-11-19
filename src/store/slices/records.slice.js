@@ -74,11 +74,13 @@ export const selectFilteredRecords = (state) => state.records.filteredRecords;
 
 export const filterRecords = (search) => (dispatch, getState) => {
   const records = selectRecords(getState());
-  if (search.length > 1) {
+  if (search.length > 0) {
     const filteredRecords = records.filter((item) => {
       return Object.values(item)
         .join("")
         .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
         .includes(search.toLowerCase());
     });
     dispatch(setFilteredRecords(filteredRecords));

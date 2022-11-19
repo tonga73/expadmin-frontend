@@ -22,7 +22,7 @@ import HotRecords from "../../components/HotRecords";
 import StatBox from "../../components/StatBox";
 
 const Dashboard = () => {
-  const [isDense, setIsDense] = useState(true);
+  const [isDense, setIsDense] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -124,7 +124,7 @@ const Dashboard = () => {
           gridAutoColumns
           gridAutoRows={isDense ? "175px" : "115px"}
         >
-          <HotRecords dense={isDense} />
+          {/* <HotRecords dense={isDense} /> */}
         </Box>
       </Box>
     </Box>

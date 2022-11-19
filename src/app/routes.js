@@ -3,6 +3,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import TableChartIcon from "@mui/icons-material/TableChart";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
@@ -26,9 +27,9 @@ const routes = [
     sectionHeader: "Gestión de Expedientes",
   },
   {
-    label: "Listar Expedientes",
+    label: "Vista de tabla",
     path: "/listado-expedientes",
-    icon: <TableRowsIcon />,
+    icon: <TableChartIcon />,
   },
   // {
   //   label: "Vista Avanzada",

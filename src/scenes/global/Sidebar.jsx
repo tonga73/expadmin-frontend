@@ -13,6 +13,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 import routes from "../../app/routes";
 
+import RecordsList from "../../components/RecordsList";
+
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -23,6 +25,7 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
+      rowGap={1.5}
       sx={{
         background: `${
           theme.palette.mode === "light"
@@ -31,22 +34,17 @@ const Sidebar = () => {
         }`,
         color: "#868dfb",
         color: "#6870fa",
-        p: "25px",
+        py: "25px",
+        px: 1,
         minWidth: "200px",
         width: "100%",
-        maxWidth: "235px",
+        maxWidth: "300px",
         minHeight: "100vh",
+        maxHeight: "100vh",
         zIndex: 99,
       }}
     >
-      <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-        <Typography variant="h4" color={colors.grey[100]}>
-          ADMINISTRACION
-        </Typography>
-        <IconButton size="large" onClick={() => {}} type="button">
-          <MenuOutlinedIcon />
-        </IconButton>
-      </Box>
+      {/* SIDEBAR ROUTES */}
       <Box width="100%">
         {routes.map((route, index) => (
           <Box key={index}>
@@ -86,6 +84,8 @@ const Sidebar = () => {
           </Box>
         ))}
       </Box>
+      {/* SIDEBAR RECORDS LIST */}
+      <RecordsList />
     </Box>
   );
 };

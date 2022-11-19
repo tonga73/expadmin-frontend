@@ -1,8 +1,11 @@
 import { axiosClient } from "../../app/axiosClient";
 
-export async function fetchGetRecords() {
+export async function fetchGetRecords(query) {
+  console.log(query, "API");
   try {
-    const { data } = await axiosClient("/records");
+    const { data } = await axiosClient(
+      `/records${Object.keys(query).length !== 0 ? query : ""}`
+    );
 
     return data;
   } catch (error) {

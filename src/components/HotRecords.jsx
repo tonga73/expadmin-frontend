@@ -73,10 +73,10 @@ const HotRecords = ({ dense }) => {
     setContextMenuPosition({});
   };
 
-  useEffect(() => {
-    dispatch(setRecord({}));
-    dispatch(getRecords({}));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setRecord({}));
+  //   dispatch(getRecords({}));
+  // }, []);
 
   useEffect(() => {
     if (recordsStatus === "success") {
