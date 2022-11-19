@@ -125,7 +125,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
         px={isDashboard ? 0 : 1.5}
         sx={{ height: "100%" }}
       >
-        <Formik
+        {/* <Formik
           innerRef={handleRect}
           // enableReinitialize={true}
           onSubmit={handleFormSubmit}
@@ -338,7 +338,7 @@ const RecordMain = ({ record, isDashboard, onClose }) => {
               </Box>
             </form>
           )}
-        </Formik>
+        </Formik> */}
       </Box>
     </>
   ) : (
