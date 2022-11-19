@@ -6,6 +6,8 @@ import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import InputBase from "@mui/material/InputBase";
 import { tokens } from "../theme";
 
@@ -28,6 +30,7 @@ import {
   selectFilteredRecords,
   selectRecordsStatus,
   filterRecords,
+  setRecordsStatus,
 } from "../store/slices/records.slice";
 
 const RecordsList = () => {
@@ -45,8 +48,6 @@ const RecordsList = () => {
   const recordsStatus = useSelector(selectRecordsStatus);
   const filteredRecords = useSelector(selectFilteredRecords);
 
-  console.log(location.search);
-
   useEffect(() => {
     dispatch(filterRecords(search));
   }, [search]);
@@ -54,6 +55,12 @@ const RecordsList = () => {
   useEffect(() => {
     dispatch(getRecords(location.search));
   }, [location.search]);
+
+  useEffect(() => {
+    if (recordsStatus === "success") {
+      dispatch(setRecordsStatus(""));
+    }
+  }, [recordsStatus]);
 
   return (
     <Box width="100%" height="min-content" overflow="auto">
@@ -72,6 +79,34 @@ const RecordsList = () => {
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
         </IconButton>
+      </Box>
+      <Box display="flex" justifyContent="space-around" py={1.5}>
+        <Stack direction="row" spacing={1}>
+          {Array.from(searchParams).map((e, index) => {
+            const [param, value] = e;
+            return (
+              <Chip
+                key={index}
+                size="small"
+                label={value.replaceAll("_", " ")}
+                onDelete={() => {}}
+                sx={{
+                  bgcolor:
+                    param === "priority"
+                      ? colors.priorityColors[value]
+                      : colors.tracingColors[value],
+                }}
+              />
+            );
+          })}
+          {/* <Chip size="small" label="Deletable" onDelete={() => {}} />
+          <Chip
+            size="small"
+            label="Deletable"
+            variant="outlined"
+            onDelete={() => {}}
+          /> */}
+        </Stack>
       </Box>
       <Box
         display="flex"
