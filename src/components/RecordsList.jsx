@@ -172,7 +172,13 @@ const RecordsList = () => {
             columnGap={1.5}
             p="15px"
             borderBottom={`4px solid ${colors.primary[500]}`}
-            onClick={() => navigate(`/expedientes/${id}`)}
+            onClick={() =>
+              navigate(
+                `/expedientes/${id}${
+                  location.search !== undefined && location.search
+                }`
+              )
+            }
           >
             <Box flex="1 1 0%" width="90%" sx={{ pointerEvents: "none" }}>
               <Typography
