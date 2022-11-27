@@ -13,18 +13,14 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import SvgIcon from "@mui/material/SvgIcon";
 import InputBase from "@mui/material/InputBase";
 import { tokens } from "../theme";
 
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import ReplayIcon from "@mui/icons-material/Replay";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import VerticalAlignTopIcon from "@mui/icons-material/VerticalAlignTop";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -102,9 +98,6 @@ const RecordFilters = () => {
           sx={{ ml: 2, flex: 1 }}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
       </Box>
       <Box
         display="flex"
@@ -217,25 +210,28 @@ const RecordFilters = () => {
         borderBottom={`4px solid ${colors.primary[500]}`}
         px="15px"
         py="7px"
-        sx={{ bgcolor: colors.primary[400] }}
+        sx={{
+          cursor: "pointer",
+          userSelect: "none",
+          color: colors.grey[400],
+          bgcolor: colors.primary[400],
+          "&:hover": { color: colors.grey[100] },
+        }}
+        onClick={() =>
+          setSortByUpdated(sortByUpdated === "desc" ? "asc" : "desc")
+        }
       >
         <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
           {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
           {`(${filteredRecords.length})`}
         </Typography>
-        <IconButton
-          size="small"
-          disableRipple
-          onClick={() =>
-            setSortByUpdated(sortByUpdated === "desc" ? "asc" : "desc")
-          }
-        >
+        <SvgIcon>
           {sortByUpdated === "desc" ? (
-            <VerticalAlignTopIcon />
+            <ArrowDownwardIcon />
           ) : (
-            <VerticalAlignBottomIcon />
+            <ArrowUpwardIcon />
           )}
-        </IconButton>
+        </SvgIcon>
       </Box>
     </>
   );

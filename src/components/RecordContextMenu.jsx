@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -16,29 +18,69 @@ import { tokens } from "../theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
 
-const RecordContextMenu = ({ children, position, onClickAway }) => {
+import RecordModalDelete from "./RecordModalDelete";
+
+const RecordContextMenu = ({ contextMenuObjId, position, onClickAway }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+
+  const [modal, setModal] = useState(false);
 
   const { xPos, yPos } = position;
+
   return (
-    <ClickAwayListener onClickAway={onClickAway}>
-      <Box
-        id="hot-records"
-        display={Object.values(position).length > 0 ? "inherit" : "none"}
-        sx={{
-          background: colors.primary[500],
-          width: 130,
-          position: "absolute",
-          top: yPos || "inherit",
-          left: xPos || "inherit",
-          zIndex: 999,
-        }}
-      >
-        {children}
-      </Box>
-    </ClickAwayListener>
+    <>
+      <ClickAwayListener onClickAway={onClickAway}>
+        <Box
+          id="hot-records"
+          display={Object.values(position).length > 0 ? "inherit" : "none"}
+          sx={{
+            background: colors.primary[500],
+            width: 130,
+            position: "absolute",
+            top: yPos || "inherit",
+            left: xPos || "inherit",
+            zIndex: 999,
+          }}
+        >
+          <MenuList dense>
+            <MenuItem
+              onClick={() => navigate(`/expedientes/${contextMenuObjId}`)}
+            >
+              <ListItemIcon>
+                <FileOpenIcon />
+              </ListItemIcon>
+              <ListItemText>Abrir</ListItemText>
+            </MenuItem>
+            <Divider />
+            <MenuItem>
+              <ListItemIcon>
+                <ArchiveIcon />
+              </ListItemIcon>
+              <ListItemText>Archivar</ListItemText>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              <ListItemIcon>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText>Eliminar</ListItemText>
+            </MenuItem>
+          </MenuList>
+        </Box>
+      </ClickAwayListener>
+      <RecordModalDelete
+        isOpen={modal}
+        handleOnClose={() => setModal(false)}
+        recordId={contextMenuObjId}
+      />
+    </>
   );
 };
 

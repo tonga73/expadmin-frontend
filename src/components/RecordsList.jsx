@@ -1,37 +1,14 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useNavigate,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import InputBase from "@mui/material/InputBase";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import ReplayIcon from "@mui/icons-material/Replay";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
-import ClearIcon from "@mui/icons-material/Clear";
-import SearchIcon from "@mui/icons-material/Search";
-import VerticalAlignTopIcon from "@mui/icons-material/VerticalAlignTop";
-import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
-import FilterListIcon from "@mui/icons-material/FilterList";
 
 import Spinner from "./Spinner";
 import RecordFilters from "./RecordFilters";
-import Header from "./Header";
+import RecordContextMenu from "./RecordContextMenu";
 
 import { getRecords } from "../store/actions/records.actions";
 
@@ -59,10 +36,39 @@ const RecordsList = () => {
   const recordsStatus = useSelector(selectRecordsStatus);
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
+  const [contextMenuPosition, setContextMenuPosition] = useState({});
+  const [contextMenuObjId, setContextMenuObjId] = useState(null);
+
+  const handleContextMenu = async (e) => {
+    e.preventDefault();
+    const recordId = await e.target.id.replace("record-", "");
+    setContextMenuObjId(recordId);
+    const xPos = e.pageX - 50 + "px";
+    const yPos = e.pageY - 100 + "px";
+
+    console.log(recordId, "ID");
+
+    if (recordId !== "") {
+      setContextMenuPosition({
+        xPos,
+        yPos,
+      });
+    }
+  };
+
+  console.log(contextMenuPosition, "ACA");
+
+  const handleClickAway = () => {
+    setContextMenuPosition({});
+  };
 
   useEffect(() => {
     dispatch(filterRecords(search));
   }, [search]);
+
+  useEffect(() => {
+    setContextMenuPosition({});
+  }, [location]);
 
   useEffect(() => {
     if (recordsStatus === "success") {
@@ -113,6 +119,7 @@ const RecordsList = () => {
       ) : (
         filteredRecords.map(({ id, order, name, priority }, index) => (
           <Box
+            id={`record-${id}`}
             key={index}
             display="flex"
             justifyContent="space-between"
@@ -137,6 +144,8 @@ const RecordsList = () => {
                 }`
               )
             }
+            onContextMenu={handleContextMenu}
+            onBlur={() => setContextMenuPosition({})}
           >
             <Box flex="1 1 0%" width="90%" sx={{ pointerEvents: "none" }}>
               <Typography
@@ -189,6 +198,11 @@ const RecordsList = () => {
       >
         <Typography fontWeight={700}>·</Typography>
       </Box>
+      <RecordContextMenu
+        position={contextMenuPosition}
+        contextMenuObjId={contextMenuObjId}
+        onClickAway={handleClickAway}
+      />
     </Box>
   );
 };
