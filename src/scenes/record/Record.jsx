@@ -17,10 +17,12 @@ import RecordDetails from "./sections/RecordDetails";
 
 import Spinner from "../../components/Spinner";
 import RecordNotes from "../../components/RecordNotes";
+import RecordSelectInput from "../../components/RecordSelectInput";
 
 import { getRecord } from "../../store/actions/records.actions";
 import {
   setRecords,
+  setRecord,
   selectRecord,
   selectRecordsStatus,
   setRecordsStatus,
@@ -38,6 +40,7 @@ const Record = () => {
   const record = useSelector(selectRecord);
 
   useEffect(() => {
+    dispatch(setRecord({}));
     dispatch(setRecords([]));
     dispatch(setRecordsStatus("loading"));
     dispatch(getRecord(params.id));
@@ -76,10 +79,21 @@ const Record = () => {
         rowGap={5}
         p="0 15px"
       >
-        <Box gridColumn="span 3">
-          <RecordMain record={record} />
+        <Box gridColumn={{ xs: "span 5", lg: "span 3" }}>
+          <RecordSelectInput record={record} />
+          <Typography variant="h2" fontWeight={700}>
+            {record.order}
+          </Typography>
+          <Typography
+            variant="h1"
+            textTransform="uppercase"
+            fontWeight={700}
+            color={colors.grey[500]}
+          >
+            {record.name}
+          </Typography>
         </Box>
-        <Box gridColumn="span 2" sx={{ height: "100" }}>
+        <Box gridColumn={{ xs: "span 5", lg: "span 3" }} sx={{ height: "100" }}>
           <RecordDetails record={record} />
         </Box>
         <Box

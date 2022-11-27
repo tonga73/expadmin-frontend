@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,14 +25,19 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
+import VerticalAlignTopIcon from "@mui/icons-material/VerticalAlignTop";
+import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 import Spinner from "./Spinner";
-import Header from "../components/Header";
+import RecordFilters from "./RecordFilters";
+import Header from "./Header";
 
 import { getRecords } from "../store/actions/records.actions";
 
 import {
   selectFilteredRecords,
+  selectRecord,
   selectRecordsStatus,
   filterRecords,
   setRecordsStatus,
@@ -44,91 +54,35 @@ const RecordsList = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
+  const [sortByUpdated, setSortByUpdated] = useState("desc");
 
   const recordsStatus = useSelector(selectRecordsStatus);
   const filteredRecords = useSelector(selectFilteredRecords);
+  const record = useSelector(selectRecord);
 
   useEffect(() => {
     dispatch(filterRecords(search));
   }, [search]);
 
   useEffect(() => {
+    searchParams.set("updatedAt", sortByUpdated);
+    setSearchParams(searchParams);
     dispatch(getRecords(location.search));
-  }, [location.search]);
+  }, [location.search, sortByUpdated]);
 
   useEffect(() => {
     if (recordsStatus === "success") {
       dispatch(setRecordsStatus(""));
     }
-  }, [recordsStatus]);
+    if (recordsStatus === "edited") {
+      dispatch(getRecords(location.search));
+      dispatch(setRecordsStatus(""));
+    }
+  }, [recordsStatus, location.search]);
 
   return (
     <Box width="100%" height="min-content" overflow="auto">
-      {/* SEARCH BAR */}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
-        <InputBase
-          sx={{ ml: 2, flex: 1 }}
-          placeholder="Buscar"
-          endAdornment={<ClearIcon />}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box>
-      <Box display="flex" justifyContent="space-around" py={1.5}>
-        <Stack direction="row" spacing={1}>
-          {Array.from(searchParams).map((e, index) => {
-            const [param, value] = e;
-            return (
-              <Chip
-                key={index}
-                size="small"
-                label={value.replaceAll("_", " ")}
-                onDelete={() => {}}
-                sx={{
-                  bgcolor:
-                    param === "priority"
-                      ? colors.priorityColors[value]
-                      : colors.tracingColors[value],
-                }}
-              />
-            );
-          })}
-          {/* <Chip size="small" label="Deletable" onDelete={() => {}} />
-          <Chip
-            size="small"
-            label="Deletable"
-            variant="outlined"
-            onDelete={() => {}}
-          /> */}
-        </Stack>
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom={`4px solid ${colors.primary[500]}`}
-        p="15px"
-      >
-        <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
-          Expedientes Recientes {`(${filteredRecords.length})`}
-        </Typography>
-        <MenuList sx={{ position: "absolute", bgcolor: "white", width: 260 }}>
-          <MenuItem
-            onClick={() => {
-              searchParams.set("tracing", "ACEPTA_CARGO");
-              setSearchParams(searchParams);
-            }}
-          >
-            <ListItemText>Archivar</ListItemText>
-          </MenuItem>
-        </MenuList>
-      </Box>
+      <RecordFilters />
       {filteredRecords.length <= 0 ? (
         <>
           <Box
@@ -172,6 +126,16 @@ const RecordsList = () => {
             columnGap={1.5}
             p="15px"
             borderBottom={`4px solid ${colors.primary[500]}`}
+            sx={{
+              userSelect: "none",
+              opacity: recordsStatus !== "" ? 0.5 : 1,
+              pointerEvents: recordsStatus !== "" ? "none" : "initial",
+              bgcolor: record.id === id ? colors.primary[400] : "initial",
+              "&:hover": {
+                bgcolor:
+                  record.id === id ? colors.primary[400] : colors.primary[500],
+              },
+            }}
             onClick={() =>
               navigate(
                 `/expedientes/${id}${

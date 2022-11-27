@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Toolbar from "@mui/material/Toolbar";
@@ -21,10 +22,14 @@ import Row1 from "./rows/Row1";
 import HotRecords from "../../components/HotRecords";
 import StatBox from "../../components/StatBox";
 
+import { setRecord } from "../../store/slices/records.slice";
+
 const Dashboard = () => {
   const [isDense, setIsDense] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const dispatch = useDispatch();
 
   const mainStatsData = [
     {
@@ -69,7 +74,9 @@ const Dashboard = () => {
     },
   ];
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(setRecord({}));
+  }, []);
 
   return (
     <Box>
