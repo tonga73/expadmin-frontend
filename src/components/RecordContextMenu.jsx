@@ -39,6 +39,7 @@ const RecordContextMenu = ({ contextMenuObjId, position, onClickAway }) => {
           display={Object.values(position).length > 0 ? "inherit" : "none"}
           sx={{
             background: colors.primary[500],
+            color: colors.grey[100],
             width: 130,
             position: "absolute",
             top: yPos || "inherit",
@@ -53,15 +54,23 @@ const RecordContextMenu = ({ contextMenuObjId, position, onClickAway }) => {
               <ListItemIcon>
                 <FileOpenIcon />
               </ListItemIcon>
-              <ListItemText>Abrir</ListItemText>
+              <ListItemText>
+                <Typography textTransform="uppercase" fontWeight={600}>
+                  Abrir
+                </Typography>
+              </ListItemText>
             </MenuItem>
             <Divider />
-            <MenuItem>
+            {/* <MenuItem>
               <ListItemIcon>
                 <ArchiveIcon />
               </ListItemIcon>
-              <ListItemText>Archivar</ListItemText>
-            </MenuItem>
+              <ListItemText>
+                <Typography textTransform="uppercase" fontWeight={600}>
+                  Archivar
+                </Typography>
+              </ListItemText>
+            </MenuItem> */}
             <MenuItem
               onClick={() => {
                 setModal(true);
@@ -70,7 +79,11 @@ const RecordContextMenu = ({ contextMenuObjId, position, onClickAway }) => {
               <ListItemIcon>
                 <DeleteIcon />
               </ListItemIcon>
-              <ListItemText>Eliminar</ListItemText>
+              <ListItemText>
+                <Typography textTransform="uppercase" fontWeight={600}>
+                  Eliminar
+                </Typography>
+              </ListItemText>
             </MenuItem>
           </MenuList>
         </Box>

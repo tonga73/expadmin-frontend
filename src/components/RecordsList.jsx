@@ -44,7 +44,7 @@ const RecordsList = () => {
     const recordId = await e.target.id.replace("record-", "");
     setContextMenuObjId(recordId);
     const xPos = e.pageX - 50 + "px";
-    const yPos = e.pageY - 100 + "px";
+    const yPos = e.pageY - 50 + "px";
 
     console.log(recordId, "ID");
 
@@ -74,7 +74,7 @@ const RecordsList = () => {
     if (recordsStatus === "success") {
       dispatch(setRecordsStatus(""));
     }
-    if (recordsStatus === "edited") {
+    if (recordsStatus === "edited" || recordsStatus === "deleted") {
       dispatch(getRecords(location.search));
       dispatch(setRecordsStatus(""));
     }

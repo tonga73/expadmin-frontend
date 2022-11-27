@@ -21,6 +21,7 @@ import { getOfficesByCourtId } from "../../store/actions/offices.actions";
 
 import {
   selectRecord,
+  setRecord,
   selectRecordsStatus,
   setRecordsStatus,
 } from "../../store/slices/records.slice";
@@ -83,6 +84,7 @@ const RecordCreateForm = () => {
   };
 
   useEffect(() => {
+    dispatch(setRecord({}));
     dispatch(setRecordsStatus("creating"));
     dispatch(getCourts({}));
   }, []);
