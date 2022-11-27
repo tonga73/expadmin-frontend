@@ -57,7 +57,6 @@ const RecordFilters = () => {
   const [sortByUpdated, setSortByUpdated] = useState("desc");
   const [sortTracingMenu, setSortTracingMenu] = useState(false);
 
-  console.log(sortTracingMenu, "ACA ESTAMO");
   const recordsStatus = useSelector(selectRecordsStatus);
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
@@ -65,6 +64,12 @@ const RecordFilters = () => {
   useEffect(() => {
     dispatch(filterRecords(search));
   }, [search]);
+
+  useEffect(() => {
+    searchParams.set("updatedAt", sortByUpdated);
+    setSearchParams(searchParams);
+    dispatch(getRecords(location.search));
+  }, [location.search, sortByUpdated]);
 
   return (
     <>

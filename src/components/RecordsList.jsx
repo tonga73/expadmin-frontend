@@ -65,12 +65,6 @@ const RecordsList = () => {
   }, [search]);
 
   useEffect(() => {
-    searchParams.set("updatedAt", sortByUpdated);
-    setSearchParams(searchParams);
-    dispatch(getRecords(location.search));
-  }, [location.search, sortByUpdated]);
-
-  useEffect(() => {
     if (recordsStatus === "success") {
       dispatch(setRecordsStatus(""));
     }
