@@ -57,6 +57,8 @@ const RecordFilters = () => {
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
 
+  console.log(Array.from(searchParams));
+
   useEffect(() => {
     dispatch(filterRecords(search));
   }, [search]);
@@ -68,14 +70,16 @@ const RecordFilters = () => {
   }, [location.search, sortByUpdated]);
 
   return (
-    <>
-      {" "}
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      rowGap={0.5}
+      width="100%"
+      px={1}
+    >
       {/* SEARCH BAR */}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
+      <Box display="flex" backgroundColor={colors.primary[400]} width="100%">
         <InputBase
           placeholder="Buscar"
           value={search}
@@ -95,7 +99,7 @@ const RecordFilters = () => {
               />
             ) : undefined
           }
-          sx={{ ml: 2, flex: 1 }}
+          sx={{ ml: 2, flex: 1, fontSize: "19px" }}
           onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
@@ -104,6 +108,7 @@ const RecordFilters = () => {
         justifyContent="center"
         alignItems="center"
         borderBottom={`4px solid ${colors.primary[500]}`}
+        width="100%"
         sx={{
           position: "relative",
           cursor: "pointer",
@@ -171,7 +176,69 @@ const RecordFilters = () => {
           </MenuList>
         ) : undefined}
       </Box>
-      <Box display="flex" justifyContent="space-around" py={1.5}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        borderBottom={`4px solid ${colors.primary[500]}`}
+        px="15px"
+        py="7px"
+        width="100%"
+        sx={{
+          cursor: "pointer",
+          userSelect: "none",
+          color: colors.grey[400],
+          bgcolor: colors.primary[400],
+          "&:hover": { color: colors.grey[100] },
+        }}
+        onClick={() =>
+          setSortByUpdated(sortByUpdated === "desc" ? "asc" : "desc")
+        }
+      >
+        <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
+          {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
+          {`(${filteredRecords.length})`}
+        </Typography>
+        <SvgIcon>
+          {sortByUpdated === "desc" ? (
+            <ArrowDownwardIcon />
+          ) : (
+            <ArrowUpwardIcon />
+          )}
+        </SvgIcon>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        rowGap={1}
+      >
+        {Array.from(searchParams).length > 1 && (
+          <Box display="flex" justifyContent="end" width="100%">
+            <Typography
+              variant="caption"
+              textTransform="uppercase"
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  color: colors.blueAccent[300],
+                },
+              }}
+              onClick={() => {
+                if (searchParams.has("priority")) {
+                  searchParams.delete("priority");
+                }
+                if (searchParams.has("tracing")) {
+                  searchParams.delete("tracing");
+                }
+                setSearchParams(searchParams);
+              }}
+            >
+              Borrar Filtros
+            </Typography>
+          </Box>
+        )}
         <Stack direction="row" spacing={1}>
           {Array.from(searchParams).map((e, index) => {
             const [param, value] = e;
@@ -203,37 +270,7 @@ const RecordFilters = () => {
           })}
         </Stack>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom={`4px solid ${colors.primary[500]}`}
-        px="15px"
-        py="7px"
-        sx={{
-          cursor: "pointer",
-          userSelect: "none",
-          color: colors.grey[400],
-          bgcolor: colors.primary[400],
-          "&:hover": { color: colors.grey[100] },
-        }}
-        onClick={() =>
-          setSortByUpdated(sortByUpdated === "desc" ? "asc" : "desc")
-        }
-      >
-        <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
-          {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
-          {`(${filteredRecords.length})`}
-        </Typography>
-        <SvgIcon>
-          {sortByUpdated === "desc" ? (
-            <ArrowDownwardIcon />
-          ) : (
-            <ArrowUpwardIcon />
-          )}
-        </SvgIcon>
-      </Box>
-    </>
+    </Box>
   );
 };
 

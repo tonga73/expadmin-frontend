@@ -7,7 +7,6 @@ import { tokens } from "../theme";
 import ReplayIcon from "@mui/icons-material/Replay";
 
 import Spinner from "./Spinner";
-import RecordFilters from "./RecordFilters";
 import RecordContextMenu from "./RecordContextMenu";
 
 import { getRecords } from "../store/actions/records.actions";
@@ -82,7 +81,6 @@ const RecordsList = () => {
 
   return (
     <Box width="100%" height="min-content" overflow="auto">
-      <RecordFilters />
       {filteredRecords.length <= 0 ? (
         <>
           <Box

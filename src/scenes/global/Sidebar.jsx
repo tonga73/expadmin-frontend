@@ -14,6 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import routes from "../../app/routes";
 
 import RecordsList from "../../components/RecordsList";
+import RecordFilters from "../../components/RecordFilters";
 
 const Sidebar = () => {
   const theme = useTheme();
@@ -35,7 +36,6 @@ const Sidebar = () => {
         color: "#868dfb",
         color: "#6870fa",
         py: "25px",
-        px: 1,
         minWidth: "200px",
         width: "100%",
         maxWidth: "300px",
@@ -49,7 +49,7 @@ const Sidebar = () => {
         {routes.map((route, index) => (
           <Box key={index}>
             {route.sectionHeader ? (
-              <Box mt={1.5}>
+              <Box mt={1.5} px={1.5}>
                 <Typography
                   variant="caption"
                   color={colors.grey[500]}
@@ -85,6 +85,7 @@ const Sidebar = () => {
         ))}
       </Box>
       {/* SIDEBAR RECORDS LIST */}
+      <RecordFilters />
       <RecordsList />
     </Box>
   );
