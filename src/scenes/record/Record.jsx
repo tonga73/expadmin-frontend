@@ -76,16 +76,18 @@ const Record = () => {
       <Box
         display="grid"
         gridTemplateColumns="repeat(5, minmax(0, 1fr))"
+        alignItems="start"
         rowGap={5}
+        columnGap={1}
         p="0 15px"
       >
         <Box gridColumn={{ xs: "span 5", lg: "span 3" }}>
           <RecordSelectInput record={record} />
-          <Typography variant="h2" fontWeight={700}>
+          <Typography variant="h1" fontWeight={700} sx={{ py: 1 }}>
             {record.order}
           </Typography>
           <Typography
-            variant="h1"
+            variant="h2"
             textTransform="uppercase"
             fontWeight={700}
             color={colors.grey[500]}
@@ -93,7 +95,11 @@ const Record = () => {
             {record.name}
           </Typography>
         </Box>
-        <Box gridColumn={{ xs: "span 5", lg: "span 3" }} sx={{ height: "100" }}>
+        <Box
+          gridColumn={{ xs: "span 5", lg: "span 2" }}
+          py={1.9}
+          sx={{ height: "100" }}
+        >
           <RecordDetails record={record} />
         </Box>
         <Box
