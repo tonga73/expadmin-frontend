@@ -55,8 +55,6 @@ const RecordsList = () => {
     }
   };
 
-  console.log(contextMenuPosition, "ACA");
-
   const handleClickAway = () => {
     setContextMenuPosition({});
   };
@@ -81,7 +79,7 @@ const RecordsList = () => {
 
   return (
     <Box width="100%" height="min-content" overflow="auto">
-      {filteredRecords.length <= 0 ? (
+      {!!filteredRecords && filteredRecords.length <= 0 ? (
         <>
           <Box
             display="flex"
@@ -115,6 +113,7 @@ const RecordsList = () => {
           </Box>
         </>
       ) : (
+        !!filteredRecords &&
         filteredRecords.map(({ id, order, name, priority }, index) => (
           <Box
             id={`record-${id}`}

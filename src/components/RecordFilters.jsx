@@ -57,8 +57,6 @@ const RecordFilters = () => {
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
 
-  console.log(Array.from(searchParams));
-
   useEffect(() => {
     dispatch(filterRecords(search));
   }, [search]);
@@ -197,7 +195,7 @@ const RecordFilters = () => {
       >
         <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
           {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
-          {`(${filteredRecords.length})`}
+          {`(${!!filteredRecords && filteredRecords.length})`}
         </Typography>
         <SvgIcon>
           {sortByUpdated === "desc" ? (

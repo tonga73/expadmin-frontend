@@ -15,7 +15,6 @@ export const getRecords = createAsyncThunk(
   async (query) => {
     const response = await fetchGetRecords(query);
 
-    console.log("OBTENIENDO");
     return response;
   }
 );
