@@ -4,15 +4,8 @@ import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
-import RecordMain from "./sections/RecordMain";
 import RecordDetails from "./sections/RecordDetails";
 
 import Spinner from "../../components/Spinner";
@@ -44,13 +37,13 @@ const Record = () => {
     dispatch(setRecords([]));
     dispatch(setRecordsStatus("loading"));
     dispatch(getRecord(params.id));
-  }, [params.id]);
+  }, [params.id, dispatch]);
 
   useEffect(() => {
     if (recordsStatus === "success" || recordsStatus === "edited") {
       dispatch(setRecordsStatus(""));
     }
-  }, [recordsStatus]);
+  }, [recordsStatus, dispatch]);
 
   return Object.values(record).length < 1 ? (
     <Box
