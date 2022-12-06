@@ -1,1 +1,3 @@
 /* /index.html 200
+/*?updatedAt=desc /index.html 200
+/*?updatedAt=asc /index.html 200
