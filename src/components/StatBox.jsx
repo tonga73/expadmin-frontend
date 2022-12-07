@@ -2,7 +2,16 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 
-const StatBox = ({ title, subtitle, icon, progress, dense }) => {
+const StatBox = ({
+  title,
+  subtitle,
+  icon,
+  progress,
+  progressSize,
+  dense,
+  titleFontVariant,
+  subtitleFontVariant,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -42,25 +51,37 @@ const StatBox = ({ title, subtitle, icon, progress, dense }) => {
     </Box>
   ) : (
     <Box width="100%" p="15px 30px" sx={{ userSelect: "none" }}>
-      <Box display="grid" gridTemplateColumns="repeat(2, minmax(0, 1fr))">
-        <Box>
+      <Box
+        display="grid"
+        height="100%"
+        gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+      >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <ProgressCircle size={progressSize} progress={progress} />
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={1}
+          px={1}
+          justifyContent="center"
+        >
           {icon}
           <Typography
-            variant="h4"
+            variant={titleFontVariant}
             fontWeight="bold"
             sx={{ color: colors.grey[100] }}
           >
             {title}
           </Typography>
-          <Typography variant="h5" sx={{ color: colors.greenAccent[100] }}>
+          <Typography
+            variant={subtitleFontVariant}
+            sx={{ color: colors.greenAccent[100] }}
+          >
             {subtitle}
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <ProgressCircle size="75" progress={progress} />
-        </Box>
       </Box>
-      <Box display="flex" justifyContent="space-between"></Box>
     </Box>
   );
 };
