@@ -39,7 +39,7 @@ function NotificationsPopover() {
       {
         id: "3",
         title: "GENERAL: Notificaciones de cambios en el sistema",
-        text: 'Se activaron las notificaciones de sistema para cambios importantes. Las mismas serán visibles en este menú y pueden "marcarse como leidas" haciendo click en las mismas.',
+        text: 'Se activaron las notificaciones de sistema para cambios importantes. Las mismas serán visibles en este menú y pueden "marcarse como leidas" haciendo click en ellas.',
         isRead: false,
       },
     ],
