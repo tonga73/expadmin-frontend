@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import { keyframes } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
@@ -18,11 +19,15 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
 import Person2Icon from "@mui/icons-material/Person2";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 
 import AddRecordPartForm from "./AddRecordPartForm";
 
 import { editRecord } from "../store/actions/records.actions";
-import { selectRecord } from "../store/slices/records.slice";
+import {
+  selectRecord,
+  selectRecordsStatus,
+} from "../store/slices/records.slice";
 
 export default function RecordDetailsAccordion({ title, content, name }) {
   // THEME UTILS
@@ -31,6 +36,7 @@ export default function RecordDetailsAccordion({ title, content, name }) {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
 
+  const recordsStatus = useSelector(selectRecordsStatus);
   const record = useSelector(selectRecord);
 
   const initialContent = {
@@ -49,12 +55,45 @@ export default function RecordDetailsAccordion({ title, content, name }) {
     // Dispatch the action here
     dispatch(editRecord({ id: record.id, req: initialContent }));
   };
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const handleDeleteItem = (item) => {
+    if (name === "prosecutor") {
+      initialContent.prosecutor = content.filter((x) => x !== item);
+    } else if (name === "defendant") {
+      initialContent.defendant = content.filter((x) => x !== item);
+    } else if (name === "insurance") {
+      initialContent.insurance = content.filter((x) => x !== item);
+    }
+
+    // Dispatch the action here
+    dispatch(editRecord({ id: record.id, req: initialContent }));
+  };
+
+  const pulse = keyframes`
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
+`;
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box
+      sx={{
+        width: "100%",
+        pointerEvents: recordsStatus === "editing" ? "none" : "initial",
+        opacity: recordsStatus === "editing" ? 0.5 : "initial",
+        animation:
+          recordsStatus === "editing"
+            ? `${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`
+            : "initial",
+      }}
+    >
       <Box gridColumn="span 12">
         <Accordion expanded={expanded === title} onChange={handleChange(title)}>
           <AccordionSummary
@@ -115,8 +154,11 @@ export default function RecordDetailsAccordion({ title, content, name }) {
                     <Person2Icon />
                     <ListItemText primary={<Typography>{e}</Typography>} />
                     <Tooltip sx={{ bgcolor: "primary" }} title="Agregar parte">
-                      <IconButton size="small">
-                        <EditIcon />
+                      <IconButton
+                        onClick={() => handleDeleteItem(e)}
+                        size="small"
+                      >
+                        <PersonRemoveIcon />
                       </IconButton>
                     </Tooltip>
                   </Box>
