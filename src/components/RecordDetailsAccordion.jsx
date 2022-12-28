@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
@@ -14,17 +15,40 @@ import ListItemText from "@mui/material/ListItemText";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
-import CommentIcon from "@mui/icons-material/Comment";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
+import Person2Icon from "@mui/icons-material/Person2";
 
-export default function RecordDetailsAccordion({ title, content }) {
+import AddRecordPartForm from "./AddRecordPartForm";
+
+import { editRecord } from "../store/actions/records.actions";
+import { selectRecord } from "../store/slices/records.slice";
+
+export default function RecordDetailsAccordion({ title, content, name }) {
   // THEME UTILS
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
 
+  const record = useSelector(selectRecord);
+
+  const initialContent = {
+    [name]: content,
+  };
+
+  const handleAddItem = (item) => {
+    if (name === "prosecutor") {
+      initialContent.prosecutor = [...content, item];
+    } else if (name === "defendant") {
+      initialContent.defendant = [...content, item];
+    } else if (name === "insurance") {
+      initialContent.insurance = [...content, item];
+    }
+
+    // Dispatch the action here
+    dispatch(editRecord({ id: record.id, req: initialContent }));
+  };
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -51,31 +75,51 @@ export default function RecordDetailsAccordion({ title, content }) {
                 p: 0,
               }}
             >
+              <AddRecordPartForm onAddItem={handleAddItem} name={name} />
               {content.length <= 0 ? (
                 <Box
                   display="flex"
+                  flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="center"
+                  gap={1.5}
                 >
-                  <Typography color={colors.grey[500]}>
-                    No se encontraron datos.
-                  </Typography>
-                  <Tooltip sx={{ bgcolor: "primary" }} title="Agregar parte">
-                    <IconButton size="small">
-                      <PersonAddIcon />
-                    </IconButton>
-                  </Tooltip>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    p={1.5}
+                    sx={{
+                      bgcolor: colors.primary[500],
+                    }}
+                  >
+                    <Typography color={colors.grey[500]}>
+                      No se encontraron datos.
+                    </Typography>
+                  </Box>
                 </Box>
               ) : (
                 content.map((e, index) => (
-                  <ListItem key={index} disableGutters>
+                  <Box
+                    component={ListItem}
+                    key={index}
+                    display="flex"
+                    alignItems="center"
+                    columnGap={1}
+                    sx={{
+                      bgcolor: colors.primary[700],
+                      borderTopColor: colors.primary[700],
+                      borderTopStyle: "solid",
+                      borderTopWidth: "1.5px",
+                    }}
+                  >
+                    <Person2Icon />
                     <ListItemText primary={<Typography>{e}</Typography>} />
                     <Tooltip sx={{ bgcolor: "primary" }} title="Agregar parte">
                       <IconButton size="small">
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
-                  </ListItem>
+                  </Box>
                 ))
               )}
             </List>

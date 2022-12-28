@@ -83,14 +83,17 @@ const RecordDetails = ({ record }) => {
         <RecordDetailsAccordion
           title="Parte Actora"
           content={record.prosecutor || []}
+          name="prosecutor"
         />
         <RecordDetailsAccordion
           title="Parte Demandada"
           content={record.defendant || []}
+          name="defendant"
         />
         <RecordDetailsAccordion
           title="Seguro"
           content={record.insurance || []}
+          name="insurance"
         />
       </Box>
     </Box>

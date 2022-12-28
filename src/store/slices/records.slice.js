@@ -4,8 +4,8 @@ import { getRecords } from "../actions/records.actions";
 
 const initialState = {
   status: "",
-  // records: [],
-  // filteredRecords: [],
+  records: [],
+  filteredRecords: [],
   record: {},
 };
 
