@@ -19,6 +19,8 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 
 import Spinner from "./Spinner";
 
+import { pulse } from "../utils/keyframes";
+
 import { createNote, editNote } from "../store/actions/notes.actions";
 import {
   selectNotesStatus,
@@ -44,14 +46,35 @@ const RecordNoteNewCard = ({ onClose }) => {
     }
 
     newNote.recordId = record.id;
+    dispatch(setNotesStatus("creating"));
     dispatch(createNote(newNote));
   };
 
   return (
-    <Card sx={{ minWidth: 275, opacity: !newNote ? 0.5 : 1 }}>
+    <Card
+      sx={{
+        minWidth: 275,
+        opacity: !newNote ? 0.5 : 1,
+        pointerEvents: notesStatus === "creating" ? "none" : "initial",
+        opacity: notesStatus === "creating" ? 0.5 : "initial",
+        animation:
+          notesStatus === "creating"
+            ? `${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`
+            : "initial",
+      }}
+    >
       <CardContent>
         {notesStatus === "creating" ? (
-          <Spinner size="50" />
+          <Box
+            display="flex"
+            width="100%"
+            height="100%"
+            minHeight="90px"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner size="50" />
+          </Box>
         ) : (
           <TextField
             autoFocus
@@ -72,7 +95,7 @@ const RecordNoteNewCard = ({ onClose }) => {
       </CardContent>
       <CardActions>
         <Box
-          display="flex"
+          display={notesStatus === "creating" ? "none" : "flex"}
           justifyContent={"flex-end"}
           sx={{ width: "100%", minHeight: 26 }}
         >

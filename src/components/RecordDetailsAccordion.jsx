@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { keyframes } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
@@ -22,6 +21,8 @@ import Person2Icon from "@mui/icons-material/Person2";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 
 import AddRecordPartForm from "./AddRecordPartForm";
+
+import { pulse } from "../utils/keyframes";
 
 import { editRecord } from "../store/actions/records.actions";
 import {
@@ -72,15 +73,6 @@ export default function RecordDetailsAccordion({ title, content, name }) {
     // Dispatch the action here
     dispatch(editRecord({ id: record.id, req: initialContent }));
   };
-
-  const pulse = keyframes`
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: .5;
-    }
-`;
 
   return (
     <Box

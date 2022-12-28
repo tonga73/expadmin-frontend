@@ -60,6 +60,7 @@ const RecordNoteCard = ({ noteData }) => {
   };
 
   const handleDeleteNote = () => {
+    dispatch(setNotesStatus("deleting"));
     dispatch(deleteNote(note.id));
   };
 

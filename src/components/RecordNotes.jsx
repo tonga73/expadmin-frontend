@@ -23,6 +23,8 @@ import Spinner from "./Spinner";
 import RecordNoteCard from "./RecordNoteCard";
 import RecordNoteNewCard from "./RecordNoteNewCard";
 
+import { pulse } from "../utils/keyframes";
+
 import {
   selectNotesStatus,
   setNotesStatus,
@@ -38,7 +40,12 @@ const RecordNotes = ({ notes }) => {
 
   const dispatch = useDispatch();
   const [newNote, setNewNote] = useState(false);
-  const [displayNotes, setDisplayNotes] = useState([]);
+  const [displayNotes, setDisplayNotes] = useState({
+    notes: [],
+    showAll: false,
+  });
+
+  console.log(displayNotes.showAll);
 
   const notesStatus = useSelector(selectNotesStatus);
 
@@ -47,11 +54,8 @@ const RecordNotes = ({ notes }) => {
       setNewNote(false);
       dispatch(setNotesStatus(""));
     }
-    if (notesStatus === "edited") {
-      setDisplayNotes(notes.slice(0, 3));
-    }
-    if (notesStatus === "deleted") {
-      setDisplayNotes(notes);
+    if (notesStatus === "edited" || notesStatus === "deleted") {
+      setDisplayNotes({ notes: notes, showAll: displayNotes.showAll });
       dispatch(setNote({}));
       dispatch(setNotesStatus(""));
     }
@@ -63,18 +67,42 @@ const RecordNotes = ({ notes }) => {
 
   useEffect(() => {
     if (notes === []) {
-      setDisplayNotes([]);
+      setDisplayNotes({ notes: [], showAll: displayNotes.showAll });
     }
-    if (notes.length > 0) {
-      setDisplayNotes(notes.slice(0, 3));
+    if (displayNotes.showAll === true) {
+      setDisplayNotes({ notes: notes, showAll: displayNotes.showAll });
+      return;
+    } else if (displayNotes.showAll === false) {
+      setDisplayNotes({
+        notes: notes.slice(
+          0,
+          notesStatus === "create-note" || notesStatus === "creating" ? 2 : 3
+        ),
+        showAll: displayNotes.showAll,
+      });
+      return;
     }
-  }, [notes]);
+  }, [notes, displayNotes.showAll, notesStatus]);
 
   return (
     <Box
       display="grid"
       gridTemplateColumns="repeat(12, minmax(0, 1fr))"
       columnGap={1.5}
+      sx={{
+        pointerEvents:
+          notesStatus === "editing" || notesStatus === "deleting"
+            ? "none"
+            : "initial",
+        opacity:
+          notesStatus === "editing" || notesStatus === "deleting"
+            ? 0.5
+            : "initial",
+        animation:
+          notesStatus === "editing" || notesStatus === "deleting"
+            ? `${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`
+            : "initial",
+      }}
     >
       <Box
         gridColumn="span 12"
@@ -93,8 +121,28 @@ const RecordNotes = ({ notes }) => {
         >
           Crear Nota
         </Button>
-        <Button endIcon={<ExpandCircleDownIcon />} color="neutral">
-          Mostrar Todas (+5)
+        <Button
+          onClick={() =>
+            setDisplayNotes({
+              notes: notes,
+              showAll: !displayNotes.showAll,
+            })
+          }
+          endIcon={
+            <ExpandCircleDownIcon
+              sx={{
+                rotate: displayNotes.showAll ? "180deg" : "0deg",
+              }}
+            />
+          }
+          color="neutral"
+        >
+          {displayNotes.showAll
+            ? `Mostrar solo recientes | Total: ${notes.length}`
+            : `
+          Mostrar Todas | Ocultas: (+${
+            notes.length > 3 ? notes.length - 3 : 0
+          })`}
         </Button>
       </Box>
       <Box
@@ -120,7 +168,7 @@ const RecordNotes = ({ notes }) => {
             </Box>
           </>
         ) : (
-          displayNotes.map((e, index) => (
+          displayNotes.notes.map((e, index) => (
             <RecordNoteCard key={index} noteData={e} />
           ))
         )}
