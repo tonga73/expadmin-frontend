@@ -90,7 +90,7 @@ const RecordNoteCard = ({ noteData }) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          height: "165px",
+          minHeight: "165px",
           position: "relative",
         }}
       >
@@ -128,48 +128,49 @@ const RecordNoteCard = ({ noteData }) => {
             </Button>
           </Box>
         )}
-        <CardContent>
-          <Box sx={{ p: 1 }}>
-            <Typography id={`note-text-${noteData.id}`} variant="h5">
-              {noteData.text}
-            </Typography>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            sx={{ width: "100%", minHeight: 26 }}
+        <Box component={CardContent} height="100%" sx={{ overflowY: "hidden" }}>
+          <Typography
+            id={`note-text-${noteData.id}`}
+            variant="h5"
+            sx={{
+              height: "100%",
+              overflowY: "hidden",
+            }}
           >
-            <Box>
-              <IconButton color="neutral" size="small">
-                <PushPinIcon />
-              </IconButton>
-              <IconButton
-                color="warning"
-                size="small"
-                onClick={() => {
-                  setEditMode(true);
-                  setEditedNote(noteData);
-                  dispatch(setNote(noteData));
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-            </Box>
+            {noteData.text}
+          </Typography>
+        </Box>
+        <Box
+          component={CardActions}
+          display="flex"
+          justifyContent="space-between"
+          sx={{ width: "100%", minHeight: 26 }}
+        >
+          <Box display="flex" gap={1}>
             <IconButton
-              color="error"
+              color="warning"
               size="small"
               onClick={() => {
-                dispatch(setNotesStatus("delete-note"));
+                setEditMode(true);
+                setEditedNote(noteData);
                 dispatch(setNote(noteData));
-                setDeleteMode(true);
               }}
             >
-              <DeleteIcon />
+              <EditIcon />
             </IconButton>
           </Box>
-        </CardActions>
+          <IconButton
+            color="error"
+            size="small"
+            onClick={() => {
+              dispatch(setNotesStatus("delete-note"));
+              dispatch(setNote(noteData));
+              setDeleteMode(true);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
       </Card>
       <Modal
         open={editMode}
