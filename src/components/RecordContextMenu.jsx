@@ -39,6 +39,7 @@ const RecordContextMenu = ({ contextMenuObjId, position, onClickAway }) => {
           display={Object.values(position).length > 0 ? "inherit" : "none"}
           sx={{
             background: colors.primary[500],
+            boxShadow: "0 0 5px 1px #ccc",
             color: colors.grey[100],
             width: 130,
             position: "absolute",
