@@ -1,25 +1,14 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Modal from "@mui/material/Modal";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import PushPinIcon from "@mui/icons-material/PushPin";
 
-import Spinner from "./Spinner";
 import RecordNoteCard from "./RecordNoteCard";
 import RecordNoteNewCard from "./RecordNoteNewCard";
 
@@ -30,8 +19,6 @@ import {
   setNotesStatus,
   setNote,
 } from "../store/slices/notes.slice";
-
-import { setRecordNotes } from "../store/slices/records.slice";
 
 const RecordNotes = ({ notes }) => {
   // THEME UTILS
@@ -44,8 +31,6 @@ const RecordNotes = ({ notes }) => {
     notes: [],
     showAll: false,
   });
-
-  console.log(displayNotes.showAll);
 
   const notesStatus = useSelector(selectNotesStatus);
 
@@ -63,7 +48,7 @@ const RecordNotes = ({ notes }) => {
       dispatch(setNotesStatus(""));
       setNewNote(false);
     }
-  }, [notesStatus]);
+  }, [notes, displayNotes.showAll, notesStatus, dispatch]);
 
   useEffect(() => {
     if (notes === []) {
