@@ -114,27 +114,72 @@ const Record = () => {
       >
         <Box gridColumn={{ xs: "span 5", lg: "span 3" }}>
           <RecordSelectInput record={record} />
-          <Typography variant="h1" fontWeight={700} sx={{ py: 1 }}>
-            {record.order}
-          </Typography>
-          <Typography
-            variant="h2"
-            textTransform="uppercase"
-            fontWeight={700}
-            color={colors.grey[500]}
-          >
-            {record.name}
-          </Typography>
-          <Button
-            disabled={recordsStatus === "editing"}
-            color="warning"
-            variant="outlined"
-            size="small"
-            sx={{ mt: 1 }}
-            onClick={() => setEditMode(!editMode)}
-          >
-            Editar
-          </Button>
+          <Box>
+            <Divider light textAlign="right" sx={{ px: 1.5 }}>
+              <Typography
+                variant="subtitle1"
+                fontWeight={100}
+                color="neutral"
+                textTransform="uppercase"
+              >
+                Número de expediente
+              </Typography>
+            </Divider>
+            <Typography
+              variant="h1"
+              fontWeight={700}
+              textAlign="right"
+              sx={{ py: 1, px: 1.5 }}
+            >
+              {record.order}
+            </Typography>
+          </Box>
+          <Box>
+            <Divider light textAlign="right" sx={{ px: 1.5 }}>
+              <Typography
+                variant="subtitle1"
+                fontWeight={100}
+                color="neutral"
+                textTransform="uppercase"
+              >
+                Carátula
+              </Typography>
+            </Divider>
+            <Typography
+              variant="h2"
+              textTransform="uppercase"
+              fontWeight={700}
+              color={colors.grey[500]}
+              textAlign="right"
+              sx={{ py: 1, px: 1.5 }}
+            >
+              {record.name}
+            </Typography>
+          </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Box width="100%">
+              <Divider light textAlign="right" sx={{ px: 1.5 }}>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={100}
+                  color="neutral"
+                  textTransform="uppercase"
+                >
+                  Modificar Número o Carátula
+                </Typography>
+              </Divider>
+            </Box>
+            <Button
+              disabled={recordsStatus === "editing"}
+              color="warning"
+              variant="outlined"
+              size="small"
+              sx={{ mt: 1 }}
+              onClick={() => setEditMode(!editMode)}
+            >
+              Editar
+            </Button>
+          </Box>
         </Box>
         <Box
           gridColumn={{ xs: "span 5", lg: "span 2" }}
@@ -237,16 +282,6 @@ const Record = () => {
                 >
                   Cancelar
                 </Button>
-                <Typography
-                  variant="caption"
-                  fontWeight={700}
-                  textTransform="uppercase"
-                  sx={{
-                    color: "warning",
-                  }}
-                >
-                  Editando Expediente
-                </Typography>
                 <Button
                   type="submit"
                   color="warning"

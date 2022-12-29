@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -121,6 +122,16 @@ const RecordSelectInput = ({ record }) => {
               bgcolor: colors.priorityColors[values.priority],
             }}
           >
+            <Divider light textAlign="right">
+              <Typography
+                variant="subtitle1"
+                fontWeight={100}
+                color="neutral"
+                textTransform="uppercase"
+              >
+                Prioridad
+              </Typography>
+            </Divider>
             {dataPriorities.map((e) => (
               <MenuItem key={e} value={e}>
                 {e}
@@ -145,6 +156,16 @@ const RecordSelectInput = ({ record }) => {
               bgcolor: colors.tracingColors[values.tracing],
             }}
           >
+            <Divider light textAlign="right">
+              <Typography
+                variant="subtitle1"
+                fontWeight={100}
+                color="neutral"
+                textTransform="uppercase"
+              >
+                Estado pericial
+              </Typography>
+            </Divider>
             {dataTracings.map((e) => (
               <MenuItem key={e} value={e}>
                 {e.replaceAll("_", " ")}
