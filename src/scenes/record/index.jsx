@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Formik, Field } from "formik";
@@ -16,6 +17,7 @@ import Spinner from "../../components/Spinner";
 import RecordNotes from "../../components/RecordNotes";
 import RecordSelectInput from "../../components/RecordSelectInput";
 import ActionsModal from "../../components/ActionsModal";
+import RecordModalDelete from "../../components/RecordModalDelete";
 
 import { getRecord, editRecord } from "../../store/actions/records.actions";
 import {
@@ -35,6 +37,7 @@ const Record = () => {
   const params = useParams();
 
   const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
   const recordsStatus = useSelector(selectRecordsStatus);
   const record = useSelector(selectRecord);
 
@@ -101,10 +104,6 @@ const Record = () => {
     </Box>
   ) : (
     <>
-      <Box
-        gridColumn="span 5"
-        sx={{ height: 15, bgcolor: colors.primary[600], mb: 1 }}
-      ></Box>
       <Box
         display="grid"
         gridTemplateColumns="repeat(5, minmax(0, 1fr))"
@@ -262,6 +261,46 @@ const Record = () => {
           )}
         </Formik>
       </ActionsModal>
+      <Box
+        display="flex"
+        flexDirection="column"
+        rowGap={1}
+        sx={{ pt: 5, pb: 3, px: 3 }}
+      >
+        <Divider light textAlign="left">
+          <Typography
+            variant="subtitle1"
+            fontWeight={100}
+            color="neutral"
+            textTransform="uppercase"
+          >
+            Gestión del expediente
+          </Typography>
+        </Divider>
+        <Button
+          color="error"
+          fullWidth
+          variant="outlined"
+          size="large"
+          sx={{
+            py: 3,
+            opacity: 0.3,
+            "&:hover": {
+              opacity: 1,
+            },
+          }}
+          onClick={() => setDeleteMode(true)}
+        >
+          <Typography variant="h5" fontWeight={700}>
+            BORRAR EXPEDIENTE DEFINITIVAMENTE
+          </Typography>
+        </Button>
+        <RecordModalDelete
+          isOpen={deleteMode}
+          handleOnClose={() => setDeleteMode(false)}
+          recordId={record.id}
+        />
+      </Box>
     </>
   );
 };

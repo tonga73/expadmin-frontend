@@ -44,7 +44,7 @@ export const recordsSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getRecords.fulfilled, (state, action) => {
-        state.status = "success";
+        state.status = "";
         state.records = action.payload;
         state.filteredRecords = action.payload;
       })

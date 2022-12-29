@@ -12,9 +12,10 @@ import { setRecord, setRecordsStatus } from "../slices/records.slice";
 
 export const getRecords = createAsyncThunk(
   "records/fetchGetRecords",
-  async (query) => {
+  async (query, { dispatch }) => {
     const response = await fetchGetRecords(query);
 
+    dispatch(setRecordsStatus("success"));
     return response;
   }
 );

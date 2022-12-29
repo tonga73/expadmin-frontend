@@ -40,7 +40,7 @@ const Sidebar = () => {
         width: "100%",
         maxWidth: "300px",
         minHeight: "100vh",
-        maxHeight: "100vh",
+        maxHeight: "100%",
         zIndex: 99,
       }}
     >

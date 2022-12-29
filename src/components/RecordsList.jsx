@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Box, Button, Typography, useTheme } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import { tokens } from "../theme";
 
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplayIcon from "@mui/icons-material/Replay";
 
 import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
+import CustomizedTooltip from "./CustomizedTooltip";
 
 import { getRecords } from "../store/actions/records.actions";
 
@@ -39,13 +43,13 @@ const RecordsList = () => {
   const [contextMenuObjId, setContextMenuObjId] = useState(null);
 
   const handleContextMenu = async (e) => {
-    e.preventDefault();
     const recordId = await e.target.id.replace("record-", "");
     setContextMenuObjId(recordId);
+
+    console.log(e);
+
     const xPos = e.pageX - 50 + "px";
     const yPos = e.pageY - 50 + "px";
-
-    console.log(recordId, "ID");
 
     if (recordId !== "") {
       setContextMenuPosition({
@@ -53,10 +57,6 @@ const RecordsList = () => {
         yPos,
       });
     }
-  };
-
-  const handleClickAway = () => {
-    setContextMenuPosition({});
   };
 
   useEffect(() => {
@@ -68,17 +68,19 @@ const RecordsList = () => {
   }, [location]);
 
   useEffect(() => {
-    if (recordsStatus === "success") {
-      dispatch(setRecordsStatus(""));
-    }
-    if (recordsStatus === "edited" || recordsStatus === "deleted") {
+    if (recordsStatus === "edited") {
       dispatch(getRecords(location.search));
       dispatch(setRecordsStatus(""));
+    }
+    if (recordsStatus === "deleted") {
+      dispatch(getRecords(location.search));
+      dispatch(setRecordsStatus(""));
+      navigate(`/`);
     }
   }, [recordsStatus, location.search]);
 
   return (
-    <Box width="100%" height="min-content" overflow="auto">
+    <Box width="100%" height="100vh" minHeight="min-content" overflow="auto">
       {!!filteredRecords && filteredRecords.length <= 0 ? (
         <>
           <Box
@@ -114,19 +116,20 @@ const RecordsList = () => {
         </>
       ) : (
         !!filteredRecords &&
-        filteredRecords.map(({ id, order, name, priority }, index) => (
+        filteredRecords.map(({ id, order, name, priority, tracing }, index) => (
           <Box
-            id={`record-${id}`}
             key={index}
             display="flex"
             justifyContent="space-between"
             alignItems="center"
             columnGap={1.5}
-            p="15px"
+            py="15px"
+            pl="7px"
+            pr="20px"
             borderBottom={`4px solid ${colors.primary[500]}`}
             sx={{
               userSelect: "none",
-              opacity: recordsStatus !== "" ? 0.5 : 1,
+              opacity: recordsStatus !== "" ? 0.1 : 1,
               pointerEvents: recordsStatus !== "" ? "none" : "initial",
               bgcolor: record.id === id ? colors.primary[400] : "initial",
               "&:hover": {
@@ -134,28 +137,60 @@ const RecordsList = () => {
                   record.id === id ? colors.primary[400] : colors.primary[500],
               },
             }}
-            onClick={() =>
-              navigate(
-                `/expedientes/${id}${
-                  location.search !== undefined && location.search
-                }`
-              )
-            }
-            onContextMenu={handleContextMenu}
-            onBlur={() => setContextMenuPosition({})}
           >
-            <Box flex="1 1 0%" width="90%" sx={{ pointerEvents: "none" }}>
-              <Typography
-                color={colors.greenAccent[500]}
-                variant="h5"
-                fontWeight="600"
+            <Box
+              flex="1 1 0%"
+              width="90%"
+              onClick={() =>
+                navigate(
+                  `/expedientes/${id}${
+                    location.search !== undefined && location.search
+                  }`
+                )
+              }
+            >
+              <Box
+                component={CustomizedTooltip}
+                placement="top"
+                title={
+                  <Typography
+                    variant="caption"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    {tracing.replaceAll("_", " ")}
+                  </Typography>
+                }
+                sx={{ bgcolor: "red" }}
               >
-                {order}
-              </Typography>
+                <Typography
+                  color={colors.tracingColors[tracing]}
+                  variant="h5"
+                  fontWeight="600"
+                  sx={{
+                    width: "min-content",
+                    py: 0.5,
+                    px: 0.5,
+                    borderRadius: "7px",
+                    "&:hover": {
+                      bgcolor: colors.tracingColors[tracing],
+                      color: colors.primary[100],
+                    },
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    searchParams.set("tracing", tracing);
+                    setSearchParams(searchParams);
+                  }}
+                >
+                  {order.replaceAll(" ", "")}
+                </Typography>
+              </Box>
               <Typography
                 fontWeight="600"
                 color={colors.grey[100]}
                 textTransform="uppercase"
+                fontStyle="italic"
                 noWrap
                 sx={{
                   textOverflow: "ellipsis",
@@ -165,7 +200,14 @@ const RecordsList = () => {
                 {name}
               </Typography>
             </Box>
-            <Box flexShrink="1 1 auto">
+            <Box
+              flexShrink="1 1 auto"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
               <Box
                 onClick={(e) => {
                   e.stopPropagation();
@@ -195,11 +237,6 @@ const RecordsList = () => {
       >
         <Typography fontWeight={700}>·</Typography>
       </Box>
-      <RecordContextMenu
-        position={contextMenuPosition}
-        contextMenuObjId={contextMenuObjId}
-        onClickAway={handleClickAway}
-      />
     </Box>
   );
 };

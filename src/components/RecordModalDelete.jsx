@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -33,14 +34,17 @@ const RecordModalDelete = ({ isOpen, handleOnClose, recordId }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   const recordsStatus = useSelector(selectRecordsStatus);
   const record = useSelector(selectRecord);
 
   useEffect(() => {
     if (recordsStatus === "deleted") {
-      handleOnClose();
+      navigate(`/`, { replace: true });
+      console.log("ACAPUE");
       dispatch(setRecordsStatus(""));
+      handleOnClose();
     }
   }, [recordsStatus]);
 

@@ -103,79 +103,6 @@ const RecordFilters = () => {
       </Box>
       <Box
         display="flex"
-        justifyContent="center"
-        alignItems="center"
-        borderBottom={`4px solid ${colors.primary[500]}`}
-        width="100%"
-        sx={{
-          position: "relative",
-          cursor: "pointer",
-          userSelect: "none",
-          py: 0.1,
-          bgcolor: colors.primary[600],
-          color: colors.grey[300],
-          "&:hover": {
-            color: colors.grey[100],
-          },
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setSortTracingMenu(!sortTracingMenu);
-        }}
-      >
-        <IconButton color="inherit" size="small" disableRipple>
-          <FilterListIcon />
-        </IconButton>
-        <Typography
-          color="inherit"
-          variant="caption"
-          textTransform="uppercase"
-          fontWeight="bold"
-        >
-          Filtrar Estados
-        </Typography>
-        {sortTracingMenu ? (
-          <MenuList
-            sx={{
-              position: "absolute",
-              top: 30,
-              bgcolor: colors.primary[600],
-              border: `1px solid ${colors.primary[400]}`,
-              borderRadius: "1%",
-              px: 1,
-              zIndex: 999,
-            }}
-          >
-            {dataTracings.map((tracing, index) => (
-              <MenuItem
-                disableGutters
-                sx={{
-                  textAlign: "center",
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSortTracingMenu(!sortTracingMenu);
-                  searchParams.set("tracing", tracing);
-                  setSearchParams(searchParams);
-                }}
-              >
-                <ListItemText>
-                  <Typography
-                    variant="h5"
-                    fontWeight={600}
-                    color={colors.grey[100]}
-                    sx={{ color: colors.tracingColors[tracing] }}
-                  >
-                    {tracing.replaceAll("_", " ")}
-                  </Typography>
-                </ListItemText>
-              </MenuItem>
-            ))}
-          </MenuList>
-        ) : undefined}
-      </Box>
-      <Box
-        display="flex"
         justifyContent="space-between"
         alignItems="center"
         borderBottom={`4px solid ${colors.primary[500]}`}
@@ -237,7 +164,11 @@ const RecordFilters = () => {
             </Typography>
           </Box>
         )}
-        <Stack direction="row" spacing={1}>
+        <Stack
+          direction="column-reverse"
+          spacing={1}
+          sx={{ justifyContent: "center", alignItems: "center" }}
+        >
           {Array.from(searchParams).map((e, index) => {
             const [param, value] = e;
             if (value === "asc" || value === "desc") {
@@ -258,6 +189,8 @@ const RecordFilters = () => {
                   setSearchParams(searchParams);
                 }}
                 sx={{
+                  width: "min-content",
+                  justifyContent: "space-between",
                   bgcolor:
                     param === "priority"
                       ? colors.priorityColors[value]
