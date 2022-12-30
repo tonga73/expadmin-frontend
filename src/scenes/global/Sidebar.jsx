@@ -21,6 +21,14 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
 
   const location = useLocation().pathname;
+
+  const styles = {
+    text: {
+      background: "linear-gradient(to right, #00b8d4, #0052cc)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    },
+  };
   return (
     <Box
       display="flex"
@@ -44,6 +52,28 @@ const Sidebar = () => {
         zIndex: 99,
       }}
     >
+      <Box
+        display="flex"
+        alignItems="center"
+        gap={1.5}
+        sx={{ pointerEvents: "none", userSelect: "none" }}
+      >
+        <Box
+          component="img"
+          src="../images/hugadminFavicon.png"
+          alt="Imagen Logo de Hugadmin."
+          height="55px"
+          sx={{ boxShadow: 21 }}
+        />
+        <Typography
+          variant="h2"
+          textTransform="uppercase"
+          fontWeight={100}
+          style={styles.text}
+        >
+          Hugadmin
+        </Typography>
+      </Box>
       {/* SIDEBAR ROUTES */}
       <Box width="100%">
         {routes.map((route, index) => (
