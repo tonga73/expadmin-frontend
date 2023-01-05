@@ -13,6 +13,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 import routes from "../../app/routes";
 
+import { gradient } from "../../utils/keyframes";
+
 import RecordsList from "../../components/RecordsList";
 import RecordFilters from "../../components/RecordFilters";
 
@@ -24,9 +26,12 @@ const Sidebar = () => {
 
   const styles = {
     text: {
-      background: "linear-gradient(to right, #00b8d4, #0052cc)",
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
+      background: `linear-gradient(to right, ${colors.greenAccent[500]}, ${colors.blueAccent[500]})`,
+      backgroundClip: "text",
+      color: "transparent",
+      animation: `${gradient} 1s linear infinite`,
     },
   };
   return (
@@ -69,7 +74,8 @@ const Sidebar = () => {
           variant="h2"
           textTransform="uppercase"
           fontWeight={100}
-          style={styles.text}
+          sx={styles.text}
+          className="text"
         >
           Hugadmin
         </Typography>

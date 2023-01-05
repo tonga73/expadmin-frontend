@@ -16,7 +16,6 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import EditIcon from "@mui/icons-material/Edit";
 import Person2Icon from "@mui/icons-material/Person2";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 
@@ -145,7 +144,18 @@ export default function RecordDetailsAccordion({ title, content, name }) {
                   >
                     <Person2Icon />
                     <ListItemText primary={<Typography>{e}</Typography>} />
-                    <Tooltip sx={{ bgcolor: "primary" }} title="Agregar parte">
+                    <Tooltip
+                      sx={{ bgcolor: "primary" }}
+                      title={
+                        <Box
+                          component={Typography}
+                          textTransform="uppercase"
+                          variant="caption"
+                        >
+                          Eliminar parte
+                        </Box>
+                      }
+                    >
                       <IconButton
                         onClick={() => handleDeleteItem(e)}
                         size="small"

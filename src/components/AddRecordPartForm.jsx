@@ -70,7 +70,7 @@ export default function AddRecordPartForm({ onAddItem, name }) {
                 </Box>
                 <TextField
                   variant="outlined"
-                  placeholder="Ingresa el nombre"
+                  placeholder="'Fulano De Tal', 'Aseguradora De Prueba S.R.L', etc..."
                   name="text"
                   value={values.text}
                   onChange={handleChange}
@@ -101,24 +101,15 @@ export default function AddRecordPartForm({ onAddItem, name }) {
           )}
         </Formik>
       ) : (
-        <Tooltip
-          sx={{ bgcolor: "primary" }}
-          title={
-            <Box component={Typography} p={1} sx={{ bgcolor: "" }}>
-              Ej: "Fulano De Tal", "Aseguradora De Prueba S.R.L", etc...
-            </Box>
-          }
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          startIcon={<PersonAddIcon />}
+          onClick={() => setIsOpen(true)}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            startIcon={<PersonAddIcon />}
-            onClick={() => setIsOpen(true)}
-          >
-            Agregar parte
-          </Button>
-        </Tooltip>
+          Agregar parte
+        </Button>
       )}
     </Box>
   );
