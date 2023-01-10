@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useNavigate,
@@ -6,6 +6,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import _debounce from "lodash.debounce";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,7 +30,7 @@ import { dataTracings } from "../data/enumsData";
 
 import Spinner from "./Spinner";
 
-import { getRecords } from "../store/actions/records.actions";
+import { getFilteredRecords } from "../store/actions/records.actions";
 
 import {
   selectFilteredRecords,
@@ -57,14 +58,48 @@ const RecordFilters = () => {
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
 
+  const debounceFn = useCallback(_debounce(handleDebounceFn, 1000), []);
+
+  const escFunction = useCallback((event) => {
+    if (event.key === "Escape") {
+      handleSearch({ target: { value: "" } });
+    }
+  }, []);
+
+  function handleDebounceFn(inputValue) {
+    console.log(inputValue, "VALUE");
+    if (inputValue.length > 0) {
+      dispatch(setRecordsStatus("loading"));
+      console.log("POR AQUI");
+      searchParams.set("search", inputValue);
+      setSearchParams(searchParams);
+      dispatch(getFilteredRecords(location.search));
+    } else {
+      dispatch(setRecordsStatus("loading"));
+      console.log("ELSE POR ACUA");
+      searchParams.delete("search");
+      setSearchParams(searchParams);
+    }
+  }
+
+  function handleSearch(event) {
+    setSearch(event.target.value);
+    debounceFn(event.target.value);
+  }
+
   useEffect(() => {
-    dispatch(filterRecords(search));
-  }, [search]);
+    document.addEventListener("keydown", escFunction, false);
+
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+    };
+  }, []);
 
   useEffect(() => {
     searchParams.set("updatedAt", sortByUpdated);
     setSearchParams(searchParams);
-    dispatch(getRecords(location.search));
+    dispatch(setRecordsStatus("loading"));
+    dispatch(getFilteredRecords(location.search));
   }, [location.search, sortByUpdated]);
 
   return (
@@ -79,29 +114,37 @@ const RecordFilters = () => {
       {/* SEARCH BAR */}
       <Box display="flex" backgroundColor={colors.primary[400]} width="100%">
         <InputBase
+          id="searchbar-escape-button"
           placeholder="Buscar"
           value={search}
           endAdornment={
             search.length > 0 ? (
-              <ClearIcon
+              <Box
+                component={Button}
+                size="small"
                 sx={{
+                  mr: 1,
+                  bgcolor: colors.primary[600],
                   color: colors.grey[400],
                   cursor: "pointer",
+                  border: `solid 1px ${colors.primary[100]}`,
                   "&:hover": {
                     color: colors.grey[300],
                   },
                 }}
-                onClick={() => {
-                  setSearch("");
-                }}
-              />
+                onClick={() => handleSearch({ target: { value: "" } })}
+              >
+                Esc
+              </Box>
             ) : undefined
           }
           sx={{ ml: 2, flex: 1, fontSize: "19px" }}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleSearch}
         />
       </Box>
       <Box
+        component={Button}
+        disabled={recordsStatus !== ""}
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -116,9 +159,9 @@ const RecordFilters = () => {
           bgcolor: colors.primary[400],
           "&:hover": { color: colors.grey[100] },
         }}
-        onClick={() =>
-          setSortByUpdated(sortByUpdated === "desc" ? "asc" : "desc")
-        }
+        onClick={() => {
+          setSortByUpdated(sortByUpdated === "desc" ? "asc" : "desc");
+        }}
       >
         <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
           {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
@@ -139,31 +182,35 @@ const RecordFilters = () => {
         width="100%"
         rowGap={1}
       >
-        {Array.from(searchParams).length > 1 && (
-          <Box display="flex" justifyContent="end" width="100%">
-            <Typography
-              variant="caption"
-              textTransform="uppercase"
-              sx={{
-                cursor: "pointer",
-                "&:hover": {
-                  color: colors.blueAccent[300],
-                },
-              }}
-              onClick={() => {
-                if (searchParams.has("priority")) {
-                  searchParams.delete("priority");
-                }
-                if (searchParams.has("tracing")) {
-                  searchParams.delete("tracing");
-                }
-                setSearchParams(searchParams);
-              }}
-            >
-              Borrar Filtros
-            </Typography>
-          </Box>
-        )}
+        {(Array.from(searchParams).length > 1 && searchParams.has("tracing")) ||
+          (searchParams.has("priority") && (
+            <Box display="flex" justifyContent="end" width="100%">
+              <Typography
+                variant="caption"
+                textTransform="uppercase"
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": {
+                    color: colors.blueAccent[300],
+                  },
+                }}
+                onClick={() => {
+                  if (searchParams.has("priority")) {
+                    searchParams.delete("priority");
+                  }
+                  if (searchParams.has("tracing")) {
+                    searchParams.delete("tracing");
+                  }
+                  if (searchParams.has("search")) {
+                    handleSearch({ target: { value: "" } });
+                  }
+                  setSearchParams(searchParams);
+                }}
+              >
+                Borrar Filtros
+              </Typography>
+            </Box>
+          ))}
         <Stack
           direction="column-reverse"
           spacing={1}
@@ -172,6 +219,9 @@ const RecordFilters = () => {
           {Array.from(searchParams).map((e, index) => {
             const [param, value] = e;
             if (value === "asc" || value === "desc") {
+              return;
+            }
+            if (param === "search") {
               return;
             }
             return (

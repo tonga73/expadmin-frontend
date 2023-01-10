@@ -1,9 +1,20 @@
 import { axiosClient } from "../../app/axiosClient";
 
-export async function fetchGetRecords(query) {
+export async function fetchGetRecords() {
+  try {
+    const { data } = await axiosClient(`/records`);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchGetFilteredRecords(query) {
+  console.log(query, "QUERY");
   try {
     const { data } = await axiosClient(
-      `/records${Object.keys(query).length !== 0 ? query : ""}`
+      `/records/filter${Object.keys(query).length !== 0 ? query : ""}`
     );
 
     return data;

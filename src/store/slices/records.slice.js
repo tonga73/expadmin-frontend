@@ -46,7 +46,6 @@ export const recordsSlice = createSlice({
       .addCase(getRecords.fulfilled, (state, action) => {
         state.status = "";
         state.records = action.payload;
-        state.filteredRecords = action.payload;
       })
       .addCase(getRecords.rejected, (state, action) => {
         state.status = "error";

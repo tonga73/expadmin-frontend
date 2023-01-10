@@ -2,21 +2,36 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
   fetchGetRecords,
+  fetchGetFilteredRecords,
   fetchGetRecord,
   fetchNewRecord,
   fetchEditRecord,
   fetchDeleteRecord,
 } from "../../app/fetchAPI/recordsAPI";
 
-import { setRecord, setRecordsStatus } from "../slices/records.slice";
+import {
+  setRecord,
+  setFilteredRecords,
+  setRecordsStatus,
+} from "../slices/records.slice";
 
 export const getRecords = createAsyncThunk(
   "records/fetchGetRecords",
-  async (query, { dispatch }) => {
-    const response = await fetchGetRecords(query);
+  async ({ dispatch }) => {
+    const response = await fetchGetRecords();
 
     dispatch(setRecordsStatus("success"));
     return response;
+  }
+);
+
+export const getFilteredRecords = createAsyncThunk(
+  "records/fetchGetFilteredRecords",
+  async (query, { dispatch }) => {
+    const response = await fetchGetFilteredRecords(query);
+
+    dispatch(setRecordsStatus("success"));
+    dispatch(setFilteredRecords(response));
   }
 );
 

@@ -13,7 +13,7 @@ import Spinner from "./Spinner";
 import RecordContextMenu from "./RecordContextMenu";
 import CustomizedTooltip from "./CustomizedTooltip";
 
-import { getRecords } from "../store/actions/records.actions";
+import { getFilteredRecords } from "../store/actions/records.actions";
 
 import {
   selectFilteredRecords,
@@ -68,16 +68,23 @@ const RecordsList = () => {
   }, [location]);
 
   useEffect(() => {
+    if (recordsStatus === "success") {
+      dispatch(setRecordsStatus(""));
+    }
     if (recordsStatus === "edited") {
-      dispatch(getRecords(location.search));
+      dispatch(getFilteredRecords(location.search));
       dispatch(setRecordsStatus(""));
     }
     if (recordsStatus === "deleted") {
-      dispatch(getRecords(location.search));
+      dispatch(getFilteredRecords(location.search));
       dispatch(setRecordsStatus(""));
       navigate(`/`);
     }
   }, [recordsStatus, location.search]);
+
+  useEffect(() => {
+    dispatch(getFilteredRecords(location.search));
+  }, [location.search]);
 
   return (
     <Box width="100%" height="100vh" minHeight="min-content" overflow="auto">
@@ -100,7 +107,7 @@ const RecordsList = () => {
               Presiona para recargar.
             </Typography>
             <Button
-              onClick={() => dispatch(getRecords({}))}
+              onClick={() => dispatch(getFilteredRecords({}))}
               variant="contained"
               endIcon={
                 recordsStatus === "loading" ? (
