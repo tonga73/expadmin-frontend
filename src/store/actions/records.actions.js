@@ -20,7 +20,6 @@ export const getRecords = createAsyncThunk(
   async ({ dispatch }) => {
     const response = await fetchGetRecords();
 
-    dispatch(setRecordsStatus("success"));
     return response;
   }
 );

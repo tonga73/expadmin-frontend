@@ -11,7 +11,6 @@ export async function fetchGetRecords() {
 }
 
 export async function fetchGetFilteredRecords(query) {
-  console.log(query, "QUERY");
   try {
     const { data } = await axiosClient(
       `/records/filter${Object.keys(query).length !== 0 ? query : ""}`
