@@ -49,11 +49,9 @@ const Sidebar = () => {
         color: "#868dfb",
         color: "#6870fa",
         py: "25px",
-        minWidth: "200px",
         width: "100%",
-        maxWidth: "300px",
-        minHeight: "100vh",
-        maxHeight: "100%",
+        minHeight: "100%",
+        maxHeight: "100vh",
         zIndex: 99,
       }}
     >
