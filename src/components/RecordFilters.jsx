@@ -182,35 +182,36 @@ const RecordFilters = () => {
         width="100%"
         rowGap={1}
       >
-        {(Array.from(searchParams).length > 1 && searchParams.has("tracing")) ||
-          (searchParams.has("priority") && (
-            <Box display="flex" justifyContent="end" width="100%">
-              <Typography
-                variant="caption"
-                textTransform="uppercase"
-                sx={{
-                  cursor: "pointer",
-                  "&:hover": {
-                    color: colors.blueAccent[300],
-                  },
-                }}
-                onClick={() => {
-                  if (searchParams.has("priority")) {
-                    searchParams.delete("priority");
-                  }
-                  if (searchParams.has("tracing")) {
-                    searchParams.delete("tracing");
-                  }
-                  if (searchParams.has("search")) {
-                    handleSearch({ target: { value: "" } });
-                  }
-                  setSearchParams(searchParams);
-                }}
-              >
-                Borrar Filtros
-              </Typography>
-            </Box>
-          ))}
+        {((Array.from(searchParams).length > 1 &&
+          searchParams.has("tracing")) ||
+          searchParams.has("priority")) && (
+          <Box display="flex" justifyContent="end" width="100%">
+            <Typography
+              variant="caption"
+              textTransform="uppercase"
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  color: colors.blueAccent[300],
+                },
+              }}
+              onClick={() => {
+                if (searchParams.has("priority")) {
+                  searchParams.delete("priority");
+                }
+                if (searchParams.has("tracing")) {
+                  searchParams.delete("tracing");
+                }
+                if (searchParams.has("search")) {
+                  handleSearch({ target: { value: "" } });
+                }
+                setSearchParams(searchParams);
+              }}
+            >
+              Borrar Filtros
+            </Typography>
+          </Box>
+        )}
         <Stack
           direction="column-reverse"
           spacing={1}

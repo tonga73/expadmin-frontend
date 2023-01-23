@@ -121,6 +121,7 @@ const Dashboard = () => {
             heihgt="100%"
           >
             <StatBox
+              type=""
               title={!!records && records.length}
               titleFontVariant="h1"
               subtitle={"Total"}
@@ -143,6 +144,7 @@ const Dashboard = () => {
             heihgt="100%"
           >
             <StatBox
+              type="tracing"
               title={statCobrado.length}
               titleFontVariant="h1"
               subtitle={"Cobrado"}
@@ -175,6 +177,7 @@ const Dashboard = () => {
           }}
         >
           <StatBox
+            type="priority"
             title={statUrgente.length}
             titleFontVariant="h3"
             subtitle={"Urgente"}
@@ -192,9 +195,10 @@ const Dashboard = () => {
             }
           />
           <StatBox
+            type="tracing"
             title={statSentenciaConvenio.length}
             titleFontVariant="h3"
-            subtitle={"Sentencia o Covenio de Partes"}
+            subtitle={"Sentencia o Convenio de Partes"}
             subtitleFontVariant="h5"
             progress={generatePercentage(statSentenciaConvenio)}
             progressSize={75}
@@ -209,6 +213,7 @@ const Dashboard = () => {
             }
           />
           <StatBox
+            type="priority"
             title={statAlta.length}
             titleFontVariant="h3"
             subtitle={"Alta"}
@@ -226,6 +231,7 @@ const Dashboard = () => {
             }
           />
           <StatBox
+            type="tracing"
             title={statHonorariosRegulados.length}
             titleFontVariant="h3"
             subtitle={"Honorarios Regulados"}
@@ -243,6 +249,7 @@ const Dashboard = () => {
             }
           />
           <StatBox
+            type="tracing"
             title={statPericiaRealizada.length}
             titleFontVariant="h3"
             subtitle={"Pericia Realizada"}
@@ -260,6 +267,7 @@ const Dashboard = () => {
             }
           />
           <StatBox
+            type="tracing"
             title={statEnTratativa.length}
             titleFontVariant="h3"
             subtitle={"En Tratativa de Cobro"}

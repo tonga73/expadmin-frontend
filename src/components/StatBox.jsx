@@ -1,3 +1,4 @@
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
@@ -11,16 +12,24 @@ const StatBox = ({
   dense,
   titleFontVariant,
   subtitleFontVariant,
+  type,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const [searchParams, setSearchParams] = useSearchParams();
   function truncate(string, limit) {
     if (string.length <= limit) {
       return string;
     }
 
     return string.slice(0, limit) + "...";
+  }
+
+  function handleClick(e) {
+    e.stopPropagation();
+    searchParams.set(type, subtitle.replaceAll(" ", "_").toUpperCase());
+    setSearchParams(searchParams);
   }
 
   return dense ? (
@@ -50,7 +59,17 @@ const StatBox = ({
       </Box>
     </Box>
   ) : (
-    <Box width="100%" p="15px 30px" sx={{ userSelect: "none" }}>
+    <Box
+      width="100%"
+      p="15px 30px"
+      sx={{
+        userSelect: "none",
+        "&:hover": {
+          opacity: 0.9,
+        },
+      }}
+      onClick={type !== "" ? handleClick : undefined}
+    >
       <Box
         display="grid"
         height="100%"
