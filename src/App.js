@@ -39,7 +39,7 @@ function App() {
           </Box>
           <Box gridColumn="span 10">
             <main className="content">
-              <Topbar />
+              <Topbar user={user} />
               <Container>
                 {user ? (
                   <Routes>

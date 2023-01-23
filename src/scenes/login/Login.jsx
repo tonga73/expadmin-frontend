@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 const Login = (props) => {
   const [isRegistering, setIsRegistering] = React.useState(false);
 
-  const crearUsuario = (email, password) => {
+  const createUser = (email, password) => {
     app
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -17,7 +17,7 @@ const Login = (props) => {
       });
   };
 
-  const iniciarSesion = (email, password) => {
+  const login = (email, password) => {
     app
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -33,11 +33,11 @@ const Login = (props) => {
     const password = e.target.passwordField.value;
 
     if (isRegistering) {
-      crearUsuario(email, password);
+      createUser(email, password);
     }
 
     if (!isRegistering) {
-      iniciarSesion(email, password);
+      login(email, password);
     }
   };
 
