@@ -12,15 +12,14 @@ import Record from "./scenes/record";
 
 import Login from "./scenes/login/Login";
 
-import { app } from "./data/firebaseKeys";
+import firebase from "./services/firebase";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    app.auth().onAuthStateChanged((usuarioFirebase) => {
-      console.log("ya tienes sesión iniciada con:", usuarioFirebase);
+    firebase.auth().onAuthStateChanged((usuarioFirebase) => {
       setUser(usuarioFirebase);
     });
   }, []);

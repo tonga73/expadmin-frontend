@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { app } from "../data/firebaseKeys";
+import { auth } from "../services/firebase";
 
 const LogoutButton = () => {
   const logout = () => {
-    app.auth().signOut();
+    auth.signOut();
   };
 
   return (
