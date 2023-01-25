@@ -80,10 +80,10 @@ const Dashboard = () => {
     return !!records && (records.length * value.length) / 100 / 100;
   }
 
-  useEffect(() => {
-    dispatch(setRecord({}));
-    dispatch(getRecords({}));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setRecord({}));
+  //   dispatch(getRecords({}));
+  // }, []);
 
   return (
     <Box>

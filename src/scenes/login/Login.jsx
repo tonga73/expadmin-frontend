@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import firebase, { signInWithGoogle } from "../../services/firebase";
 
 import Box from "@mui/material/Box";
@@ -7,46 +9,81 @@ import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
+import Spinner from "../../components/Spinner";
+import UnknownUser from "../../components/UnknownUser";
+import RegisterForm from "../../components/RegisterForm";
+import LoginButtons from "../../components/LoginButtons";
+import Welcome from "../../components/Welcome";
+
 import GoogleIcon from "@mui/icons-material/Google";
+
+import { logIn } from "../../store/actions/users.actions";
+import {
+  setUserProfile,
+  setUserCondition,
+  selectUser,
+  selectUsersStatus,
+} from "../../store/slices/users.slice";
 
 const Login = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isRegistering, setIsRegistering] = React.useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [displayName, setDisplayName] = useState(false);
 
-  const createUser = (email, password) => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((firebaseUser) => {
-        console.log("usuario creado:", firebaseUser);
-        props.setUser(firebaseUser);
-      });
-  };
+  const user = useSelector(selectUser);
+  const usersStatus = useSelector(selectUsersStatus);
 
-  const login = (email, password) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((firebaseUser) => {
-        console.log("sesión iniciada con:", firebaseUser.user);
-        props.setUser(firebaseUser);
-      });
-  };
+  const ValidationStepper = () => {
+    const clearStepper = () => {
+      dispatch(setUserCondition(""));
+      localStorage.removeItem("profile");
+      dispatch(setUserProfile(null));
+    };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const email = e.target.emailField.value;
-    const password = e.target.passwordField.value;
+    const validatedRedirect = () => {
+      dispatch(setUserCondition(""));
+      navigate("/");
+    };
 
-    if (isRegistering) {
-      createUser(email, password);
+    switch (user.condition) {
+      case "unknown":
+        return <UnknownUser handleRedirect={clearStepper} />;
+      case "confirm-registration":
+        return (
+          <>
+            <RegisterForm cancelRegistration={clearStepper} />
+          </>
+        );
+      case "not-verified":
+        return <UnknownUser notVerified={true} handleRedirect={clearStepper} />;
+
+      case "verified":
+        return <Welcome email={user.profile.email} />;
+
+      case "validated":
+        validatedRedirect();
+        break;
+
+      default:
+        return (
+          <>
+            <LoginButtons user={user} />
+          </>
+        );
     }
-
-    if (!isRegistering) {
-      login(email, password);
-    }
   };
+
+  useEffect(() => {
+    if (user.condition === "confirm-registration") {
+      localStorage.setItem("profile", JSON.stringify(user.profile));
+    }
+    // if (user.signedIn) {
+    //   navigate("/");
+    // }
+  }, [user.condition, user.signedIn]);
 
   return (
     <Box
@@ -54,96 +91,10 @@ const Login = (props) => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      gap={3}
       width="100%"
       minHeight="75vh"
     >
-      <Typography
-        variant="h1"
-        fontWeight={600}
-        textTransform="uppercase"
-        sx={{
-          color:
-            theme.palette.mode === "dark"
-              ? colors.primary[100]
-              : colors.primary[600],
-        }}
-      >
-        {" "}
-        {isRegistering ? "Regístrate" : "Inicia sesión"}
-      </Typography>
-      <Button
-        onClick={signInWithGoogle}
-        variant="contained"
-        startIcon={<GoogleIcon />}
-        sx={{
-          p: 3,
-          color:
-            theme.palette.mode === "dark"
-              ? colors.primary[400]
-              : colors.primary[700],
-          bgcolor:
-            theme.palette.mode === "dark"
-              ? colors.primary[200]
-              : colors.primary[900],
-          "&:hover": {
-            color:
-              theme.palette.mode === "dark"
-                ? colors.primary[500]
-                : colors.primary[600],
-            bgcolor:
-              theme.palette.mode === "dark"
-                ? colors.primary[100]
-                : colors.primary[900],
-          },
-        }}
-      >
-        <Typography fontWeight={600} variant="h5">
-          Iniciar Sesión con Google
-        </Typography>
-      </Button>
-      {/* <Box
-        component="form"
-        onSubmit={submitHandler}
-        display="flex"
-        flexDirection="column"
-        gap={1.5}
-        p={3}
-        sx={{ bgcolor: "background.paper" }}
-      >
-        <label htmlFor="emailField">
-          <Typography variant="h5" textTransform="uppercase">
-            {" "}
-            email{" "}
-          </Typography>
-        </label>
-        <Box
-          component="input"
-          type="email"
-          id="emailField"
-          defaultValue="gastonmm@gmail.com"
-        />
-        <label htmlFor="passwordField">
-          <Typography variant="h5" textTransform="uppercase">
-            {" "}
-            Contraseña{" "}
-          </Typography>
-        </label>
-        <Box
-          component="input"
-          type="password"
-          id="passwordField"
-          defaultValue="123456"
-        />
-        <button type="submit">
-          {isRegistering ? "Regístrate" : "Inicia sesión"}
-        </button>
-      </Box>
-      <button onClick={() => setIsRegistering(!isRegistering)}>
-        {isRegistering
-          ? "¿Ya tienes cuenta? ¡Inicia sesión"
-          : "¿No tienes cuenta? ¡Regístrate gratis!"}
-      </button> */}
+      <ValidationStepper />
     </Box>
   );
 };

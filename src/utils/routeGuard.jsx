@@ -1,12 +1,10 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, Route } from "react-router-dom";
 import { auth } from "../services/firebase";
 
-export const ProtectedRoute = ({ children }) => {
-  const { user } = auth();
-  if (!user) {
-    // user is not authenticated
-    return <Navigate to="/login" />;
+export const ProtectedRoute = ({ isSignedIn, children }) => {
+  if (!isSignedIn) {
+    return <Navigate to="/login" replace />;
   }
   return children;
 };

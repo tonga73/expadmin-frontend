@@ -59,32 +59,28 @@ const RecordsList = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(filterRecords(search));
-  }, [search]);
+  // useEffect(() => {
+  //   dispatch(filterRecords(search));
+  // }, [search]);
 
-  useEffect(() => {
-    setContextMenuPosition({});
-  }, [location]);
+  // useEffect(() => {
+  //   if (recordsStatus === "success") {
+  //     dispatch(setRecordsStatus(""));
+  //   }
+  //   if (recordsStatus === "edited") {
+  //     dispatch(getFilteredRecords(location.search));
+  //     dispatch(setRecordsStatus(""));
+  //   }
+  //   if (recordsStatus === "deleted") {
+  //     dispatch(getFilteredRecords(location.search));
+  //     dispatch(setRecordsStatus(""));
+  //     navigate(`/`);
+  //   }
+  // }, [recordsStatus, location.search]);
 
-  useEffect(() => {
-    if (recordsStatus === "success") {
-      dispatch(setRecordsStatus(""));
-    }
-    if (recordsStatus === "edited") {
-      dispatch(getFilteredRecords(location.search));
-      dispatch(setRecordsStatus(""));
-    }
-    if (recordsStatus === "deleted") {
-      dispatch(getFilteredRecords(location.search));
-      dispatch(setRecordsStatus(""));
-      navigate(`/`);
-    }
-  }, [recordsStatus, location.search]);
-
-  useEffect(() => {
-    dispatch(getFilteredRecords(location.search));
-  }, [location.search]);
+  // useEffect(() => {
+  //   dispatch(getFilteredRecords(location.search));
+  // }, [location.search]);
 
   return (
     <Box width="100%" height="100vh" minHeight="min-content" overflow="auto">

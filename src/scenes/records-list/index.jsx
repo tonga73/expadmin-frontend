@@ -59,9 +59,9 @@ const RecordsList = () => {
     },
   ];
 
-  useEffect(() => {
-    dispatch(getRecords({}));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getRecords({}));
+  // }, []);
 
   return (
     <Box>

@@ -42,7 +42,7 @@ const Topbar = ({ user }) => {
           <SettingsOutlinedIcon />
         </IconButton> */}
 
-        {user ? <LogoutButton /> : undefined}
+        {user.signedIn ? <LogoutButton /> : undefined}
       </Box>
     </Box>
   );
