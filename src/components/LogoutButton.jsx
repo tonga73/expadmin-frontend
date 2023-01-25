@@ -7,7 +7,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 import { auth } from "../services/firebase";
 
-import { setSignedIn, setUserProfile } from "../store/slices/users.slice";
+import {
+  setSignedIn,
+  setUserProfile,
+  setUserCondition,
+} from "../store/slices/users.slice";
 
 const LogoutButton = () => {
   const dispatch = useDispatch();
@@ -17,6 +21,7 @@ const LogoutButton = () => {
   const logout = () => {
     auth.signOut();
     keysToRemove.forEach((k) => localStorage.removeItem(k));
+    dispatch(setUserCondition(""));
     dispatch(setUserProfile(null));
     dispatch(setSignedIn(false));
   };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, Container, ThemeProvider } from "@mui/material";
@@ -20,6 +21,7 @@ import firebase from "./services/firebase";
 import {
   setSignedIn,
   setUserProfile,
+  setUserCondition,
   selectUser,
   selectSignedIn,
 } from "./store/slices/users.slice";
@@ -28,31 +30,51 @@ import { logIn } from "./store/actions/users.actions";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [theme, colorMode] = useMode();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const user = useSelector(selectUser);
 
-  useEffect(() => {
-    if (user.condition !== "verified") {
-      firebase.auth().onAuthStateChanged((firebaseUser) => {
-        if (firebaseUser) {
-          const { accessToken, email } = firebaseUser.multiFactor.user;
-          dispatch(logIn(email));
-          localStorage.setItem("token", accessToken);
-          localStorage.setItem("signedIn", true);
-        }
-      });
-    }
-  }, [user["condition"]]);
+  const validatedRedirect = () => {
+    console.log("SIPE");
+    dispatch(setUserCondition(""));
+    navigate("/");
+  };
+
+  // useEffect(() => {
+  //   if (user.condition !== "verified" && user.isSignedIn) {
+  //     firebase.auth().onAuthStateChanged((firebaseUser) => {
+  //       if (firebaseUser) {
+  //         const { accessToken, email } = firebaseUser.multiFactor.user;
+  //         dispatch(logIn(email));
+  //         localStorage.setItem("token", accessToken);
+  //         localStorage.setItem("signedIn", true);
+  //       }
+  //     });
+  //   }
+  // }, [user["condition"]]);
 
   useEffect(() => {
-    if (user.condition !== "verified" && user.signedIn) {
-      setSidebarOpen(true);
-    } else {
+    if (location.pathname === "/login") {
       setSidebarOpen(false);
     }
-  }, [user.signedIn, user.condition]);
+    if (
+      location.pathname === "/login" &&
+      user.condition !== "verified" &&
+      user.signedIn
+    ) {
+      setSidebarOpen(true);
+      navigate("/", { replace: true });
+    }
+    if (user.condition === "validated") {
+      navigate("/", { replace: true });
+    }
+    if (user.condition !== "verified" && user.signedIn) {
+      setSidebarOpen(true);
+    }
+  }, [user.signedIn, user.condition, location.pathname]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -106,7 +128,10 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
-                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/login"
+                    element={<Login validatedRedirect={validatedRedirect} />}
+                  />
                 </Routes>
               </Container>
             </main>

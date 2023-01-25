@@ -34,7 +34,7 @@ export const logIn = createAsyncThunk(
       return;
     }
 
-    dispatch(setUserCondition(""));
+    dispatch(setUserCondition("validated"));
     dispatch(setUserProfile(response));
     localStorage.setItem("profile", JSON.stringify(response));
     localStorage.setItem("signedIn", true);

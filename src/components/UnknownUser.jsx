@@ -48,7 +48,7 @@ const UnknownUser = ({ handleRedirect, notVerified }) => {
       >
         {notVerified
           ? "contacta con un administrador"
-          : "el regristro de cuentas se encuentra cerrado"}
+          : "la creación de cuentas está cerrada"}
       </Typography>
       <Button onClick={handleRedirect} color="secondary">
         Volver

@@ -50,7 +50,7 @@ const Welcome = ({ email }) => {
         >
           Desde ahora vas a poder iniciar sesión con el usuario de Google
           correspondiente al correo:{" "}
-          <span>
+          <div>
             <Typography
               variant="h2"
               color="neutral"
@@ -65,9 +65,30 @@ const Welcome = ({ email }) => {
             >
               {email}
             </Typography>
-          </span>
-          Por defecto la cuenta se mantiene conectada. Para salir, usar el botón{" "}
-          <LogoutIcon /> en la barra superior.
+          </div>
+          <Box pb={1}>
+            <Typography
+              variant="subtitle1"
+              color="neutral"
+              textAlign="center"
+              textTransform="uppercase"
+              fontWeight={700}
+            >
+              tener en cuenta:
+            </Typography>
+          </Box>
+          Por defecto la cuenta se mantiene conectada.
+          <br />
+          <br />
+          Usar el botón{" "}
+          <Box
+            display="inline-flex"
+            width="min-content"
+            sx={{ bgcolor: colors.primary[600], p: 1 }}
+          >
+            <LogoutIcon />
+          </Box>{" "}
+          ubicado en la barra superior para cerrar sesión.
           <br />
           <br />
           Para facilitar el acceso y la configuración del sistema, algunos datos

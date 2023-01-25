@@ -17,7 +17,7 @@ const RegisterForm = (props) => {
 
   const confirmAccount = (displayName) => {
     if (displayName.length > 0) {
-      return;
+      dispatch(confirmUser({ email: user.profile.email, displayName }));
     }
   };
 
@@ -25,7 +25,7 @@ const RegisterForm = (props) => {
     e.preventDefault();
     const displayName = e.target.displayNameField.value;
 
-    dispatch(confirmUser({ email: user.profile.email, displayName }));
+    confirmAccount(displayName);
   };
 
   return (
@@ -39,7 +39,7 @@ const RegisterForm = (props) => {
           maxWidth: "350px",
         }}
       >
-        Al confirmar la cuenta vas a poder iniciar sesión y acceder al sistema
+        confirmá tu cuenta poder iniciar sesión y acceder al sistema
       </Typography>
       <Box
         component="form"

@@ -43,11 +43,6 @@ const Login = (props) => {
       dispatch(setUserProfile(null));
     };
 
-    const validatedRedirect = () => {
-      dispatch(setUserCondition(""));
-      navigate("/");
-    };
-
     switch (user.condition) {
       case "unknown":
         return <UnknownUser handleRedirect={clearStepper} />;
@@ -62,10 +57,6 @@ const Login = (props) => {
 
       case "verified":
         return <Welcome email={user.profile.email} />;
-
-      case "validated":
-        validatedRedirect();
-        break;
 
       default:
         return (
