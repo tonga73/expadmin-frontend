@@ -5,11 +5,12 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 import NotificationsPopover from "../../components/NotificationsPopover";
 import LogoutButton from "../../components/LogoutButton";
 
-const Topbar = ({ user }) => {
+const Topbar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -17,11 +18,19 @@ const Topbar = ({ user }) => {
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
+      <Box display="flex" borderRadius="3px">
+        {props.user.signedIn ? (
+          <IconButton
+            onClick={props.handleSidebar}
+            size="medium"
+            sx={{
+              transform: props.sidebarOpen ? "" : "rotate(180deg)",
+              animation: "transform 500ms ease",
+            }}
+          >
+            <MenuOpenIcon />
+          </IconButton>
+        ) : undefined}
         {/* <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
@@ -42,7 +51,7 @@ const Topbar = ({ user }) => {
           <SettingsOutlinedIcon />
         </IconButton> */}
 
-        {user.signedIn ? <LogoutButton /> : undefined}
+        {props.user.signedIn ? <LogoutButton /> : undefined}
       </Box>
     </Box>
   );

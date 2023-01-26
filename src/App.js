@@ -33,14 +33,23 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [theme, colorMode] = useMode();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(
+    JSON.parse(localStorage.getItem("sidebar")) || false
+  );
 
   const user = useSelector(selectUser);
+  const customSidebarOption = JSON.parse(localStorage.getItem("sidebar"));
+
+  console.log(sidebarOpen);
 
   const validatedRedirect = () => {
     console.log("SIPE");
     dispatch(setUserCondition(""));
     navigate("/");
+  };
+
+  const handleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   // useEffect(() => {
@@ -57,23 +66,26 @@ function App() {
   // }, [user["condition"]]);
 
   useEffect(() => {
-    if (location.pathname === "/login") {
-      setSidebarOpen(false);
+    localStorage.setItem("sidebar", sidebarOpen);
+  }, [sidebarOpen]);
+
+  useEffect(() => {
+    if (location.pathname !== "/login") {
+      if (user.condition === "validated") {
+        dispatch(setUserCondition(""));
+        navigate("/", { replace: true });
+        setSidebarOpen(true);
+      }
     }
     if (
       location.pathname === "/login" &&
       user.condition !== "verified" &&
       user.signedIn
     ) {
-      setSidebarOpen(true);
       navigate("/", { replace: true });
     }
-    if (user.condition === "validated") {
-      dispatch(setUserCondition(""));
-      navigate("/", { replace: true });
-    }
-    if (user.condition !== "verified" && user.signedIn) {
-      setSidebarOpen(true);
+    if (location.pathname === "/login") {
+      setSidebarOpen(false);
     }
   }, [user.signedIn, user.condition, location.pathname]);
 
@@ -94,7 +106,11 @@ function App() {
 
           <Box width="100%">
             <main className="content">
-              <Topbar user={user} />
+              <Topbar
+                user={user}
+                sidebarOpen={sidebarOpen}
+                handleSidebar={handleSidebar}
+              />
               <Container>
                 <Routes>
                   <Route path="*" element={<Navigate to="/" replace />} />
