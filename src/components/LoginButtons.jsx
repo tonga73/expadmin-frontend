@@ -60,7 +60,7 @@ const LoginButtons = (user) => {
               : colors.primary[600],
         }}
       >
-        Inicia sesión
+        ingreso al sistema
       </Typography>
       <GoogleLoginButton />
     </Box>

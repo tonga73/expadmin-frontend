@@ -70,12 +70,10 @@ function App() {
   }, [sidebarOpen]);
 
   useEffect(() => {
-    if (location.pathname !== "/login") {
-      if (user.condition === "validated") {
-        dispatch(setUserCondition(""));
-        navigate("/", { replace: true });
-        setSidebarOpen(true);
-      }
+    if (location.pathname !== "/login" && user.condition === "validated") {
+      dispatch(setUserCondition(""));
+      navigate("/", { replace: true });
+      setSidebarOpen(true);
     }
     if (
       location.pathname === "/login" &&
