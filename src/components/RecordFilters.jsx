@@ -58,7 +58,7 @@ const RecordFilters = () => {
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
 
-  const debounceFn = useCallback(_debounce(handleDebounceFn, 1000), []);
+  const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
 
   const escFunction = useCallback((event) => {
     if (event.key === "Escape") {
@@ -67,16 +67,13 @@ const RecordFilters = () => {
   }, []);
 
   function handleDebounceFn(inputValue) {
-    console.log(inputValue, "VALUE");
     if (inputValue.length > 0) {
       dispatch(setRecordsStatus("loading"));
-      console.log("POR AQUI");
       searchParams.set("search", inputValue);
       setSearchParams(searchParams);
       dispatch(getFilteredRecords(location.search));
     } else {
       dispatch(setRecordsStatus("loading"));
-      console.log("ELSE POR ACUA");
       searchParams.delete("search");
       setSearchParams(searchParams);
     }
@@ -104,6 +101,7 @@ const RecordFilters = () => {
   useEffect(() => {
     dispatch(getFilteredRecords(location.search));
   }, [location.search]);
+
   return (
     <Box
       display="flex"

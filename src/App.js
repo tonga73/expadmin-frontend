@@ -40,8 +40,6 @@ function App() {
   const user = useSelector(selectUser);
   const customSidebarOption = JSON.parse(localStorage.getItem("sidebar"));
 
-  console.log(sidebarOpen);
-
   const validatedRedirect = () => {
     console.log("SIPE");
     dispatch(setUserCondition(""));
