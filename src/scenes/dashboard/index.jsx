@@ -1,20 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import Toolbar from "@mui/material/Toolbar";
-import SvgIcon from "@mui/material/SvgIcon";
 
 import Header from "../../components/Header";
 
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CloseIcon from "@mui/icons-material/Close";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -24,8 +14,6 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import NearbyErrorIcon from "@mui/icons-material/NearbyError";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
-import Row1 from "./rows/Row1";
-import HotRecords from "../../components/HotRecords";
 import StatBox from "../../components/StatBox";
 
 import { setRecord, selectRecords } from "../../store/slices/records.slice";
@@ -80,10 +68,10 @@ const Dashboard = () => {
     return !!records && (records.length * value.length) / 100 / 100;
   }
 
-  // useEffect(() => {
-  //   dispatch(setRecord({}));
-  //   dispatch(getRecords({}));
-  // }, []);
+  useEffect(() => {
+    dispatch(setRecord({}));
+    dispatch(getRecords({}));
+  }, [dispatch]);
 
   return (
     <Box>
