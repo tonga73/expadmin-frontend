@@ -73,18 +73,20 @@ const Welcome = ({ email }) => {
               {email}
             </Typography>
           </div>
-          <Box pb={1}>
+          <Alert severity="info" sx={{ mb: 1.5 }}>
             <Typography
-              variant="subtitle1"
+              variant="h5"
               color="neutral"
               textAlign="center"
-              textTransform="uppercase"
-              fontWeight={700}
+              fontWeight={100}
+              sx={{
+                maxWidth: "500px",
+              }}
             >
-              tener en cuenta:
+              Información importante
             </Typography>
-          </Box>
-          Por defecto la cuenta se mantiene conectada.
+          </Alert>
+          Por defecto la cuenta se mantiene con la sesión iniciada.
           <br />
           <br />
           Usar el botón{" "}
@@ -95,7 +97,7 @@ const Welcome = ({ email }) => {
           >
             <LogoutIcon />
           </Box>{" "}
-          ubicado en la barra superior para cerrar sesión.
+          ubicado en la barra superior para cerrarla.
           <br />
           <br />
           Para facilitar el acceso y la configuración del sistema, algunos datos
