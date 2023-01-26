@@ -63,20 +63,20 @@ const RecordsList = () => {
   //   dispatch(filterRecords(search));
   // }, [search]);
 
-  // useEffect(() => {
-  //   if (recordsStatus === "success") {
-  //     dispatch(setRecordsStatus(""));
-  //   }
-  //   if (recordsStatus === "edited") {
-  //     dispatch(getFilteredRecords(location.search));
-  //     dispatch(setRecordsStatus(""));
-  //   }
-  //   if (recordsStatus === "deleted") {
-  //     dispatch(getFilteredRecords(location.search));
-  //     dispatch(setRecordsStatus(""));
-  //     navigate(`/`);
-  //   }
-  // }, [recordsStatus, location.search]);
+  useEffect(() => {
+    if (recordsStatus === "success") {
+      dispatch(setRecordsStatus(""));
+    }
+    if (recordsStatus === "edited") {
+      dispatch(getFilteredRecords(location.search));
+      dispatch(setRecordsStatus(""));
+    }
+    if (recordsStatus === "deleted") {
+      dispatch(getFilteredRecords(location.search));
+      dispatch(setRecordsStatus(""));
+      navigate(`/`);
+    }
+  }, [recordsStatus, location.search]);
 
   // useEffect(() => {
   //   dispatch(getFilteredRecords(location.search));

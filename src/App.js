@@ -7,10 +7,10 @@ import { CssBaseline, Container, ThemeProvider } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
-import SidebarNavigation from "./scenes/global/Sidebar";
+import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import RecordCreateForm from "./scenes/record-create-form";
-import RecordsList from "./scenes/records-list";
+import RecordsTable from "./scenes/records-table";
 import Record from "./scenes/record";
 
 import Login from "./scenes/login/Login";
@@ -99,7 +99,7 @@ function App() {
           className="app"
         >
           <Box display={sidebarOpen ? "initial" : "none"}>
-            <SidebarNavigation />
+            <Sidebar />
           </Box>
 
           <Box width="100%">
@@ -132,7 +132,7 @@ function App() {
                     path="/listado-expedientes"
                     element={
                       <ProtectedRoute isSignedIn={user.signedIn}>
-                        <RecordsList />
+                        <RecordsTable />
                       </ProtectedRoute>
                     }
                   />

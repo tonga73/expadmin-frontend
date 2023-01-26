@@ -95,13 +95,15 @@ const RecordFilters = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   searchParams.set("updatedAt", sortByUpdated);
-  //   setSearchParams(searchParams);
-  //   dispatch(setRecordsStatus("loading"));
-  //   dispatch(getFilteredRecords(location.search));
-  // }, [location.search, sortByUpdated]);
+  useEffect(() => {
+    searchParams.set("updatedAt", sortByUpdated);
+    setSearchParams(searchParams);
+    dispatch(setRecordsStatus("loading"));
+  }, [sortByUpdated]);
 
+  useEffect(() => {
+    dispatch(getFilteredRecords(location.search));
+  }, [location.search]);
   return (
     <Box
       display="flex"

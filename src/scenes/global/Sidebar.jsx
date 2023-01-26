@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material/";
@@ -18,11 +19,14 @@ import { gradient } from "../../utils/keyframes";
 import RecordsList from "../../components/RecordsList";
 import RecordFilters from "../../components/RecordFilters";
 
+import { selectUser } from "../../store/slices/users.slice";
+
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const location = useLocation().pathname;
+  const { pathname } = useLocation();
+  const user = useSelector(selectUser);
 
   const styles = {
     text: {
@@ -105,7 +109,7 @@ const Sidebar = () => {
               sx={{
                 justifyContent: "flex-start",
                 color:
-                  location === route.path
+                  pathname === route.path
                     ? colors.blueAccent[500]
                     : colors.grey[300],
                 "&:hover": {
@@ -119,8 +123,12 @@ const Sidebar = () => {
         ))}
       </Box>
       {/* SIDEBAR RECORDS LIST */}
-      <RecordFilters />
-      <RecordsList />
+      {pathname !== "/login" && user.signedIn ? (
+        <>
+          <RecordFilters />
+          <RecordsList />
+        </>
+      ) : undefined}
     </Box>
   );
 };

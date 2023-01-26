@@ -13,7 +13,7 @@ import { useTheme } from "@mui/material";
 import { selectRecords } from "../../store/slices/records.slice";
 import { getRecords } from "../../store/actions/records.actions";
 
-const RecordsList = () => {
+const RecordsTable = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -119,4 +119,4 @@ const RecordsList = () => {
   );
 };
 
-export default RecordsList;
+export default RecordsTable;
