@@ -39,7 +39,7 @@ const RegisterForm = (props) => {
           maxWidth: "350px",
         }}
       >
-        confirmá tu cuenta poder iniciar sesión y acceder al sistema
+        confirmá tu cuenta para poder iniciar sesión y acceder al sistema
       </Typography>
       <Box
         component="form"
