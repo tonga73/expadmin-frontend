@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, Container, ThemeProvider } from "@mui/material";
@@ -69,6 +69,7 @@ function App() {
       navigate("/", { replace: true });
     }
     if (user.condition === "validated") {
+      dispatch(setUserCondition(""));
       navigate("/", { replace: true });
     }
     if (user.condition !== "verified" && user.signedIn) {
@@ -96,6 +97,7 @@ function App() {
               <Topbar user={user} />
               <Container>
                 <Routes>
+                  <Route path="*" element={<Navigate to="/" replace />} />
                   <Route
                     path="/"
                     element={

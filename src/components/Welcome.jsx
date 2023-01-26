@@ -19,6 +19,13 @@ const Welcome = ({ email }) => {
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleOnContinue = () => {
+    dispatch(setUserCondition(""));
+    navigate("/");
+    return;
+  };
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
       <Typography variant="h6" color="secondary" textTransform="uppercase">
@@ -99,10 +106,7 @@ const Welcome = ({ email }) => {
           color="secondary"
           variant="contained"
           sx={{ mt: 5 }}
-          onClick={() => {
-            dispatch(setUserCondition(""));
-            navigate("/");
-          }}
+          onClick={handleOnContinue}
         >
           Continuar
         </Button>
