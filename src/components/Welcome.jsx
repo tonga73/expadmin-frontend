@@ -54,7 +54,7 @@ const Welcome = ({ email }) => {
             maxWidth: "500px",
           }}
         >
-          Desde ahora vas a poder iniciar sesión con el usuario de Google
+          A partir de ahora vas a poder iniciar sesión con el usuario de Google
           correspondiente al correo:{" "}
           <div>
             <Typography
@@ -88,7 +88,7 @@ const Welcome = ({ email }) => {
           Por defecto la cuenta se mantiene con la sesión iniciada.
           <br />
           <br />
-          Usar el botón{" "}
+          Se puede usar el botón{" "}
           <Box
             display="inline-flex"
             width="min-content"
@@ -100,7 +100,7 @@ const Welcome = ({ email }) => {
           <br />
           <br />
           Para facilitar el acceso y la configuración del sistema, algunos datos
-          son guardados en el almacenamiento de su navegador.
+          son almacenados en su navegador.
         </Typography>
         <Button
           size="large"
