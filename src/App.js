@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 
-import { ColorModeContext, useMode } from "./theme";
+import { ColorModeContext, useMode, tokens } from "./theme";
 import { CssBaseline, Container, ThemeProvider } from "@mui/material";
+
 import Box from "@mui/material/Box";
-import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
@@ -29,10 +35,12 @@ import {
 import { logIn } from "./store/actions/users.actions";
 
 function App() {
+  // THEME UTILS
+  const [theme, colorMode] = useMode();
+  const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [theme, colorMode] = useMode();
   const [sidebarOpen, setSidebarOpen] = useState(
     JSON.parse(localStorage.getItem("sidebar")) || false
   );
@@ -95,6 +103,20 @@ function App() {
             sidebarOpen ? "70%" : "1fr"
           }`}
           className="app"
+          sx={{
+            "*::-webkit-scrollbar": {
+              width: "7px",
+            },
+            "*::-webkit-scrollbar-track": {
+              background: colors.primary[600],
+            },
+            "*::-webkit-scrollbar-thumb": {
+              background: colors.primary[400],
+            },
+            "*::-webkit-scrollbar-track:hover": {
+              background: colors.primary[700],
+            },
+          }}
         >
           <Box display={sidebarOpen ? "initial" : "none"}>
             <Sidebar />
