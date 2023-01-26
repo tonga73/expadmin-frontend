@@ -57,7 +57,26 @@ const RecordsList = () => {
   // }, [location.search]);
 
   return (
-    <Box width="100%" height="100vh" minHeight="min-content" overflow="auto">
+    <Box
+      width="100%"
+      height="100vh"
+      minHeight="min-content"
+      overflow="auto"
+      sx={{
+        "*::-webkit-scrollbar": {
+          width: "10px",
+        },
+        "*::-webkit-scrollbar-track": {
+          background: "#e0e0e0",
+        },
+        "*::-webkit-scrollbar-thumb": {
+          background: "#888",
+        },
+        "*::-webkit-scrollbar-track:hover": {
+          background: "#555",
+        },
+      }}
+    >
       {!!filteredRecords && filteredRecords.length <= 0 ? (
         <>
           <Box
