@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import { tokens } from "../theme";
 
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplayIcon from "@mui/icons-material/Replay";
 
 import Spinner from "./Spinner";
-import RecordContextMenu from "./RecordContextMenu";
 import CustomizedTooltip from "./CustomizedTooltip";
 
 import { getFilteredRecords } from "../store/actions/records.actions";
@@ -19,7 +15,6 @@ import {
   selectFilteredRecords,
   selectRecord,
   selectRecordsStatus,
-  filterRecords,
   setRecordsStatus,
 } from "../store/slices/records.slice";
 
@@ -33,31 +28,10 @@ const RecordsList = () => {
   const location = useLocation();
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState("");
-  const [sortByUpdated, setSortByUpdated] = useState("desc");
 
   const recordsStatus = useSelector(selectRecordsStatus);
   const filteredRecords = useSelector(selectFilteredRecords);
   const record = useSelector(selectRecord);
-  const [contextMenuPosition, setContextMenuPosition] = useState({});
-  const [contextMenuObjId, setContextMenuObjId] = useState(null);
-
-  const handleContextMenu = async (e) => {
-    const recordId = await e.target.id.replace("record-", "");
-    setContextMenuObjId(recordId);
-
-    console.log(e);
-
-    const xPos = e.pageX - 50 + "px";
-    const yPos = e.pageY - 50 + "px";
-
-    if (recordId !== "") {
-      setContextMenuPosition({
-        xPos,
-        yPos,
-      });
-    }
-  };
 
   // useEffect(() => {
   //   dispatch(filterRecords(search));
@@ -76,7 +50,7 @@ const RecordsList = () => {
       dispatch(setRecordsStatus(""));
       navigate(`/`);
     }
-  }, [recordsStatus, location.search]);
+  }, [recordsStatus, location.search, dispatch, navigate]);
 
   // useEffect(() => {
   //   dispatch(getFilteredRecords(location.search));

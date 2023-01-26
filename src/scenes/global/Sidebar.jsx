@@ -1,16 +1,10 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material/";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
-
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 import routes from "../../app/routes";
 
@@ -50,8 +44,6 @@ const Sidebar = () => {
             ? colors.primary[900]
             : colors.primary[600]
         }`,
-        color: "#868dfb",
-        color: "#6870fa",
         py: "25px",
         width: "100%",
         minHeight: "100%",

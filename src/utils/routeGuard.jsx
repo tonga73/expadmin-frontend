@@ -1,6 +1,5 @@
 import React from "react";
-import { Navigate, Outlet, Route } from "react-router-dom";
-import { auth } from "../services/firebase";
+import { Navigate } from "react-router-dom";
 
 export const ProtectedRoute = ({ isSignedIn, children }) => {
   if (!isSignedIn) {
