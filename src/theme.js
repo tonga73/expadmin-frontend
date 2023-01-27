@@ -81,7 +81,7 @@ export const tokens = (mode) => ({
           SENTENCIA_O_CONVENIO_DE_PARTES: "#005f73",
           HONORARIOS_REGULADOS: "#F8961E",
           EN_TRATATIVA_DE_COBRO: "#F94144",
-          COBRADO: "#7a3e6a",
+          COBRADO: "#6e44ff",
         },
       }
     : {
@@ -141,50 +141,21 @@ export const tokens = (mode) => ({
           900: "#cde6f0",
         },
         priorityColors: {
-          NULA: {
-            background: "#626262",
-            text: "#494949",
-          },
-          BAJA: {
-            background: "#619b8a",
-          },
-          MEDIA: {
-            background: "#F8961E",
-          },
-          ALTA: {
-            text: "",
-            background: "#F3722C",
-          },
-          URGENTE: {
-            background: "#F94144",
-          },
-          INACTIVO: {
-            background: "#001219",
-            text: "#333",
-          },
+          NULA: "#626262",
+          BAJA: "#619b8a",
+          MEDIA: "#F8961E",
+          ALTA: "#F3722C",
+          URGENTE: "#F94144",
+          INACTIVO: "#001219",
         },
         tracingColors: {
-          ACEPTA_CARGO: {
-            background: "#626262",
-          },
-          ACTO_PERICIAL_REALIZADO: {
-            background: "#619b8a",
-          },
-          PERICIA_REALIZADA: {
-            background: "#577590",
-          },
-          SENTENCIA_O_CONVENIO_DE_PARTES: {
-            background: "#005f73",
-          },
-          HONORARIOS_REGULADOS: {
-            background: "#F8961E",
-          },
-          EN_TRATATIVA_DE_COBRO: {
-            background: "#F94144",
-          },
-          COBRADO: {
-            background: "#9b2226",
-          },
+          ACEPTA_CARGO: "#626262",
+          ACTO_PERICIAL_REALIZADO: "#619b8a",
+          PERICIA_REALIZADA: "#577590",
+          SENTENCIA_O_CONVENIO_DE_PARTES: "#005f73",
+          HONORARIOS_REGULADOS: "#F8961E",
+          EN_TRATATIVA_DE_COBRO: "#F94144",
+          COBRADO: "#6e44ff",
         },
       }),
 });
