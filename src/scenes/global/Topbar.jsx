@@ -68,11 +68,8 @@ const Topbar = (props) => {
                     flexDirection="column"
                     justifyContent="center"
                   >
-                    <Typography variant="h5">
+                    <Typography variant="h3" color={colors.grey[500]}>
                       {props.user.profile.name}
-                    </Typography>
-                    <Typography variant="caption" color={colors.grey[500]}>
-                      {props.user.profile.role}
                     </Typography>
                   </Box>
                 </Box>
