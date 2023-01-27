@@ -8,7 +8,6 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import BlurCircularIcon from "@mui/icons-material/BlurCircular";
 import FolderOffIcon from "@mui/icons-material/FolderOff";
 import InventoryIcon from "@mui/icons-material/Inventory";
