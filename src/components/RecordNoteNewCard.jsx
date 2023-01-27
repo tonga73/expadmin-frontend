@@ -1,35 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Modal from "@mui/material/Modal";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import PushPinIcon from "@mui/icons-material/PushPin";
 
 import Spinner from "./Spinner";
 
 import { pulse } from "../utils/keyframes";
 
-import { createNote, editNote } from "../store/actions/notes.actions";
-import {
-  selectNotesStatus,
-  selectNote,
-  setNote,
-  setNotesStatus,
-} from "../store/slices/notes.slice";
+import { createNote } from "../store/actions/notes.actions";
+import { selectNotesStatus, setNotesStatus } from "../store/slices/notes.slice";
 
-import { selectRecord, setRecordNotes } from "../store/slices/records.slice";
+import { selectRecord } from "../store/slices/records.slice";
 
 const RecordNoteNewCard = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -54,7 +41,6 @@ const RecordNoteNewCard = ({ onClose }) => {
     <Card
       sx={{
         minWidth: 275,
-        opacity: !newNote ? 0.5 : 1,
         pointerEvents: notesStatus === "creating" ? "none" : "initial",
         opacity: notesStatus === "creating" ? 0.5 : "initial",
         animation:

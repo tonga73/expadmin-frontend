@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import firebase, { signInWithGoogle } from "../services/firebase";
+import React from "react";
+import { useSelector } from "react-redux";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
@@ -12,19 +9,11 @@ import { tokens } from "../theme";
 import Spinner from "../components/Spinner";
 import GoogleLoginButton from "./GoogleLoginButton";
 
-import GoogleIcon from "@mui/icons-material/Google";
+import { selectUsersStatus } from "../store/slices/users.slice";
 
-import { logIn } from "../store/actions/users.actions";
-import {
-  setUserProfile,
-  selectUser,
-  selectUsersStatus,
-} from "../store/slices/users.slice";
-
-const LoginButtons = (user) => {
+const LoginButtons = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const dispatch = useDispatch();
   const usersStatus = useSelector(selectUsersStatus);
 
   return usersStatus === "validating" ? (

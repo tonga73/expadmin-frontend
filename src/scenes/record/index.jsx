@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 
 import RecordDetails from "./sections/RecordDetails";

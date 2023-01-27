@@ -23,13 +23,7 @@ import UserProfile from "./scenes/user-profile";
 import Login from "./scenes/login/Login";
 import { ProtectedRoute } from "./utils/routeGuard";
 
-import firebase from "./services/firebase";
-
-import {
-  setUserProfile,
-  setUserCondition,
-  selectUser,
-} from "./store/slices/users.slice";
+import { setUserCondition, selectUser } from "./store/slices/users.slice";
 
 function App() {
   // THEME UTILS
@@ -74,7 +68,7 @@ function App() {
     if (location.pathname === "/login") {
       setSidebarOpen(false);
     }
-  }, [user.signedIn, user.condition, location.pathname]);
+  }, [user.signedIn, user.condition, location.pathname, dispatch, navigate]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

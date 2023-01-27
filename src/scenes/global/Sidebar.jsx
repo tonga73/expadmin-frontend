@@ -174,7 +174,7 @@ const Sidebar = () => {
             sx={{
               justifyContent: "flex-start",
               color:
-                pathname === pathname
+                pathname === "/user-profile"
                   ? colors.blueAccent[500]
                   : colors.grey[300],
               "&:hover": {

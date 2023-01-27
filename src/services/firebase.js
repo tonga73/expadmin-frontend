@@ -2,7 +2,6 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-  apiKey: "API_KEY",
   projectId: "expadmin-4de9a",
   appId: "1:944700620635:web:9266d6c5a070aa1fa2247e",
   storageBucket: "expadmin-4de9a.appspot.com",

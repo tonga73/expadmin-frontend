@@ -3,7 +3,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchGetOffices,
   fetchGetOfficesByCourtId,
-  fetchGetOffice,
 } from "../../app/fetchAPI/officesAPI";
 
 import { setOfficesStatus, setOffices } from "../slices/offices.slice";

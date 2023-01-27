@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import Box from "@mui/material/Box";
@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 
 import { dataPriorities, dataTracings } from "../data/enumsData";
@@ -25,7 +25,7 @@ const RecordSelectInput = ({ record }) => {
 
   const recordsStatus = useSelector(selectRecordsStatus);
 
-  const [isMounted, toggle] = useReducer((p) => !p, true);
+  const [isMounted] = useReducer((p) => !p, true);
   const [elementRect, setElementRect] = useState();
   const handleRect = useCallback((node) => {
     setElementRect(node?.values);
@@ -41,14 +41,17 @@ const RecordSelectInput = ({ record }) => {
     tracing: yup.string(),
   });
 
-  const handleFormSubmit = (values) => {
-    const { id } = params;
-    try {
-      dispatch(editRecord({ id: id, req: values }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleFormSubmit = useCallback(
+    (values) => {
+      const { id } = params;
+      try {
+        dispatch(editRecord({ id: id, req: values }));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [dispatch, params]
+  );
 
   useEffect(() => {
     if (isMounted && elementRect !== undefined) {
@@ -67,7 +70,7 @@ const RecordSelectInput = ({ record }) => {
         // make sure to catch any error
         .catch(console.error);
     }
-  }, [elementRect, record, isMounted]);
+  }, [elementRect, record, isMounted, handleFormSubmit, params.id]);
 
   useEffect(() => {
     // Input IDs to handle blur

@@ -1,40 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import firebase, { signInWithGoogle } from "../../services/firebase";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material";
-import { tokens } from "../../theme";
 
-import Spinner from "../../components/Spinner";
 import UnknownUser from "../../components/UnknownUser";
 import RegisterForm from "../../components/RegisterForm";
 import LoginButtons from "../../components/LoginButtons";
 import Welcome from "../../components/Welcome";
 
-import GoogleIcon from "@mui/icons-material/Google";
-
-import { logIn } from "../../store/actions/users.actions";
 import {
   setUserProfile,
   setUserCondition,
   selectUser,
-  selectUsersStatus,
 } from "../../store/slices/users.slice";
 
 const Login = (props) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [displayName, setDisplayName] = useState(false);
 
   const user = useSelector(selectUser);
-  const usersStatus = useSelector(selectUsersStatus);
 
   const ValidationStepper = () => {
     const clearStepper = () => {
@@ -74,7 +57,7 @@ const Login = (props) => {
     // if (user.signedIn) {
     //   navigate("/");
     // }
-  }, [user.condition, user.signedIn]);
+  }, [user.condition, user.signedIn, user.profile]);
 
   return (
     <Box

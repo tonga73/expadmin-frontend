@@ -17,7 +17,6 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import NotificationsPopover from "../../components/NotificationsPopover";
 import LogoutButton from "../../components/LogoutButton";
 import Help from "../../components/Help";
-import Spinner from "../../components/Spinner";
 
 const Topbar = (props) => {
   const theme = useTheme();

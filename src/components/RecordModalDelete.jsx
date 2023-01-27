@@ -1,20 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Typography,
-  MenuList,
-  MenuItem,
-  Modal,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  useTheme,
-} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Typography, Modal, Paper, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningIcon from "@mui/icons-material/Warning";
@@ -24,7 +11,6 @@ import Spinner from "./Spinner";
 import { getRecord, removeRecord } from "../store/actions/records.actions";
 
 import {
-  selectRecords,
   selectRecord,
   selectRecordsStatus,
   setRecordsStatus,
@@ -46,14 +32,14 @@ const RecordModalDelete = ({ isOpen, handleOnClose, recordId }) => {
       dispatch(setRecordsStatus(""));
       handleOnClose();
     }
-  }, [recordsStatus]);
+  }, [recordsStatus, dispatch, handleOnClose, navigate]);
 
   useEffect(() => {
     if (isOpen) {
       dispatch(setRecordsStatus("loading"));
       dispatch(getRecord(recordId));
     }
-  }, [isOpen, recordId]);
+  }, [isOpen, recordId, dispatch]);
 
   return record !== undefined ? (
     <Modal

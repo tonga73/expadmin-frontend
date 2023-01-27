@@ -7,23 +7,15 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import PushPinIcon from "@mui/icons-material/PushPin";
 
 import Spinner from "./Spinner";
 
-import {
-  createNote,
-  editNote,
-  deleteNote,
-} from "../store/actions/notes.actions";
+import { editNote, deleteNote } from "../store/actions/notes.actions";
 import {
   selectNotesStatus,
   selectNote,
@@ -32,11 +24,7 @@ import {
 } from "../store/slices/notes.slice";
 
 import { getRecord } from "../store/actions/records.actions";
-import {
-  selectRecord,
-  setRecordNotes,
-  setRecordsStatus,
-} from "../store/slices/records.slice";
+import { selectRecord, setRecordsStatus } from "../store/slices/records.slice";
 
 const RecordNoteCard = ({ noteData }) => {
   const dispatch = useDispatch();
@@ -82,7 +70,7 @@ const RecordNoteCard = ({ noteData }) => {
     if (notesStatus === "deleted") {
       setDeleteMode(false);
     }
-  }, [notesStatus]);
+  }, [notesStatus, dispatch, note.id, note.text, record.id]);
 
   return (
     <>

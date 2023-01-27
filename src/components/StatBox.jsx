@@ -1,4 +1,4 @@
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
@@ -9,7 +9,6 @@ const StatBox = ({
   title,
   titleFontVariant,
   subtitle,
-  subtitleFontVariant,
   icon,
   progress,
   progressSize,
@@ -19,13 +18,6 @@ const StatBox = ({
   const colors = tokens(theme.palette.mode);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  function truncate(string, limit) {
-    if (string.length <= limit) {
-      return string;
-    }
-
-    return string.slice(0, limit) + "...";
-  }
 
   function handleClick(e) {
     e.stopPropagation();

@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import SvgIcon from "@mui/material/SvgIcon";
-import Divider from "@mui/material/Divider";
 
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PlaceIcon from "@mui/icons-material/Place";
