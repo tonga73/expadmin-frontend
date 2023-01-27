@@ -11,7 +11,6 @@ export async function fetchGetUser(email) {
 }
 
 export async function fetchConfirmUser({ email, localDisplayName }) {
-  console.log(localDisplayName, "API");
   try {
     const { data } = await axiosClient.patch(`/users/${email}`, {
       name: localDisplayName,
