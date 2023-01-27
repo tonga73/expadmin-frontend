@@ -45,7 +45,7 @@ const Help = () => {
           alignItems="center"
           maxWidth="50vw"
           height="100%"
-          maxHeight="50vh"
+          maxHeight="30vh"
           gap={1}
           p={5}
           m="auto"
