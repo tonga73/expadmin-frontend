@@ -28,7 +28,11 @@ const UserProfile = () => {
       <Avatar
         alt={profile.name}
         src={profile.photoURL || undefined}
-        sx={{ height: 120, width: 120 }}
+        sx={{
+          height: 120,
+          width: 120,
+          border: `3px solid ${colors.greenAccent[500]}`,
+        }}
       />
       <Box display="flex" flexDirection="column" alignItems="center">
         <Typography variant="h3" textTransform="uppercase">

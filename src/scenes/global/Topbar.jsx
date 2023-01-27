@@ -49,42 +49,48 @@ const Topbar = (props) => {
             </IconButton>
             <Box alignItems="center">
               {pathname === "/user-profile" ? undefined : (
-                <Tooltip
-                  title={
-                    <Typography
-                      variant="caption"
-                      fontWeight="bold"
-                      textTransform="uppercase"
-                    >
-                      perfil de usuario
-                    </Typography>
-                  }
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  gap={1}
+                  sx={{
+                    userSelect: "none",
+                  }}
                 >
-                  <Box
-                    onClick={handleUserProfile}
-                    display="flex"
-                    alignItems="center"
-                    gap={1}
-                    sx={{
-                      userSelect: "none",
-                      cursor: "pointer",
-                    }}
+                  <Tooltip
+                    title={
+                      <Typography
+                        variant="caption"
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                      >
+                        perfil de usuario
+                      </Typography>
+                    }
                   >
                     <Avatar
+                      onClick={handleUserProfile}
                       alt={props.user.profile.name}
                       src={props.user.profile.photoURL || undefined}
+                      sx={{
+                        cursor: "pointer",
+                        boxShadow: `0px 0px 3px 1.5px ${colors.greenAccent[500]}`,
+                        "&:is(:hover)": {
+                          boxShadow: `0px 0px 3px 3px ${colors.greenAccent[500]}`,
+                        },
+                      }}
                     />
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                    >
-                      <Typography variant="h4" color={colors.grey[500]}>
-                        {props.user.profile.name}
-                      </Typography>
-                    </Box>
+                  </Tooltip>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                  >
+                    <Typography variant="h4" color={colors.grey[500]}>
+                      {props.user.profile.name}
+                    </Typography>
                   </Box>
-                </Tooltip>
+                </Box>
               )}
             </Box>
           </>
@@ -97,7 +103,12 @@ const Topbar = (props) => {
 
       {/* ICONS */}
       <Box display="flex" gap={0.5}>
-        <Box display="flex" alignItems="center">
+        <Box
+          display="flex"
+          alignItems="center"
+          mx={1}
+          sx={{ userSelect: "none" }}
+        >
           <Typography variant="caption" color={colors.grey[500]}>
             v{require("../../../package.json").version}
           </Typography>
