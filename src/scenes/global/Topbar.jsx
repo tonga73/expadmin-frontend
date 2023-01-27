@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Avatar,
@@ -7,15 +8,15 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-
-import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
+
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 import NotificationsPopover from "../../components/NotificationsPopover";
 import LogoutButton from "../../components/LogoutButton";
+import Help from "../../components/Help";
 import Spinner from "../../components/Spinner";
 
 const Topbar = (props) => {
@@ -24,8 +25,6 @@ const Topbar = (props) => {
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  console.log(require("../../../package.json").version);
 
   const handleUserProfile = () => {
     navigate("/user-profile");
@@ -106,13 +105,14 @@ const Topbar = (props) => {
         <Box
           display="flex"
           alignItems="center"
-          mx={1}
+          mx={0.5}
           sx={{ userSelect: "none" }}
         >
           <Typography variant="caption" color={colors.grey[500]}>
             v{require("../../../package.json").version}
           </Typography>
         </Box>
+        <Help />
         <IconButton size="medium" onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
