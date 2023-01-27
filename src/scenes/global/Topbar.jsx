@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -20,6 +21,12 @@ const Topbar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const handleUserProfile = () => {
+    navigate("/user-profile");
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -38,42 +45,44 @@ const Topbar = (props) => {
               <MenuOpenIcon />
             </IconButton>
             <Box alignItems="center">
-              <Tooltip
-                title={
-                  <Typography
-                    variant="caption"
-                    fontWeight="bold"
-                    textTransform="uppercase"
-                  >
-                    perfil de usuario
-                  </Typography>
-                }
-              >
-                <Box
-                  onClick={() => {}}
-                  display="flex"
-                  alignItems="center"
-                  gap={1}
-                  sx={{
-                    userSelect: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Avatar
-                    alt="Remy Sharp"
-                    src={props.user.profile.photoURL || undefined}
-                  />
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="center"
-                  >
-                    <Typography variant="h3" color={colors.grey[500]}>
-                      {props.user.profile.name}
+              {pathname === "/user-profile" ? undefined : (
+                <Tooltip
+                  title={
+                    <Typography
+                      variant="caption"
+                      fontWeight="bold"
+                      textTransform="uppercase"
+                    >
+                      perfil de usuario
                     </Typography>
+                  }
+                >
+                  <Box
+                    onClick={handleUserProfile}
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
+                    sx={{
+                      userSelect: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Avatar
+                      alt={props.user.profile.name}
+                      src={props.user.profile.photoURL || undefined}
+                    />
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
+                    >
+                      <Typography variant="h4" color={colors.grey[500]}>
+                        {props.user.profile.name}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </Tooltip>
+                </Tooltip>
+              )}
             </Box>
           </>
         ) : undefined}

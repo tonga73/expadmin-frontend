@@ -14,23 +14,27 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
-const routes = [
-  {
-    label: "Inicio",
-    path: "/",
-    icon: <HomeOutlinedIcon />,
-  },
-  {
-    label: "Crear Expediente",
-    path: "/crear-expediente",
-    icon: <AddBoxIcon />,
-    sectionHeader: "Gestión de Expedientes",
-  },
-  {
-    label: "Vista de tabla",
-    path: "/listado-expedientes",
-    icon: <TableChartIcon />,
-  },
+const routes = {
+  MAIN: [
+    {
+      label: "Inicio",
+      path: "/",
+      icon: <HomeOutlinedIcon />,
+    },
+  ],
+  RECORDS: [
+    {
+      label: "Crear Expediente",
+      path: "/crear-expediente",
+      icon: <AddBoxIcon />,
+      sectionHeader: "Gestión de Expedientes",
+    },
+    {
+      label: "Vista de tabla",
+      path: "/listado-expedientes",
+      icon: <TableChartIcon />,
+    },
+  ],
   // {
   //   label: "Vista Avanzada",
   //   path: "/invoices",
@@ -89,5 +93,5 @@ const routes = [
   //     path: "/geography",
   //     icon: <MapOutlinedIcon />,
   //   },
-];
+};
 export default routes;

@@ -39,10 +39,11 @@ export const logIn = createAsyncThunk(
     dispatch(setUserCondition("validated"));
     firebase.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        const { photoURL } = await firebaseUser.multiFactor.user;
+        const { photoURL, displayName } = await firebaseUser.multiFactor.user;
 
         const userProfile = {
           ...response,
+          displayName,
           photoURL,
         };
 
@@ -58,11 +59,11 @@ export const logIn = createAsyncThunk(
 
 export const confirmUser = createAsyncThunk(
   "users/fetchConfirmUser",
-  async ({ email, displayName }, { dispatch }) => {
+  async ({ email, localDisplayName }, { dispatch }) => {
     dispatch(setUsersStatus("verifiying"));
     const response = await fetchConfirmUser({
       email,
-      displayName,
+      localDisplayName,
     });
 
     if (!response.verified) {
@@ -75,10 +76,11 @@ export const confirmUser = createAsyncThunk(
 
     firebase.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        const { photoURL } = await firebaseUser.multiFactor.user;
+        const { photoURL, displayName } = await firebaseUser.multiFactor.user;
 
         const userProfile = {
           ...response,
+          displayName,
           photoURL,
         };
 

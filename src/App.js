@@ -18,6 +18,7 @@ import Dashboard from "./scenes/dashboard";
 import RecordCreateForm from "./scenes/record-create-form";
 import RecordsTable from "./scenes/records-table";
 import Record from "./scenes/record";
+import UserProfile from "./scenes/user-profile";
 
 import Login from "./scenes/login/Login";
 import { ProtectedRoute } from "./utils/routeGuard";
@@ -143,6 +144,14 @@ function App() {
                     element={
                       <ProtectedRoute isSignedIn={user.signedIn}>
                         <Record />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/user-profile"
+                    element={
+                      <ProtectedRoute isSignedIn={user.signedIn}>
+                        <UserProfile />
                       </ProtectedRoute>
                     }
                   />

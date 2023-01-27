@@ -15,17 +15,17 @@ const RegisterForm = (props) => {
 
   const user = useSelector(selectUser);
 
-  const confirmAccount = (displayName) => {
-    if (displayName.length > 0) {
-      dispatch(confirmUser({ email: user.profile.email, displayName }));
+  const confirmAccount = (localDisplayName) => {
+    if (localDisplayName.length > 0) {
+      dispatch(confirmUser({ email: user.profile.email, localDisplayName }));
     }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const displayName = e.target.displayNameField.value;
+    const localDisplayName = e.target.displayNameField.value;
 
-    confirmAccount(displayName);
+    confirmAccount(localDisplayName);
   };
 
   return (

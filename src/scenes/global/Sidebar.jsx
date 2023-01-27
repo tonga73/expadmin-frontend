@@ -6,6 +6,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+
 import routes from "../../app/routes";
 
 import { gradient } from "../../utils/keyframes";
@@ -37,7 +39,6 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      rowGap={1.5}
       sx={{
         background: `${
           theme.palette.mode === "light"
@@ -46,7 +47,7 @@ const Sidebar = () => {
         }`,
         py: "25px",
         width: "100%",
-        minHeight: "100%",
+        minHeight: "100vh",
         maxHeight: "100vh",
         zIndex: 99,
       }}
@@ -76,20 +77,8 @@ const Sidebar = () => {
       </Box>
       {/* SIDEBAR ROUTES */}
       <Box width="100%">
-        {routes.map((route, index) => (
-          <Box key={index}>
-            {route.sectionHeader ? (
-              <Box mt={1.5} px={1.5}>
-                <Typography
-                  variant="caption"
-                  color={colors.grey[500]}
-                  fontWeight={700}
-                  textTransform="uppercase"
-                >
-                  {route.sectionHeader}
-                </Typography>
-              </Box>
-            ) : null}
+        {routes["MAIN"].map((route, index) => (
+          <Box key={index} mt={1}>
             <Button
               component={Link}
               to={route.path}
@@ -115,11 +104,87 @@ const Sidebar = () => {
         ))}
       </Box>
       {/* SIDEBAR RECORDS LIST */}
-      {pathname !== "/login" && user.signedIn ? (
-        <>
-          <RecordFilters />
-          <RecordsList />
-        </>
+      {pathname !== "/login" &&
+      pathname !== "/user-profile" &&
+      user.signedIn ? (
+        <Box width="100%">
+          {routes["RECORDS"].map((route, index) => (
+            <Box key={index}>
+              {route.sectionHeader ? (
+                <Box mt={1.5} px={1.5}>
+                  <Typography
+                    variant="caption"
+                    color={colors.grey[500]}
+                    fontWeight={700}
+                    textTransform="uppercase"
+                  >
+                    {route.sectionHeader}
+                  </Typography>
+                </Box>
+              ) : null}
+              <Button
+                component={Link}
+                to={route.path}
+                disableRipple
+                size="large"
+                variant="text"
+                startIcon={route.icon}
+                fullWidth={true}
+                sx={{
+                  justifyContent: "flex-start",
+                  color:
+                    pathname === route.path
+                      ? colors.blueAccent[500]
+                      : colors.grey[300],
+                  "&:hover": {
+                    color: colors.grey[100],
+                  },
+                }}
+              >
+                {route.label}
+              </Button>
+            </Box>
+          ))}
+          <Box mt={1}>
+            <RecordFilters />
+            <RecordsList />
+          </Box>
+        </Box>
+      ) : undefined}
+      {pathname === "/user-profile" && user.signedIn ? (
+        <Box width="100%">
+          <Box px={1.5} mt={1.5}>
+            <Typography
+              variant="caption"
+              color={colors.grey[500]}
+              fontWeight={700}
+              textTransform="uppercase"
+            >
+              gestión del usuario
+            </Typography>
+          </Box>
+          <Button
+            component={Link}
+            to={pathname}
+            disableRipple
+            size="large"
+            variant="text"
+            startIcon={<AccountBoxIcon />}
+            fullWidth={true}
+            sx={{
+              justifyContent: "flex-start",
+              color:
+                pathname === pathname
+                  ? colors.blueAccent[500]
+                  : colors.grey[300],
+              "&:hover": {
+                color: colors.grey[100],
+              },
+            }}
+          >
+            Perfil
+          </Button>
+        </Box>
       ) : undefined}
     </Box>
   );
