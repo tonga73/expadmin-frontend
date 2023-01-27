@@ -57,7 +57,7 @@ const RecordsList = () => {
   // }, [location.search]);
 
   return (
-    <Box width="100%" height="100vh" minHeight="min-content" overflow="auto">
+    <Box width="100%" height="100%" minHeight="min-content" overflow="auto">
       {!!filteredRecords && filteredRecords.length <= 0 ? (
         <>
           <Box

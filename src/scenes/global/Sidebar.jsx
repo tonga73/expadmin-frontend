@@ -107,49 +107,49 @@ const Sidebar = () => {
       {pathname !== "/login" &&
       pathname !== "/user-profile" &&
       user.signedIn ? (
-        <Box width="100%">
-          {routes["RECORDS"].map((route, index) => (
-            <Box key={index}>
-              {route.sectionHeader ? (
-                <Box mt={1.5} px={1.5}>
-                  <Typography
-                    variant="caption"
-                    color={colors.grey[500]}
-                    fontWeight={700}
-                    textTransform="uppercase"
-                  >
-                    {route.sectionHeader}
-                  </Typography>
-                </Box>
-              ) : null}
-              <Button
-                component={Link}
-                to={route.path}
-                disableRipple
-                size="large"
-                variant="text"
-                startIcon={route.icon}
-                fullWidth={true}
-                sx={{
-                  justifyContent: "flex-start",
-                  color:
-                    pathname === route.path
-                      ? colors.blueAccent[500]
-                      : colors.grey[300],
-                  "&:hover": {
-                    color: colors.grey[100],
-                  },
-                }}
-              >
-                {route.label}
-              </Button>
-            </Box>
-          ))}
-          <Box mt={1}>
-            <RecordFilters />
-            <RecordsList />
+        <>
+          <Box width="100%">
+            {routes["RECORDS"].map((route, index) => (
+              <Box key={index}>
+                {route.sectionHeader ? (
+                  <Box mt={1.5} px={1.5}>
+                    <Typography
+                      variant="caption"
+                      color={colors.grey[500]}
+                      fontWeight={700}
+                      textTransform="uppercase"
+                    >
+                      {route.sectionHeader}
+                    </Typography>
+                  </Box>
+                ) : null}
+                <Button
+                  component={Link}
+                  to={route.path}
+                  disableRipple
+                  size="large"
+                  variant="text"
+                  startIcon={route.icon}
+                  fullWidth={true}
+                  sx={{
+                    justifyContent: "flex-start",
+                    color:
+                      pathname === route.path
+                        ? colors.blueAccent[500]
+                        : colors.grey[300],
+                    "&:hover": {
+                      color: colors.grey[100],
+                    },
+                  }}
+                >
+                  {route.label}
+                </Button>
+              </Box>
+            ))}
           </Box>
-        </Box>
+          <RecordFilters />
+          <RecordsList />
+        </>
       ) : undefined}
       {pathname === "/user-profile" && user.signedIn ? (
         <Box width="100%">

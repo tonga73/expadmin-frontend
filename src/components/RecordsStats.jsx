@@ -37,9 +37,12 @@ const RecordsStats = () => {
 
   const generalStats = [
     {
-      title: records.filter((e) => {
-        return e.tracing === "PERICIA_REALIZADA";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.tracing === "PERICIA_REALIZADA";
+            }).length,
       titleFontVariant: null,
       subtitle: "pericia realizada",
       subtitleFontVariant: null,
@@ -60,9 +63,12 @@ const RecordsStats = () => {
       type: "tracing",
     },
     {
-      title: records.filter((e) => {
-        return e.tracing === "COBRADO";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.tracing === "COBRADO";
+            }).length,
       titleFontVariant: null,
       subtitle: "cobrado",
       subtitleFontVariant: null,
@@ -82,7 +88,7 @@ const RecordsStats = () => {
       type: "tracing",
     },
     {
-      title: records.length,
+      title: records.length <= 0 ? null : records.length,
       titleFontVariant: null,
       subtitle: "Total",
       subtitleFontVariant: null,
@@ -98,9 +104,12 @@ const RecordsStats = () => {
       type: null,
     },
     {
-      title: records.filter((e) => {
-        return e.priority === "INACTIVO";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.priority === "INACTIVO";
+            }).length,
       titleFontVariant: null,
       subtitle: "inactivo",
       subtitleFontVariant: null,
@@ -120,9 +129,12 @@ const RecordsStats = () => {
       type: "priority",
     },
     {
-      title: records.filter((e) => {
-        return e.archive === true;
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.archive === true;
+            }).length,
       titleFontVariant: null,
       subtitle: "Archivado",
       subtitleFontVariant: null,
@@ -145,9 +157,12 @@ const RecordsStats = () => {
 
   const priorityStats = [
     {
-      title: records.filter((e) => {
-        return e.priority === "URGENTE";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.priority === "URGENTE";
+            }).length,
       titleFontVariant: null,
       subtitle: "URGENTE",
       subtitleFontVariant: null,
@@ -168,9 +183,12 @@ const RecordsStats = () => {
       type: "priority",
     },
     {
-      title: records.filter((e) => {
-        return e.priority === "ALTA";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.priority === "ALTA";
+            }).length,
       titleFontVariant: null,
       subtitle: "ALTA",
       subtitleFontVariant: null,
@@ -191,9 +209,12 @@ const RecordsStats = () => {
       type: "priority",
     },
     {
-      title: records.filter((e) => {
-        return e.priority === "MEDIA";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.priority === "MEDIA";
+            }).length,
       titleFontVariant: null,
       subtitle: "media",
       subtitleFontVariant: null,
@@ -217,9 +238,12 @@ const RecordsStats = () => {
 
   const tracingStats = [
     {
-      title: records.filter((e) => {
-        return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
+            }).length,
       titleFontVariant: null,
       subtitle: "Sentencia o convenio de partes",
       subtitleFontVariant: null,
@@ -240,9 +264,12 @@ const RecordsStats = () => {
       type: "tracing",
     },
     {
-      title: records.filter((e) => {
-        return e.tracing === "HONORARIOS_REGULADOS";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.tracing === "HONORARIOS_REGULADOS";
+            }).length,
       titleFontVariant: null,
       subtitle: "honorarios regulados",
       subtitleFontVariant: null,
@@ -263,9 +290,12 @@ const RecordsStats = () => {
       type: "tracing",
     },
     {
-      title: records.filter((e) => {
-        return e.tracing === "EN_TRATATIVA_DE_COBRO";
-      }).length,
+      title:
+        records.length <= 0
+          ? null
+          : records.filter((e) => {
+              return e.tracing === "EN_TRATATIVA_DE_COBRO";
+            }).length,
       titleFontVariant: null,
       subtitle: "en tratativa de cobro",
       subtitleFontVariant: null,

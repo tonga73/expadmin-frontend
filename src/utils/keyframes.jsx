@@ -11,10 +11,10 @@ export const spin = keyframes`
 
 export const rotate = keyframes`
     from {
-        transform: rotate(180deg);
+        transform: rotate(0deg);
     }
     to {
-        transform: rotate(0deg);
+        transform: rotate(360deg);
     }
 `;
 

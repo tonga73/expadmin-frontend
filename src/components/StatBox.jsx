@@ -3,6 +3,8 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 
+import { pulse } from "../utils/keyframes";
+
 const StatBox = ({
   title,
   titleFontVariant,
@@ -78,7 +80,7 @@ const StatBox = ({
               textTransform="uppercase"
               textAlign="center"
             >
-              {subtitle}
+              {subtitle.length <= 0 ? "-" : subtitle}
             </Typography>
           </Box>
           <Box sx={{ color: colors.grey[100] }}>
@@ -87,7 +89,11 @@ const StatBox = ({
               fontWeight="bold"
               textAlign="center"
             >
-              {title}
+              {title === null ? (
+                <Box sx={{ animation: `${pulse} 2s linear infinite` }}>-</Box>
+              ) : (
+                title
+              )}
             </Typography>
           </Box>
         </Box>

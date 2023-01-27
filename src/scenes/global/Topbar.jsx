@@ -7,6 +7,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -23,6 +24,8 @@ const Topbar = (props) => {
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  console.log(require("../../../package.json").version);
 
   const handleUserProfile = () => {
     navigate("/user-profile");
@@ -94,6 +97,11 @@ const Topbar = (props) => {
 
       {/* ICONS */}
       <Box display="flex" gap={0.5}>
+        <Box display="flex" alignItems="center">
+          <Typography variant="caption" color={colors.grey[500]}>
+            v{require("../../../package.json").version}
+          </Typography>
+        </Box>
         <IconButton size="medium" onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
