@@ -63,20 +63,26 @@ const Help = () => {
             <Typography variant="subtitle1" fontWeight={100}>
               Versión
             </Typography>
-            <Typography variant="subtitle2">
+            <Typography
+              variant="subtitle2"
+              sx={{
+                bgcolor: colors.grey[500],
+                px: 0.3,
+                py: 0.1,
+                borderRadius: "15%",
+              }}
+            >
               {require("../../package.json").version}
-            </Typography>
-            <Typography variant="subtitle1" fontWeight={100}>
-              para navegadores.
             </Typography>
           </Box>
           <Typography
             variant="subtitle2"
             fontWeight={500}
+            fontStyle="italic"
             color={colors.grey[500]}
             sx={{ maxWidth: "300px" }}
           >
-            Sistema digital para la gestión de expedientes.
+            Sistema de gestión para expedientes digitales.
           </Typography>
           <Button
             component={Link}
