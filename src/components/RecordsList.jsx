@@ -125,6 +125,10 @@ const RecordsList = () => {
                   }`
                 )
               }
+              sx={{
+                userSelect: "none",
+                pointerEvents: recordsStatus !== "" ? "none" : "initial",
+              }}
             >
               <Box
                 component={CustomizedTooltip}

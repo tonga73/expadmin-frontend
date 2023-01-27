@@ -87,7 +87,7 @@ const Record = () => {
     }
   }, [editMode, dispatch]);
 
-  return Object.values(record).length < 1 ? (
+  return Object.values(record).length < 1 && !!record ? (
     <Box
       display="flex"
       justifyContent="center"
