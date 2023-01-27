@@ -243,22 +243,22 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
+              return e.tracing === "EN_TRATATIVA_DE_COBRO";
             }).length,
       titleFontVariant: null,
-      subtitle: "Sentencia o convenio de partes",
+      subtitle: "en tratativa de cobro",
       subtitleFontVariant: null,
       icon: (
-        <HandshakeIcon
+        <CurrencyExchangeIcon
           sx={{
-            color: colors.tracingColors["SENTENCIA_O_CONVENIO_DE_PARTES"],
+            color: colors.tracingColors["EN_TRATATIVA_DE_COBRO"],
             fontSize: "26px",
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
+          return e.tracing === "EN_TRATATIVA_DE_COBRO";
         }).length
       ),
       progressSize: 50,
@@ -295,22 +295,22 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "EN_TRATATIVA_DE_COBRO";
+              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
             }).length,
       titleFontVariant: null,
-      subtitle: "en tratativa de cobro",
+      subtitle: "Sentencia o convenio de partes",
       subtitleFontVariant: null,
       icon: (
-        <CurrencyExchangeIcon
+        <HandshakeIcon
           sx={{
-            color: colors.tracingColors["EN_TRATATIVA_DE_COBRO"],
+            color: colors.tracingColors["SENTENCIA_O_CONVENIO_DE_PARTES"],
             fontSize: "26px",
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "EN_TRATATIVA_DE_COBRO";
+          return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
         }).length
       ),
       progressSize: 50,
