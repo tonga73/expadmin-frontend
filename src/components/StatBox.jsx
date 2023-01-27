@@ -5,13 +5,12 @@ import ProgressCircle from "./ProgressCircle";
 
 const StatBox = ({
   title,
+  titleFontVariant,
   subtitle,
+  subtitleFontVariant,
   icon,
   progress,
   progressSize,
-  dense,
-  titleFontVariant,
-  subtitleFontVariant,
   type,
 }) => {
   const theme = useTheme();
@@ -32,73 +31,65 @@ const StatBox = ({
     setSearchParams(searchParams);
   }
 
-  return dense ? (
-    <Box width="100%" sx={{ userSelect: "none" }}>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        p={0.5}
-      >
-        {icon}
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          sx={{ color: colors.grey[100] }}
-        >
-          {title}
-        </Typography>
-        <Box display="flex" justifyContent="space-between">
-          <Typography variant="h5" sx={{ color: colors.greenAccent[100] }}>
-            {truncate(subtitle, 9)}
-          </Typography>
-        </Box>
-        <Box>
-          <ProgressCircle size="25" progress={progress} />
-        </Box>
-      </Box>
-    </Box>
-  ) : (
+  return (
     <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="start"
       width="100%"
-      p="15px 30px"
+      minHeight="min-content"
       sx={{
+        bgcolor: colors.primary[600],
         userSelect: "none",
+        py: "3%",
         "&:hover": {
-          opacity: 0.9,
+          bgcolor: !!type ? colors.primary[700] : undefined,
         },
       }}
-      onClick={type !== "" ? handleClick : undefined}
+      onClick={!!type ? handleClick : undefined}
     >
-      <Box
-        display="grid"
-        height="100%"
-        gridTemplateColumns="repeat(2, minmax(0, 1fr))"
-      >
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <ProgressCircle size={progressSize} progress={progress} />
-        </Box>
+      <Box display="flex" justifyContent="center" height="100%">
         <Box
-          display="flex"
-          flexDirection="column"
-          gap={1}
-          px={1}
+          display="grid"
+          gridAutoFlow={{ xs: "column", sm: "row" }}
+          gridTemplateRows={{
+            xs: "1fr",
+            sm: "min-content 1fr min-content",
+          }}
           justifyContent="center"
+          alignItems="center"
+          gap={1}
+          sx={{
+            px: 3,
+            py: "3%",
+          }}
         >
-          {icon}
-          <Typography
-            variant={titleFontVariant}
-            fontWeight="bold"
-            sx={{ color: colors.grey[100] }}
-          >
-            {title}
-          </Typography>
-          <Typography
-            variant={subtitleFontVariant}
-            sx={{ color: colors.greenAccent[100] }}
-          >
-            {subtitle}
-          </Typography>
+          <Box mx="auto">
+            <ProgressCircle
+              size={progressSize ? progressSize : 50}
+              progress={progress}
+              icon={icon}
+            />
+          </Box>
+          <Box sx={{ color: colors.grey[100] }}>
+            <Typography
+              variant={titleFontVariant ? titleFontVariant : "h5"}
+              fontWeight={300}
+              textTransform="uppercase"
+              textAlign="center"
+            >
+              {subtitle}
+            </Typography>
+          </Box>
+          <Box sx={{ color: colors.grey[100] }}>
+            <Typography
+              variant={titleFontVariant ? titleFontVariant : "h3"}
+              fontWeight="bold"
+              textAlign="center"
+            >
+              {title}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>

@@ -81,7 +81,7 @@ export const tokens = (mode) => ({
           SENTENCIA_O_CONVENIO_DE_PARTES: "#005f73",
           HONORARIOS_REGULADOS: "#F8961E",
           EN_TRATATIVA_DE_COBRO: "#F94144",
-          COBRADO: "#9b2226",
+          COBRADO: "#7a3e6a",
         },
       }
     : {
