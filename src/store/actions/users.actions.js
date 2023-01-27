@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 
+import firebase from "../../services/firebase";
+
 import { fetchGetUser, fetchConfirmUser } from "../../app/fetchAPI/usersAPI";
 
 import {
@@ -35,11 +37,22 @@ export const logIn = createAsyncThunk(
     }
 
     dispatch(setUserCondition("validated"));
-    dispatch(setUserProfile(response));
-    localStorage.setItem("profile", JSON.stringify(response));
-    localStorage.setItem("signedIn", true);
-    dispatch(setSignedIn(true));
-    dispatch(setUsersStatus(""));
+    firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        const { photoURL } = await firebaseUser.multiFactor.user;
+
+        const userProfile = {
+          ...response,
+          photoURL,
+        };
+
+        dispatch(setUserProfile(userProfile));
+        localStorage.setItem("profile", JSON.stringify(userProfile));
+        localStorage.setItem("signedIn", true);
+        dispatch(setSignedIn(true));
+        dispatch(setUsersStatus(""));
+      }
+    });
   }
 );
 
@@ -59,11 +72,22 @@ export const confirmUser = createAsyncThunk(
     }
 
     dispatch(setUserCondition("verified"));
-    dispatch(setUserProfile(response));
-    localStorage.setItem("profile", JSON.stringify(response));
-    localStorage.setItem("signedIn", true);
-    dispatch(setSignedIn(true));
-    dispatch(setUsersStatus(""));
-    return;
+
+    firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        const { photoURL } = await firebaseUser.multiFactor.user;
+
+        const userProfile = {
+          ...response,
+          photoURL,
+        };
+
+        dispatch(setUserProfile(userProfile));
+        localStorage.setItem("profile", JSON.stringify(userProfile));
+        localStorage.setItem("signedIn", true);
+        dispatch(setSignedIn(true));
+        dispatch(setUsersStatus(""));
+      }
+    });
   }
 );

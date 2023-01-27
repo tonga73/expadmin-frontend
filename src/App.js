@@ -25,14 +25,10 @@ import { ProtectedRoute } from "./utils/routeGuard";
 import firebase from "./services/firebase";
 
 import {
-  setSignedIn,
   setUserProfile,
   setUserCondition,
   selectUser,
-  selectSignedIn,
 } from "./store/slices/users.slice";
-
-import { logIn } from "./store/actions/users.actions";
 
 function App() {
   // THEME UTILS
@@ -46,7 +42,6 @@ function App() {
   );
 
   const user = useSelector(selectUser);
-  const customSidebarOption = JSON.parse(localStorage.getItem("sidebar"));
 
   const validatedRedirect = () => {
     console.log("SIPE");
@@ -57,19 +52,6 @@ function App() {
   const handleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
-  // useEffect(() => {
-  //   if (user.condition !== "verified" && user.isSignedIn) {
-  //     firebase.auth().onAuthStateChanged((firebaseUser) => {
-  //       if (firebaseUser) {
-  //         const { accessToken, email } = firebaseUser.multiFactor.user;
-  //         dispatch(logIn(email));
-  //         localStorage.setItem("token", accessToken);
-  //         localStorage.setItem("signedIn", true);
-  //       }
-  //     });
-  //   }
-  // }, [user["condition"]]);
 
   useEffect(() => {
     localStorage.setItem("sidebar", sidebarOpen);
