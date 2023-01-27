@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import BlurCircularIcon from "@mui/icons-material/BlurCircular";
 import FolderOffIcon from "@mui/icons-material/FolderOff";
@@ -94,7 +95,7 @@ const RecordsStats = () => {
       subtitle: "Total",
       subtitleFontVariant: null,
       icon: (
-        <AccountBalanceWalletIcon
+        <DonutSmallIcon
           sx={{
             color: colors.greenAccent[500],
           }}
@@ -162,22 +163,22 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.priority === "URGENTE";
+              return e.priority === "MEDIA";
             }).length,
       titleFontVariant: null,
-      subtitle: "URGENTE",
+      subtitle: "media",
       subtitleFontVariant: null,
       icon: (
-        <LocalFireDepartmentIcon
+        <BlurCircularIcon
           sx={{
-            color: colors.priorityColors["URGENTE"],
+            color: colors.priorityColors["MEDIA"],
             fontSize: "26px",
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.priority === "URGENTE";
+          return e.priority === "MEDIA";
         }).length
       ),
       progressSize: 50,
@@ -214,22 +215,22 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.priority === "MEDIA";
+              return e.priority === "URGENTE";
             }).length,
       titleFontVariant: null,
-      subtitle: "media",
+      subtitle: "URGENTE",
       subtitleFontVariant: null,
       icon: (
-        <BlurCircularIcon
+        <LocalFireDepartmentIcon
           sx={{
-            color: colors.priorityColors["MEDIA"],
+            color: colors.priorityColors["URGENTE"],
             fontSize: "26px",
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.priority === "MEDIA";
+          return e.priority === "URGENTE";
         }).length
       ),
       progressSize: 50,
@@ -243,22 +244,22 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "EN_TRATATIVA_DE_COBRO";
+              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
             }).length,
       titleFontVariant: null,
-      subtitle: "en tratativa de cobro",
+      subtitle: "Sentencia o convenio de partes",
       subtitleFontVariant: null,
       icon: (
-        <CurrencyExchangeIcon
+        <HandshakeIcon
           sx={{
-            color: colors.tracingColors["EN_TRATATIVA_DE_COBRO"],
+            color: colors.tracingColors["SENTENCIA_O_CONVENIO_DE_PARTES"],
             fontSize: "26px",
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "EN_TRATATIVA_DE_COBRO";
+          return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
         }).length
       ),
       progressSize: 50,
@@ -295,22 +296,22 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
+              return e.tracing === "EN_TRATATIVA_DE_COBRO";
             }).length,
       titleFontVariant: null,
-      subtitle: "Sentencia o convenio de partes",
+      subtitle: "en tratativa de cobro",
       subtitleFontVariant: null,
       icon: (
-        <HandshakeIcon
+        <CurrencyExchangeIcon
           sx={{
-            color: colors.tracingColors["SENTENCIA_O_CONVENIO_DE_PARTES"],
+            color: colors.tracingColors["EN_TRATATIVA_DE_COBRO"],
             fontSize: "26px",
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
+          return e.tracing === "EN_TRATATIVA_DE_COBRO";
         }).length
       ),
       progressSize: 50,
