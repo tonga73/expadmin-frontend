@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
@@ -350,31 +351,33 @@ const RecordsStats = () => {
         gridTemplateColumns="repeat(3, minmax(0, 1fr))"
         gap={1}
       >
-        <Typography
-          gridColumn="span 3"
-          variant="h5"
-          letterSpacing={1.7}
-          textTransform="uppercase"
-          fontWeight={100}
-          pt={1}
-          color={colors.grey[500]}
-        >
-          prioridad
-        </Typography>
+        <Box gridColumn="span 3" mt={1.5}>
+          <Divider light textAlign="left" sx={{ px: 1.5 }}>
+            <Typography
+              variant="h5"
+              fontWeight={100}
+              color={colors.grey[500]}
+              textTransform="uppercase"
+            >
+              prioridad
+            </Typography>
+          </Divider>
+        </Box>
         {priorityStats.map((e, index) => (
           <StatBox key={index} {...e} />
         ))}
-        <Typography
-          gridColumn="span 3"
-          pt={1}
-          variant="h5"
-          letterSpacing={1.7}
-          textTransform="uppercase"
-          fontWeight={100}
-          color={colors.grey[500]}
-        >
-          estado pericial
-        </Typography>
+        <Box gridColumn="span 3" mt={1.5}>
+          <Divider light textAlign="left" sx={{ px: 1.5 }}>
+            <Typography
+              variant="h5"
+              fontWeight={100}
+              color={colors.grey[500]}
+              textTransform="uppercase"
+            >
+              estado pericial
+            </Typography>
+          </Divider>
+        </Box>
         {tracingStats.map((e, index) => (
           <StatBox key={index} {...e} />
         ))}
