@@ -50,7 +50,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("sidebar", sidebarOpen);
-  }, [sidebarOpen]);
+    localStorage.setItem("theme", theme.palette.mode);
+  }, [sidebarOpen, theme.palette.mode]);
 
   useEffect(() => {
     if (location.pathname !== "/login" && user.condition === "validated") {
