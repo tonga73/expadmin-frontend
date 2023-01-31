@@ -117,7 +117,10 @@ const RecordsStats = () => {
       icon: (
         <FolderOffIcon
           sx={{
-            color: colors.primary[400],
+            color:
+              theme.palette.mode === "dark"
+                ? colors.primary[400]
+                : colors.grey[600],
           }}
         />
       ),
