@@ -31,9 +31,9 @@ const RecordsStats = () => {
 
   const records = useSelector(selectRecords);
 
-  function generatePercentage(value) {
-    const percentage = (records.length * value) / 100 / 100;
-    return percentage.toFixed(3);
+  function generatePercentage(partialValue) {
+    const percentage = (100 * partialValue) / records.length;
+    return percentage / 100;
   }
 
   const generalStats = [
