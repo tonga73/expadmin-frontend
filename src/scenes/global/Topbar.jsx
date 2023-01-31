@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { ColorModeContext, tokens } from "../../theme";
 
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -46,26 +47,32 @@ const Topbar = (props) => {
               <MenuOpenIcon />
             </IconButton>
             <Box alignItems="center">
-              {pathname === "/user-profile" ? undefined : (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  gap={1}
-                  sx={{
-                    userSelect: "none",
-                  }}
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={1}
+                sx={{
+                  userSelect: "none",
+                }}
+              >
+                <Tooltip
+                  title={
+                    <Typography
+                      variant="caption"
+                      fontWeight="bold"
+                      textTransform="uppercase"
+                    >
+                      {pathname === "/user-profile"
+                        ? "volver atrás"
+                        : "perfil de usuario"}
+                    </Typography>
+                  }
                 >
-                  <Tooltip
-                    title={
-                      <Typography
-                        variant="caption"
-                        fontWeight="bold"
-                        textTransform="uppercase"
-                      >
-                        perfil de usuario
-                      </Typography>
-                    }
-                  >
+                  {pathname === "/user-profile" ? (
+                    <IconButton onClick={() => navigate(-1)}>
+                      <ArrowBackIcon />
+                    </IconButton>
+                  ) : (
                     <Avatar
                       onClick={handleUserProfile}
                       alt={props.user.profile.name}
@@ -78,18 +85,20 @@ const Topbar = (props) => {
                         },
                       }}
                     />
-                  </Tooltip>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="center"
-                  >
-                    <Typography variant="h4" color={colors.grey[500]}>
-                      {props.user.profile.name}
-                    </Typography>
-                  </Box>
+                  )}
+                </Tooltip>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Typography variant="h4" color={colors.grey[500]}>
+                    {pathname === "/user-profile"
+                      ? ""
+                      : props.user.profile.name}
+                  </Typography>
                 </Box>
-              )}
+              </Box>
             </Box>
           </>
         ) : undefined}
