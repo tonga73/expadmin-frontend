@@ -38,7 +38,8 @@ export const logIn = createAsyncThunk(
     dispatch(setUserCondition("validated"));
     firebase.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        const { photoURL, displayName } = await firebaseUser.multiFactor.user;
+        const { photoURL, displayName, accessToken } = await firebaseUser
+          .multiFactor.user;
 
         const userProfile = {
           ...response,
@@ -47,6 +48,7 @@ export const logIn = createAsyncThunk(
         };
 
         dispatch(setUserProfile(userProfile));
+        localStorage.setItem("token", JSON.stringify(accessToken));
         localStorage.setItem("profile", JSON.stringify(userProfile));
         localStorage.setItem("signedIn", true);
         dispatch(setSignedIn(true));
@@ -75,7 +77,8 @@ export const confirmUser = createAsyncThunk(
 
     firebase.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        const { photoURL, displayName } = await firebaseUser.multiFactor.user;
+        const { photoURL, displayName, accessToken } = await firebaseUser
+          .multiFactor.user;
 
         const userProfile = {
           ...response,
@@ -84,6 +87,7 @@ export const confirmUser = createAsyncThunk(
         };
 
         dispatch(setUserProfile(userProfile));
+        localStorage.setItem("token", JSON.stringify(accessToken));
         localStorage.setItem("profile", JSON.stringify(userProfile));
         localStorage.setItem("signedIn", true);
         dispatch(setSignedIn(true));

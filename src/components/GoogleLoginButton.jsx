@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { signInWithGoogle } from "../services/firebase";
+import firebase from "../services/firebase";
 
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -19,10 +20,18 @@ const GoogleLoginButton = () => {
 
   const submitGoogleHandler = async () => {
     try {
-      const { email } = await signInWithGoogle();
+      const data = await signInWithGoogle();
 
-      dispatch(setUserProfile({ email: email }));
-      dispatch(logIn(email));
+      firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+        if (firebaseUser) {
+          const { accessToken } = firebaseUser.multiFactor.user;
+
+          localStorage.setItem("token", JSON.stringify(accessToken));
+        }
+      });
+
+      dispatch(setUserProfile({ email: data.email }));
+      dispatch(logIn(data.email));
       return;
     } catch (error) {
       console.log(error);

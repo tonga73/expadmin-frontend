@@ -29,7 +29,7 @@ const RecordsStats = () => {
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
 
-  const records = useSelector(selectRecords);
+  const records = useSelector(selectRecords) ?? [];
 
   function generatePercentage(partialValue) {
     const percentage = (100 * partialValue) / records.length;

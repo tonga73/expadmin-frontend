@@ -19,10 +19,16 @@ const Login = (props) => {
 
   const user = useSelector(selectUser);
 
+  const removeLocalStorageData = () => {
+    const keysToRemove = ["token", "profile", "signedIn"];
+
+    keysToRemove.forEach((k) => localStorage.removeItem(k));
+  };
+
   const ValidationStepper = () => {
     const clearStepper = () => {
       dispatch(setUserCondition(""));
-      localStorage.removeItem("profile");
+      removeLocalStorageData();
       dispatch(setUserProfile(null));
     };
 

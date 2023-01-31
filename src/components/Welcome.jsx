@@ -100,7 +100,7 @@ const Welcome = ({ email }) => {
           <br />
           <br />
           Para facilitar el acceso y la configuración del sistema, algunos datos
-          son almacenados en su navegador.
+          son almacenados en el navegador.
         </Typography>
         <Button
           size="large"

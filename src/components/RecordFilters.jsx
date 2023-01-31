@@ -153,7 +153,7 @@ const RecordFilters = () => {
       >
         <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
           {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
-          {`(${!!filteredRecords && filteredRecords.length})`}
+          {`(${!!filteredRecords ? filteredRecords.length : "0"})`}
         </Typography>
         <SvgIcon>
           {sortByUpdated === "desc" ? (
