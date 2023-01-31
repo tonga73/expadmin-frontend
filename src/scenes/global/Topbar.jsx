@@ -36,16 +36,18 @@ const Topbar = (props) => {
       <Box display="flex" gap={1} borderRadius="3px">
         {props.user.signedIn ? (
           <>
-            <IconButton
-              onClick={props.handleSidebar}
-              size="medium"
-              sx={{
-                transform: props.sidebarOpen ? "" : "rotate(180deg)",
-                animation: "transform 500ms ease",
-              }}
-            >
-              <MenuOpenIcon />
-            </IconButton>
+            <Box>
+              <IconButton
+                onClick={props.handleSidebar}
+                size="medium"
+                sx={{
+                  transform: props.sidebarOpen ? "" : "rotate(180deg)",
+                  animation: "transform 500ms ease",
+                }}
+              >
+                <MenuOpenIcon />
+              </IconButton>
+            </Box>
             <Box alignItems="center">
               <Box
                 display="flex"
@@ -69,15 +71,19 @@ const Topbar = (props) => {
                   }
                 >
                   {pathname === "/user-profile" ? (
-                    <IconButton onClick={() => navigate(-1)}>
-                      <ArrowBackIcon />
-                    </IconButton>
+                    <Box>
+                      <IconButton size="medium" onClick={() => navigate(-1)}>
+                        <ArrowBackIcon />
+                      </IconButton>
+                    </Box>
                   ) : (
                     <Avatar
                       onClick={handleUserProfile}
                       alt={props.user.profile.name}
                       src={props.user.profile.photoURL || undefined}
                       sx={{
+                        width: 36,
+                        height: 36,
                         cursor: "pointer",
                         boxShadow: `0px 0px 3px 1.5px ${colors.greenAccent[500]}`,
                         "&:is(:hover)": {
@@ -110,24 +116,16 @@ const Topbar = (props) => {
 
       {/* ICONS */}
       <Box display="flex" gap={0.5}>
-        <Box
-          display="flex"
-          alignItems="center"
-          mx={0.5}
-          sx={{ userSelect: "none" }}
-        >
-          <Typography variant="caption" color={colors.grey[500]}>
-            v{require("../../../package.json").version}
-          </Typography>
-        </Box>
         <Help />
-        <IconButton size="medium" onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton>
+        <Box>
+          <IconButton size="medium" onClick={colorMode.toggleColorMode}>
+            {theme.palette.mode === "dark" ? (
+              <DarkModeOutlinedIcon />
+            ) : (
+              <LightModeOutlinedIcon />
+            )}
+          </IconButton>
+        </Box>
         <NotificationsPopover />
         {/* <IconButton>
           <SettingsOutlinedIcon />
