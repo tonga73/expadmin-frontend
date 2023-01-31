@@ -112,7 +112,10 @@ const RecordFilters = () => {
                 size="small"
                 sx={{
                   mr: 1,
-                  bgcolor: colors.primary[600],
+                  bgcolor:
+                    theme.palette.mode === "dark"
+                      ? colors.primary[600]
+                      : colors.grey[700],
                   color: colors.grey[400],
                   cursor: "pointer",
                   border: `solid 1px ${colors.primary[100]}`,
@@ -126,7 +129,15 @@ const RecordFilters = () => {
               </Box>
             ) : undefined
           }
-          sx={{ ml: 2, flex: 1, fontSize: "19px" }}
+          sx={{
+            pl: 0.5,
+            flex: 1,
+            fontSize: "19px",
+            bgcolor:
+              theme.palette.mode === "dark"
+                ? colors.primary[400]
+                : colors.grey[700],
+          }}
           onChange={handleSearch}
         />
       </Box>
@@ -136,7 +147,6 @@ const RecordFilters = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        borderBottom={`4px solid ${colors.primary[500]}`}
         px="15px"
         py="7px"
         width="100%"
@@ -144,7 +154,10 @@ const RecordFilters = () => {
           cursor: "pointer",
           userSelect: "none",
           color: colors.grey[400],
-          bgcolor: colors.primary[400],
+          bgcolor:
+            theme.palette.mode === "dark"
+              ? colors.primary[400]
+              : colors.grey[700],
           "&:hover": { color: colors.grey[100] },
         }}
         onClick={() => {

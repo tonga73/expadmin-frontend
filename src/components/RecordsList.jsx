@@ -66,7 +66,11 @@ const RecordsList = () => {
             rowGap={1}
             justifyContent="center"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
+            borderBottom={`4px solid ${
+              theme.palette.mode === "dark"
+                ? colors.primary[500]
+                : colors.grey[700]
+            }`}
             p="15px"
           >
             <Typography
@@ -103,15 +107,30 @@ const RecordsList = () => {
             py="15px"
             pl="7px"
             pr="20px"
-            borderBottom={`4px solid ${colors.primary[500]}`}
+            borderBottom={`4px solid ${
+              theme.palette.mode === "dark"
+                ? colors.primary[500]
+                : colors.grey[700]
+            }`}
             sx={{
               userSelect: "none",
               opacity: recordsStatus !== "" ? 0.1 : 1,
               pointerEvents: recordsStatus !== "" ? "none" : "initial",
-              bgcolor: record.id === id ? colors.primary[400] : "initial",
+              bgcolor:
+                record.id === id
+                  ? theme.palette.mode === "dark"
+                    ? colors.primary[400]
+                    : colors.grey[600]
+                  : "initial",
               "&:hover": {
                 bgcolor:
-                  record.id === id ? colors.primary[400] : colors.primary[500],
+                  record.id === id
+                    ? theme.palette.mode === "dark"
+                      ? colors.primary[400]
+                      : colors.grey[600]
+                    : theme.palette.mode === "dark"
+                    ? colors.primary[500]
+                    : colors.grey[700],
               },
             }}
           >

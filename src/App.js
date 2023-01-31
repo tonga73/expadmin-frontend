@@ -86,13 +86,22 @@ function App() {
               width: "7px",
             },
             "*::-webkit-scrollbar-track": {
-              background: colors.primary[600],
+              background:
+                theme.palette.mode === "dark"
+                  ? colors.primary[600]
+                  : colors.grey[800],
             },
             "*::-webkit-scrollbar-thumb": {
-              background: colors.primary[400],
+              background:
+                theme.palette.mode === "dark"
+                  ? colors.primary[400]
+                  : colors.grey[600],
             },
             "*::-webkit-scrollbar-track:hover": {
-              background: colors.primary[700],
+              background:
+                theme.palette.mode === "dark"
+                  ? colors.primary[700]
+                  : colors.grey[700],
             },
           }}
         >

@@ -41,9 +41,7 @@ const Sidebar = () => {
       alignItems="center"
       sx={{
         background: `${
-          theme.palette.mode === "light"
-            ? colors.primary[900]
-            : colors.primary[600]
+          theme.palette.mode === "dark" ? colors.primary[600] : colors.grey[800]
         }`,
         py: "25px",
         width: "100%",

@@ -40,6 +40,7 @@ const Topbar = (props) => {
               <IconButton
                 onClick={props.handleSidebar}
                 size="medium"
+                color="inherit"
                 sx={{
                   transform: props.sidebarOpen ? "" : "rotate(180deg)",
                   animation: "transform 500ms ease",
@@ -80,7 +81,11 @@ const Topbar = (props) => {
                     <Avatar
                       onClick={handleUserProfile}
                       alt={props.user.profile.name}
-                      src={props.user.profile.photoURL || undefined}
+                      src={
+                        (props.user.profile.photoURL ??
+                          props.user.profile.photoURL) ||
+                        undefined
+                      }
                       sx={{
                         width: 36,
                         height: 36,
@@ -118,7 +123,11 @@ const Topbar = (props) => {
       <Box display="flex" gap={0.5}>
         <Help />
         <Box>
-          <IconButton size="medium" onClick={colorMode.toggleColorMode}>
+          <IconButton
+            size="medium"
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlinedIcon />
             ) : (

@@ -33,11 +33,18 @@ const StatBox = ({
       width="100%"
       minHeight="min-content"
       sx={{
-        bgcolor: colors.primary[600],
+        bgcolor:
+          theme.palette.mode === "dark"
+            ? colors.primary[600]
+            : colors.grey[800],
         userSelect: "none",
         py: "3%",
         "&:hover": {
-          bgcolor: !!type ? colors.primary[700] : undefined,
+          bgcolor: !!type
+            ? theme.palette.mode === "dark"
+              ? colors.primary[700]
+              : colors.grey[700]
+            : undefined,
         },
       }}
       onClick={!!type ? handleClick : undefined}
