@@ -52,10 +52,6 @@ const RecordsList = () => {
     }
   }, [recordsStatus, location.search, dispatch, navigate]);
 
-  // useEffect(() => {
-  //   dispatch(getFilteredRecords(location.search));
-  // }, [location.search]);
-
   return (
     <Box width="100%" height="100%" minHeight="min-content" overflow="auto">
       {!!filteredRecords && filteredRecords.length <= 0 ? (

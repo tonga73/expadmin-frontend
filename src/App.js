@@ -110,7 +110,7 @@ function App() {
           </Box>
 
           <Box width="100%">
-            <main className="content">
+            <main id="main-outlet" className="content">
               <Topbar
                 user={user}
                 sidebarOpen={sidebarOpen}

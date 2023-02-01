@@ -11,6 +11,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import routes from "../../app/routes";
 
 import { gradient } from "../../utils/keyframes";
+import useWindowDimensions from "../../utils/useWindowDimensions";
 
 import RecordsList from "../../components/RecordsList";
 import RecordFilters from "../../components/RecordFilters";
@@ -22,6 +23,8 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
 
   const { pathname } = useLocation();
+  const { width, height } = useWindowDimensions();
+
   const user = useSelector(selectUser);
 
   const styles = {
@@ -34,6 +37,9 @@ const Sidebar = () => {
       animation: `${gradient} 1s linear infinite`,
     },
   };
+
+  const outletElement = document.getElementById("main-outlet") || "100vh";
+
   return (
     <Box
       display="flex"
@@ -43,10 +49,10 @@ const Sidebar = () => {
         background: `${
           theme.palette.mode === "dark" ? colors.primary[600] : colors.grey[800]
         }`,
-        py: "25px",
+        pt: "25px",
         width: "100%",
         minHeight: "100vh",
-        maxHeight: "100vh",
+        height: `${outletElement.offsetHeight}px`,
         zIndex: 99,
       }}
     >
