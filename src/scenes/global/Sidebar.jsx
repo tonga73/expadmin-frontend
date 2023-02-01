@@ -11,7 +11,6 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import routes from "../../app/routes";
 
 import { gradient } from "../../utils/keyframes";
-import useWindowDimensions from "../../utils/useWindowDimensions";
 
 import RecordsList from "../../components/RecordsList";
 import RecordFilters from "../../components/RecordFilters";
@@ -23,7 +22,6 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
 
   const { pathname } = useLocation();
-  const { width, height } = useWindowDimensions();
 
   const user = useSelector(selectUser);
 
