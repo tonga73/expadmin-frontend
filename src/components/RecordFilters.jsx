@@ -1,42 +1,22 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useNavigate,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import _debounce from "lodash.debounce";
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import SvgIcon from "@mui/material/SvgIcon";
 import InputBase from "@mui/material/InputBase";
 import { tokens } from "../theme";
 
-import ClearIcon from "@mui/icons-material/Clear";
-import SearchIcon from "@mui/icons-material/Search";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import VerticalAlignTopIcon from "@mui/icons-material/VerticalAlignTop";
-import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
-import FilterListIcon from "@mui/icons-material/FilterList";
-
-import { dataTracings } from "../data/enumsData";
-
-import Spinner from "./Spinner";
 
 import { getFilteredRecords } from "../store/actions/records.actions";
 
 import {
   selectFilteredRecords,
-  selectRecord,
   selectRecordsStatus,
-  filterRecords,
   setRecordsStatus,
 } from "../store/slices/records.slice";
 
@@ -46,46 +26,51 @@ const RecordFilters = () => {
   const colors = tokens(theme.palette.mode);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [sortByUpdated, setSortByUpdated] = useState("desc");
-  const [sortTracingMenu, setSortTracingMenu] = useState(false);
 
   const recordsStatus = useSelector(selectRecordsStatus);
   const filteredRecords = useSelector(selectFilteredRecords);
-  const record = useSelector(selectRecord);
 
-  const debounceFn = useCallback(_debounce(handleDebounceFn, 1000), []);
+  const handleDebounceFn = useCallback(
+    (inputValue) => {
+      if (inputValue.length > 0) {
+        dispatch(setRecordsStatus("loading"));
+        searchParams.set("search", inputValue);
+        setSearchParams(searchParams);
+        dispatch(getFilteredRecords(location.search));
+      } else {
+        dispatch(setRecordsStatus("loading"));
+        searchParams.delete("search");
+        setSearchParams(searchParams);
+      }
+    },
+    [dispatch, searchParams, setSearchParams, location.search]
+  );
+  const debounceFn = useCallback(
+    (e) => _debounce(handleDebounceFn, 300)(e),
+    [handleDebounceFn]
+  );
 
-  const escFunction = useCallback((event) => {
-    if (event.key === "Escape") {
-      handleSearch({ target: { value: "" } });
-    }
-  }, []);
+  const handleSearch = useCallback(
+    (event) => {
+      setSearch(event.target.value);
+      debounceFn(event.target.value);
+    },
+    [debounceFn, setSearch]
+  );
 
-  function handleDebounceFn(inputValue) {
-    console.log(inputValue, "VALUE");
-    if (inputValue.length > 0) {
-      dispatch(setRecordsStatus("loading"));
-      console.log("POR AQUI");
-      searchParams.set("search", inputValue);
-      setSearchParams(searchParams);
-      dispatch(getFilteredRecords(location.search));
-    } else {
-      dispatch(setRecordsStatus("loading"));
-      console.log("ELSE POR ACUA");
-      searchParams.delete("search");
-      setSearchParams(searchParams);
-    }
-  }
-
-  function handleSearch(event) {
-    setSearch(event.target.value);
-    debounceFn(event.target.value);
-  }
+  const escFunction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        handleSearch({ target: { value: "" } });
+      }
+    },
+    [handleSearch]
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", escFunction, false);
@@ -93,14 +78,17 @@ const RecordFilters = () => {
     return () => {
       document.removeEventListener("keydown", escFunction, false);
     };
-  }, []);
+  }, [escFunction]);
 
   useEffect(() => {
     searchParams.set("updatedAt", sortByUpdated);
     setSearchParams(searchParams);
     dispatch(setRecordsStatus("loading"));
+  }, [sortByUpdated, dispatch, searchParams, setSearchParams]);
+
+  useEffect(() => {
     dispatch(getFilteredRecords(location.search));
-  }, [location.search, sortByUpdated]);
+  }, [location.search, dispatch]);
 
   return (
     <Box
@@ -124,7 +112,10 @@ const RecordFilters = () => {
                 size="small"
                 sx={{
                   mr: 1,
-                  bgcolor: colors.primary[600],
+                  bgcolor:
+                    theme.palette.mode === "dark"
+                      ? colors.primary[600]
+                      : colors.grey[700],
                   color: colors.grey[400],
                   cursor: "pointer",
                   border: `solid 1px ${colors.primary[100]}`,
@@ -138,7 +129,15 @@ const RecordFilters = () => {
               </Box>
             ) : undefined
           }
-          sx={{ ml: 2, flex: 1, fontSize: "19px" }}
+          sx={{
+            pl: 0.5,
+            flex: 1,
+            fontSize: "19px",
+            bgcolor:
+              theme.palette.mode === "dark"
+                ? colors.primary[400]
+                : colors.grey[700],
+          }}
           onChange={handleSearch}
         />
       </Box>
@@ -148,7 +147,6 @@ const RecordFilters = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        borderBottom={`4px solid ${colors.primary[500]}`}
         px="15px"
         py="7px"
         width="100%"
@@ -156,7 +154,10 @@ const RecordFilters = () => {
           cursor: "pointer",
           userSelect: "none",
           color: colors.grey[400],
-          bgcolor: colors.primary[400],
+          bgcolor:
+            theme.palette.mode === "dark"
+              ? colors.primary[400]
+              : colors.grey[700],
           "&:hover": { color: colors.grey[100] },
         }}
         onClick={() => {
@@ -165,7 +166,7 @@ const RecordFilters = () => {
       >
         <Typography variant="h5" color={colors.grey[100]} fontWeight="600">
           {sortByUpdated === "desc" ? "Recientes" : "Antiguos"} Primero{" "}
-          {`(${!!filteredRecords && filteredRecords.length})`}
+          {`(${!!filteredRecords ? filteredRecords.length : "0"})`}
         </Typography>
         <SvgIcon>
           {sortByUpdated === "desc" ? (
@@ -220,10 +221,10 @@ const RecordFilters = () => {
           {Array.from(searchParams).map((e, index) => {
             const [param, value] = e;
             if (value === "asc" || value === "desc") {
-              return;
+              return <div key={index} />;
             }
             if (param === "search") {
-              return;
+              return <div key={index} />;
             }
             return (
               <Chip

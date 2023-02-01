@@ -82,7 +82,7 @@ function NotificationsPopover() {
   return (
     <Box>
       <IconButton
-        size="large"
+        size="medium"
         aria-label="notifications"
         aria-controls="notifications-popover"
         aria-haspopup="true"

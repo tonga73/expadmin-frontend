@@ -1,20 +1,15 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { DataGrid, esES, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
 
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 
 import { selectRecords } from "../../store/slices/records.slice";
-import { getRecords } from "../../store/actions/records.actions";
 
-const RecordsList = () => {
-  const dispatch = useDispatch();
+const RecordsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -59,9 +54,9 @@ const RecordsList = () => {
     },
   ];
 
-  useEffect(() => {
-    dispatch(getRecords({}));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getRecords({}));
+  // }, []);
 
   return (
     <Box>
@@ -119,4 +114,4 @@ const RecordsList = () => {
   );
 };
 
-export default RecordsList;
+export default RecordsTable;

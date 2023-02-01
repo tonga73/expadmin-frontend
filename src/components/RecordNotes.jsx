@@ -106,29 +106,31 @@ const RecordNotes = ({ notes }) => {
         >
           Crear Nota
         </Button>
-        <Button
-          onClick={() =>
-            setDisplayNotes({
-              notes: notes,
-              showAll: !displayNotes.showAll,
-            })
-          }
-          endIcon={
-            <ExpandCircleDownIcon
-              sx={{
-                rotate: displayNotes.showAll ? "180deg" : "0deg",
-              }}
-            />
-          }
-          color="neutral"
-        >
-          {displayNotes.showAll
-            ? `Mostrar solo recientes | Total: ${notes.length}`
-            : `
+        {notes.length > 3 ? (
+          <Button
+            onClick={() =>
+              setDisplayNotes({
+                notes: notes,
+                showAll: !displayNotes.showAll,
+              })
+            }
+            endIcon={
+              <ExpandCircleDownIcon
+                sx={{
+                  rotate: displayNotes.showAll ? "180deg" : "0deg",
+                }}
+              />
+            }
+            color="neutral"
+          >
+            {displayNotes.showAll
+              ? `Mostrar solo recientes | Total: ${notes.length}`
+              : `
           Mostrar Todas | Ocultas: (+${
             notes.length > 3 ? notes.length - 3 : 0
           })`}
-        </Button>
+          </Button>
+        ) : undefined}
       </Box>
       <Box
         gridColumn="span 12"

@@ -8,11 +8,7 @@ import {
 } from "../../app/fetchAPI/notesAPI";
 
 import { setNotesStatus, setNote } from "../slices/notes.slice";
-import {
-  setRecordNotes,
-  setRecordNewNote,
-  setRecordDeleteNote,
-} from "../slices/records.slice";
+import { setRecordNewNote, setRecordDeleteNote } from "../slices/records.slice";
 
 export const getNotes = createAsyncThunk("notes/fetchGetNotes", async () => {
   const response = await fetchGetNotes();

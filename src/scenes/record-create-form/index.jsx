@@ -1,15 +1,8 @@
-import { useState, useEffect, useRef, useReducer, useCallback } from "react";
+import { useState, useEffect, useReducer, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  Typography,
-} from "@mui/material";
-import { Formik, Field } from "formik";
+import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
+import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
@@ -61,7 +54,7 @@ const userSchema = yup.object().shape({
 });
 
 const RecordCreateForm = () => {
-  const [isMounted, toggle] = useReducer((p) => !p, true);
+  const [isMounted] = useReducer((p) => !p, true);
   const [elementRect, setElementRect] = useState();
   const handleRect = useCallback((node) => {
     setElementRect(node?.values);
@@ -87,13 +80,13 @@ const RecordCreateForm = () => {
     dispatch(setRecord({}));
     dispatch(setRecordsStatus("creating"));
     dispatch(getCourts({}));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!!elementRect && elementRect.court !== "") {
       dispatch(getOfficesByCourtId(elementRect.court));
     }
-  }, [elementRect]);
+  }, [elementRect, dispatch]);
 
   useEffect(() => {
     if (recordsStatus === "created") {
@@ -106,7 +99,14 @@ const RecordCreateForm = () => {
     if (courtsStatus === "success") {
       dispatch(setCourtsStatus(""));
     }
-  }, [recordsStatus, courtsStatus, officesStatus]);
+  }, [
+    recordsStatus,
+    courtsStatus,
+    officesStatus,
+    dispatch,
+    record.id,
+    navigate,
+  ]);
 
   return (
     <Box>
