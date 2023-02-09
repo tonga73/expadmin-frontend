@@ -30,7 +30,7 @@ const GoogleLoginButton = () => {
         }
       });
 
-      dispatch(setUserProfile({ email: data.email }));
+      dispatch(setUserProfile(data));
       dispatch(logIn(data.email));
       return;
     } catch (error) {

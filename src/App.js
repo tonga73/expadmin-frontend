@@ -159,10 +159,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
-                  <Route
-                    path="/login"
-                    element={<Login validatedRedirect={validatedRedirect} />}
-                  />
+                  <Route path="/login" element={<Login />} />
                 </Routes>
               </Container>
             </main>

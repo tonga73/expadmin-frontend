@@ -46,7 +46,7 @@ const Welcome = ({ email }) => {
           </Typography>
         </Alert>
         <Typography
-          variant="h2"
+          variant="h3"
           color="neutral"
           textAlign="center"
           fontWeight={100}
