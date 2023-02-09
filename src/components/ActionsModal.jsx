@@ -14,7 +14,6 @@ const ActionsModal = ({
   isOpen,
   handleIsOpen,
   handleOnClose,
-  handleSubmit,
 }) => {
   return (
     <Modal

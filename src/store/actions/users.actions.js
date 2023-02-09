@@ -2,11 +2,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import firebase from "../../services/firebase";
 
-import { fetchGetUser, fetchConfirmUser } from "../../app/fetchAPI/usersAPI";
+import {
+  fetchGetUser,
+  fetchConfirmUser,
+  fetchEditUser,
+} from "../../app/fetchAPI/usersAPI";
 
 import {
   setUsersStatus,
   setUserProfile,
+  setUserName,
   setUserCondition,
   setSignedIn,
 } from "../slices/users.slice";
@@ -94,5 +99,27 @@ export const confirmUser = createAsyncThunk(
         dispatch(setUsersStatus(""));
       }
     });
+  }
+);
+
+export const editUser = createAsyncThunk(
+  "users/fetchEditUser",
+  async ({ email, req }, { dispatch }) => {
+    dispatch(setUsersStatus("editing"));
+    const response = await fetchEditUser({ email, req });
+
+    dispatch(setUsersStatus("edited"));
+    dispatch(setUserProfile(response));
+  }
+);
+
+export const editUserName = createAsyncThunk(
+  "users/fetchEditUser",
+  async ({ email, req }, { dispatch }) => {
+    dispatch(setUsersStatus("editing"));
+    const { name } = await fetchEditUser({ email, req });
+
+    dispatch(setUsersStatus("edited"));
+    dispatch(setUserName(name));
   }
 );

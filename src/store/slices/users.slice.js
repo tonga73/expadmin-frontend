@@ -22,14 +22,22 @@ export const usersSlice = createSlice({
     setUserProfile: (state, action) => {
       state.user.profile = action.payload;
     },
+    setUserName: (state, action) => {
+      state.user.profile.name = action.payload;
+    },
     setSignedIn: (state, action) => {
       state.user.signedIn = action.payload;
     },
   },
 });
 
-export const { setUsersStatus, setUserCondition, setUserProfile, setSignedIn } =
-  usersSlice.actions;
+export const {
+  setUsersStatus,
+  setUserCondition,
+  setUserProfile,
+  setUserName,
+  setSignedIn,
+} = usersSlice.actions;
 
 export const selectUser = (state) => state.users.user;
 
