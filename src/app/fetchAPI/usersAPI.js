@@ -21,3 +21,12 @@ export async function fetchConfirmUser({ email, localDisplayName }) {
     console.log(error);
   }
 }
+
+export async function fetchEditUser({ email, req }) {
+  try {
+    const { data } = await axiosClient.patch(`/users/${email}`, req);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
