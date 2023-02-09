@@ -48,7 +48,7 @@ const ActionsModal = ({
               textTransform="uppercase"
               textAlign="center"
             >
-              Editando Expediente
+              Editando
             </Typography>
           </Box>
           <IconButton onClick={handleOnClose} size="small">

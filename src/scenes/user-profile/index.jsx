@@ -176,7 +176,7 @@ const UserProfile = () => {
                 color="warning"
                 fullWidth
                 type="text"
-                label="Carátula del Expediente"
+                label="Nombre"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.name}
