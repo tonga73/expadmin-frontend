@@ -218,7 +218,6 @@ const Record = () => {
         isLoading={recordsStatus === "editing"}
         isOpen={editMode}
         handleOnClose={() => setEditMode(false)}
-        handleSubmit={handleEditRecordSubmit}
       >
         <Formik
           onSubmit={handleEditRecordSubmit}
