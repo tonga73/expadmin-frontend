@@ -14,7 +14,7 @@ import {
   selectUser,
 } from "../../store/slices/users.slice";
 
-const Login = (props) => {
+const Login = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);

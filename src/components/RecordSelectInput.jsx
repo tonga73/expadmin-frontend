@@ -5,11 +5,14 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { Formik } from "formik";
 import * as yup from "yup";
+
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 import { dataPriorities, dataTracings } from "../data/enumsData";
 
@@ -34,11 +37,13 @@ const RecordSelectInput = ({ record }) => {
   const initialValues = {
     priority: record.priority || "",
     tracing: record.tracing || "",
+    favorite: record.favorite,
   };
 
   const userSchema = yup.object().shape({
     priority: yup.string(),
     tracing: yup.string(),
+    favorite: yup.boolean(),
   });
 
   const handleFormSubmit = useCallback(
@@ -57,12 +62,15 @@ const RecordSelectInput = ({ record }) => {
     if (isMounted && elementRect !== undefined) {
       const fetchData = async () => {
         if (Number(params.id) === record.id) {
-          const { priority, tracing } = await record;
+          const { priority, tracing, favorite } = await record;
           if (priority !== elementRect.priority) {
             handleFormSubmit({ priority: elementRect.priority });
           }
           if (tracing !== elementRect.tracing) {
             handleFormSubmit({ tracing: elementRect.tracing });
+          }
+          if (favorite !== elementRect.favorite) {
+            handleFormSubmit({ favorite: elementRect.favorite });
           }
         }
       };
@@ -175,6 +183,16 @@ const RecordSelectInput = ({ record }) => {
               </MenuItem>
             ))}
           </TextField>
+          <Box display="flex" alignItems="center" sx={{ px: 0.5 }}>
+            <Checkbox
+              disableRipple
+              size="large"
+              checked={values.favorite}
+              icon={<PriorityHighIcon color="neutral" />}
+              checkedIcon={<PriorityHighIcon color="secondary" />}
+              onChange={handleChange("favorite")}
+            />
+          </Box>
         </Box>
       )}
     </Formik>
