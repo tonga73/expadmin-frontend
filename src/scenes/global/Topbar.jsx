@@ -136,7 +136,7 @@ const Topbar = (props) => {
           </IconButton>
         </Box>
 
-        {/* <NotificationsPopover /> */}
+        <NotificationsPopover />
 
         {/* <IconButton>
           <SettingsOutlinedIcon />
