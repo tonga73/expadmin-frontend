@@ -26,20 +26,8 @@ function NotificationsPopover() {
     () => [
       {
         id: "1",
-        title: "EXPEDIENTE: Administrar Partes del Expediente",
-        text: 'Ya se pueden añadir y eliminar NOMBRES/EMPRESAS para las PARTES de CADA EXPEDIENTE en su "zona correspondiente".',
-        isRead: false,
-      },
-      {
-        id: "2",
-        title: "EXPEDIENTE: Mejora en visualización de Notas",
-        text: 'Las NOTAS de EXPEDIENTES ahora no limitan la altura. Es recomendable igualmente separarlas en "notas individuales" siempre que sea posible.',
-        isRead: false,
-      },
-      {
-        id: "3",
-        title: "GENERAL: Notificaciones de cambios en el sistema",
-        text: 'Se activaron las notificaciones de sistema para cambios importantes. Las mismas serán visibles en este menú y pueden "marcarse como leidas" haciendo click en ellas.',
+        title: "EXPEDIENTES: Destacar para control",
+        text: "Los expedientes ahora cuentan con una opción para destacarlos. El ícono es visible desde la lista pero su estado solamente puede ser modificado ingresando al expediente.",
         isRead: false,
       },
     ],
@@ -76,6 +64,17 @@ function NotificationsPopover() {
       localStorage.getItem("notifications") !== JSON.stringify(notifications)
     ) {
       setNotifications(JSON.parse(localStorage.getItem("notifications")));
+    }
+  }, [notifications, initialNotifications]);
+
+  useEffect(() => {
+    if (
+      JSON.parse(localStorage.getItem("notifications")) !== initialNotifications
+    ) {
+      localStorage.setItem(
+        "notifications",
+        JSON.stringify(initialNotifications)
+      );
     }
   }, [notifications, initialNotifications]);
 
@@ -131,12 +130,10 @@ function NotificationsPopover() {
               <Box
                 component={ListItem}
                 key={notification.id}
-                button
                 display="flex"
                 gap={1}
               >
                 <ListItemButton
-                  disableGutters
                   disabled={notification.isRead}
                   onClick={() => markAsRead(notification)}
                 >
