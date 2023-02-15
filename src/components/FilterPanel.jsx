@@ -19,6 +19,8 @@ import PriorityHighIcon from "@mui/icons-material/PriorityHigh"
 import SortByAlphaIcon from "@mui/icons-material/SortByAlpha"
 import SortIcon from "@mui/icons-material/Sort"
 
+import { SearchInput } from "./SearchInput"
+
 import { getFilteredRecords } from "../store/actions/records.actions"
 
 const filters = [
@@ -75,7 +77,9 @@ export const FilterPanel = () => {
   const [selectedFilter, setSelectedFilter] = useState(null)
 
   const clearSearchParams = () => {
-    Array.from(searchParams).map((e) => searchParams.delete(e[0]))
+    Array.from(searchParams)
+      .filter((param) => param[0] !== "search")
+      .map((e) => searchParams.delete(e[0]))
     setSelectedFilter(null)
     setSearchParams(searchParams)
   }
@@ -97,13 +101,20 @@ export const FilterPanel = () => {
       .forEach((e) => searchParams.delete(e.value))
   }
 
+  console.log(selectedFilter)
   useEffect(() => {
+    if (searchParams.keys().next().value === "search") {
+      dispatch(getFilteredRecords(`?${searchParams.toString()}`))
+    }
     if (!!selectedFilter) {
       searchParams.set(...selectedFilter)
       setSearchParams(searchParams)
       dispatch(getFilteredRecords(`?${searchParams.toString()}`))
       return
-    } else if (!!searchParams.keys().next().value) {
+    } else if (
+      !!searchParams.keys().next().value &&
+      searchParams.keys().next().value !== "search"
+    ) {
       setSelectedFilter(searchParams.entries().next().value)
       return
     }
@@ -111,13 +122,13 @@ export const FilterPanel = () => {
   }, [searchParams, setSearchParams, selectedFilter, dispatch])
 
   return (
-    <>
+    <Box display="grid" gap={1} width="100%" sx={{ p: 1 }}>
+      <SearchInput clearSearch={clearSearchParams} />
       <ButtonGroup
         disableElevation
         fullWidth
         variant="outlined"
         aria-label="Filter panel buttons"
-        sx={{ p: 1 }}
       >
         {filters
           .filter((e) => e.sortable)
@@ -126,11 +137,7 @@ export const FilterPanel = () => {
               key={index}
               placement="top"
               disableRipple
-              title={
-                <Box component={Typography} p={0.3}>
-                  {label}
-                </Box>
-              }
+              title={<Box component={Typography}>{label}</Box>}
               sx={{ bgcolor: "transparent" }}
             >
               <Button
@@ -145,16 +152,17 @@ export const FilterPanel = () => {
         <Tooltip
           placement="top"
           disableRipple
-          title={
-            <Box component={Typography} p={0.3}>
-              limpiar filtros
-            </Box>
-          }
+          title={<Box component={Typography}>limpiar filtros</Box>}
           sx={{ bgcolor: "transparent" }}
         >
           <Button
             onClick={clearSearchParams}
-            color={searchParams.keys().next().value ? "info" : "neutral"}
+            color={
+              Array.from(searchParams).filter((param) => param[0] !== "search")
+                .length > 0 && searchParams.keys().next().value
+                ? "info"
+                : "neutral"
+            }
             size="small"
           >
             <RestartAltIcon />
@@ -165,7 +173,7 @@ export const FilterPanel = () => {
         direction="row"
         justifyContent="center"
         spacing={3}
-        sx={{ width: "100%", py: 1 }}
+        sx={{ width: "100%" }}
       >
         {filters
           .filter((e) => !e.sortable)
@@ -201,6 +209,6 @@ export const FilterPanel = () => {
             ) : undefined
           )}
       </Stack>
-    </>
+    </Box>
   )
 }

@@ -39,18 +39,18 @@ const RecordsList = () => {
   //   dispatch(filterRecords(search));
   // }, [search]);
 
-  useEffect(() => {
-    if (recordsStatus === "success") {
-      dispatch(setRecordsStatus(""))
-    }
-    if (recordsStatus === "edited") {
-      dispatch(setRecordsStatus(""))
-    }
-    if (recordsStatus === "deleted") {
-      dispatch(setRecordsStatus(""))
-      navigate(`/`)
-    }
-  }, [recordsStatus, location.search, dispatch, navigate])
+  // useEffect(() => {
+  //   if (recordsStatus === "success") {
+  //     dispatch(setRecordsStatus(""))
+  //   }
+  //   if (recordsStatus === "edited") {
+  //     dispatch(setRecordsStatus(""))
+  //   }
+  //   if (recordsStatus === "deleted") {
+  //     dispatch(setRecordsStatus(""))
+  //     navigate(`/`)
+  //   }
+  // }, [recordsStatus, location.search, dispatch, navigate])
 
   return (
     <Box width="100%" overflow="auto">
