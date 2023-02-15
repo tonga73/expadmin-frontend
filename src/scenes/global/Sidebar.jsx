@@ -1,42 +1,31 @@
-import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import { tokens } from "../../theme";
-import { useTheme } from "@mui/material/";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux"
+import { Link, useLocation } from "react-router-dom"
+import { tokens } from "../../theme"
+import { useTheme } from "@mui/material/"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Typography from "@mui/material/Typography"
 
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import AccountBoxIcon from "@mui/icons-material/AccountBox"
 
-import routes from "../../app/routes";
+import routes from "../../app/routes"
 
-import { gradient } from "../../utils/keyframes";
+import { Logo } from "../../components/Logo"
+import { FilterPanel } from "../../components/FilterPanel"
+import RecordsList from "../../components/RecordsList"
+import RecordFilters from "../../components/RecordFilters"
 
-import RecordsList from "../../components/RecordsList";
-import RecordFilters from "../../components/RecordFilters";
-
-import { selectUser } from "../../store/slices/users.slice";
+import { selectUser } from "../../store/slices/users.slice"
 
 const Sidebar = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
 
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser)
 
-  const styles = {
-    text: {
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      background: `linear-gradient(to right, ${colors.greenAccent[500]}, ${colors.blueAccent[500]})`,
-      backgroundClip: "text",
-      color: "transparent",
-      animation: `${gradient} 1s linear infinite`,
-    },
-  };
-
-  const outletElement = document.getElementById("main-outlet") || "100vh";
+  const outletElement = document.getElementById("main-outlet")
 
   return (
     <Box
@@ -50,33 +39,11 @@ const Sidebar = () => {
         pt: "25px",
         width: "100%",
         minHeight: "100vh",
-        height: `${outletElement.offsetHeight}px`,
+        height: outletElement ? `${outletElement.offsetHeight}px` : "100vh",
         zIndex: 99,
       }}
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        gap={1.5}
-        sx={{ pointerEvents: "none", userSelect: "none" }}
-      >
-        <Box
-          component="img"
-          src="../images/hugadminFavicon.png"
-          alt="Imagen Logo de Hugadmin."
-          height="55px"
-          sx={{ boxShadow: 21 }}
-        />
-        <Typography
-          variant="h2"
-          textTransform="uppercase"
-          fontWeight={100}
-          sx={styles.text}
-          className="text"
-        >
-          Hugadmin
-        </Typography>
-      </Box>
+      <Logo />
       {/* SIDEBAR ROUTES */}
       <Box width="100%">
         {routes["MAIN"].map((route, index) => (
@@ -149,7 +116,7 @@ const Sidebar = () => {
               </Box>
             ))}
           </Box>
-          <RecordFilters />
+          <FilterPanel />
           <RecordsList />
         </>
       ) : undefined}
@@ -189,7 +156,7 @@ const Sidebar = () => {
         </Box>
       ) : undefined}
     </Box>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

@@ -80,14 +80,27 @@ const RecordFilters = () => {
     };
   }, [escFunction]);
 
-  useEffect(() => {
-    searchParams.set("updatedAt", sortByUpdated);
-    setSearchParams(searchParams);
-    dispatch(setRecordsStatus("loading"));
-  }, [sortByUpdated, dispatch, searchParams, setSearchParams]);
+  // console.log(!!searchParams.entries().next().value);
+  console.log(filteredRecords.length, "SEARCH");
+
+  // useEffect(() => {
+  //   searchParams.set("updatedAt", sortByUpdated);
+  //   setSearchParams(searchParams);
+  //   dispatch(setRecordsStatus("loading"));
+  // }, [sortByUpdated, dispatch, searchParams, setSearchParams]);
+
+  const filters = [
+    {
+      value: "updatedAt",
+      sortable: true,
+      filtrable: false,
+    },
+  ];
 
   useEffect(() => {
-    dispatch(getFilteredRecords(location.search));
+    if (location.search !== "" || filteredRecords.length <= 0) {
+      dispatch(getFilteredRecords(location.search));
+    }
   }, [location.search, dispatch]);
 
   return (
