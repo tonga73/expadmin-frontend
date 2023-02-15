@@ -3,13 +3,17 @@ import { useDispatch } from "react-redux"
 import { useSearchParams } from "react-router-dom"
 
 import Box from "@mui/material/Box"
-import IconButton from "@mui/material/IconButton"
+import Chip from "@mui/material/Chip"
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
+import IconButton from "@mui/material/IconButton"
+import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
+import { useTheme } from "@mui/material"
+import { tokens } from "../theme"
 
-import CleaningServicesIcon from "@mui/icons-material/CleaningServices"
+import RestartAltIcon from "@mui/icons-material/RestartAlt"
 import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl"
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh"
 import SortByAlphaIcon from "@mui/icons-material/SortByAlpha"
@@ -20,43 +24,58 @@ import { getFilteredRecords } from "../store/actions/records.actions"
 const filters = [
   {
     value: "name",
-    label: "Nombre de Expediente",
+    label: "Orden Alfabético",
     defaultOption: "asc",
     icon: <SortByAlphaIcon />,
+    sortable: true,
   },
   {
     value: "order",
     label: "Número de Expediente",
     defaultOption: "asc",
     icon: <FormatListNumberedRtlIcon />,
+    sortable: true,
   },
   {
     value: "favorite",
     label: "Destacado",
     defaultOption: "desc",
     icon: <PriorityHighIcon />,
+    sortable: true,
   },
   {
     value: "updatedAt",
     label: "Actualizado",
-    defaultOption: "desc",
+    defaultOption: "asc",
     icon: <SortIcon />,
+    sortable: true,
+  },
+  {
+    value: "priority",
+    label: "Actualizado",
+    defaultOption: "asc",
+    icon: <SortIcon />,
+    sortable: false,
+  },
+  {
+    value: "tracing",
+    label: "Actualizado",
+    defaultOption: "asc",
+    icon: <SortIcon />,
+    sortable: false,
   },
 ]
 
 export const FilterPanel = () => {
+  // THEME UTILS
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedFilter, setSelectedFilter] = useState(null)
 
-  searchParams.forEach((key) => {
-    searchParams.delete([key])
-  })
-
   const clearSearchParams = () => {
-    const { value } = searchParams.keys().next()
-
-    searchParams.delete(value)
+    Array.from(searchParams).map((e) => searchParams.delete(e[0]))
     setSelectedFilter(null)
     setSearchParams(searchParams)
   }
@@ -74,7 +93,7 @@ export const FilterPanel = () => {
     setSelectedFilter([value, option])
 
     filters
-      .filter((e) => e.value !== selectedFilter)
+      .filter((e) => e.sortable && e.value !== selectedFilter)
       .forEach((e) => searchParams.delete(e.value))
   }
 
@@ -92,48 +111,96 @@ export const FilterPanel = () => {
   }, [searchParams, setSearchParams, selectedFilter, dispatch])
 
   return (
-    <ButtonGroup
-      disableElevation
-      fullWidth
-      variant="outlined"
-      aria-label="Filter panel buttons"
-      sx={{ p: 1 }}
-    >
-      {filters.map(({ value, label, icon, defaultOption }, index) => (
+    <>
+      <ButtonGroup
+        disableElevation
+        fullWidth
+        variant="outlined"
+        aria-label="Filter panel buttons"
+        sx={{ p: 1 }}
+      >
+        {filters
+          .filter((e) => e.sortable)
+          .map(({ value, label, icon, defaultOption }, index) => (
+            <Tooltip
+              key={index}
+              placement="top"
+              disableRipple
+              title={
+                <Box component={Typography} p={0.3}>
+                  {label}
+                </Box>
+              }
+              sx={{ bgcolor: "transparent" }}
+            >
+              <Button
+                size="small"
+                color={searchParams.has(value) ? "secondary" : "neutral"}
+                onClick={() => handleSortBy(value, defaultOption)}
+              >
+                {icon}
+              </Button>
+            </Tooltip>
+          ))}
         <Tooltip
-          key={index}
           placement="top"
           disableRipple
           title={
             <Box component={Typography} p={0.3}>
-              {label}
+              limpiar filtros
             </Box>
           }
           sx={{ bgcolor: "transparent" }}
         >
           <Button
+            onClick={clearSearchParams}
+            color={searchParams.keys().next().value ? "info" : "neutral"}
             size="small"
-            color={searchParams.has(value) ? "secondary" : "neutral"}
-            onClick={() => handleSortBy(value, defaultOption)}
           >
-            {icon}
+            <RestartAltIcon />
           </Button>
         </Tooltip>
-      ))}
-      <Tooltip
-        placement="top"
-        disableRipple
-        title={
-          <Box component={Typography} p={0.3}>
-            Limpiar filtros
-          </Box>
-        }
-        sx={{ bgcolor: "transparent" }}
+      </ButtonGroup>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        spacing={3}
+        sx={{ width: "100%", py: 1 }}
       >
-        <Button onClick={clearSearchParams} color="info" size="small">
-          <CleaningServicesIcon />
-        </Button>
-      </Tooltip>
-    </ButtonGroup>
+        {filters
+          .filter((e) => !e.sortable)
+          .map(({ value }, index) =>
+            searchParams.has(value) ? (
+              <Chip
+                key={index}
+                size="small"
+                label={searchParams.get(value).replaceAll("_", " ")}
+                onDelete={() => {
+                  if (value === "priority") {
+                    searchParams.delete("priority")
+                  }
+                  if (value === "tracing") {
+                    searchParams.delete("tracing")
+                  }
+                  setSelectedFilter(null)
+                  setSearchParams(searchParams)
+                }}
+                sx={{
+                  width: "min-content",
+                  justifyContent: "space-between",
+                  bgcolor:
+                    value === "priority"
+                      ? colors.priorityColors[
+                          searchParams.get(value).replaceAll("_", " ")
+                        ]
+                      : colors.tracingColors[
+                          searchParams.get(value).replaceAll("_", " ")
+                        ],
+                }}
+              />
+            ) : undefined
+          )}
+      </Stack>
+    </>
   )
 }
