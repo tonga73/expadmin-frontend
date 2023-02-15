@@ -1,12 +1,12 @@
-import { axiosClient } from "../../app/axiosClient";
+import { axiosClient } from "../../app/axiosClient"
 
 export async function fetchGetRecords() {
   try {
-    const { data } = await axiosClient(`/records`);
+    const { data } = await axiosClient(`/records`)
 
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
@@ -14,48 +14,48 @@ export async function fetchGetFilteredRecords(query) {
   try {
     const { data } = await axiosClient(
       `/records/filter${Object.keys(query).length !== 0 ? query : ""}`
-    );
+    )
 
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export async function fetchGetRecord(id) {
   try {
-    const { data } = await axiosClient(`/records/${id}`);
+    const { data } = await axiosClient(`/records/${id}`)
 
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export async function fetchNewRecord(req) {
   try {
-    const { data } = await axiosClient.post("/records", req);
-    return data;
+    const { data } = await axiosClient.post("/records", req)
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export async function fetchEditRecord({ id, req }) {
   try {
-    const { data } = await axiosClient.patch(`/records/${id}`, req);
-    return data;
+    const { data } = await axiosClient.patch(`/records/${id}`, req)
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export async function fetchDeleteRecord(id) {
   try {
-    const { data } = await axiosClient.delete(`/records/${id}`);
+    const { data } = await axiosClient.delete(`/records/${id}`)
 
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
