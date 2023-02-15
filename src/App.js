@@ -21,6 +21,7 @@ import Record from "./scenes/record";
 import UserProfile from "./scenes/user-profile";
 
 import Login from "./scenes/login/Login";
+import Maintenance from "./scenes/maintenance";
 import { ProtectedRoute } from "./utils/routeGuard";
 
 import { setUserCondition, selectUser } from "./store/slices/users.slice";
@@ -32,6 +33,7 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [maintenanceMode, setMaintenanceMode] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(
     JSON.parse(localStorage.getItem("sidebar")) || false
   );
@@ -75,96 +77,111 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box
-          display="grid"
-          gridTemplateColumns={`${sidebarOpen ? "30%" : ""} ${
-            sidebarOpen ? "70%" : "1fr"
-          }`}
-          className="app"
-          sx={{
-            "*::-webkit-scrollbar": {
-              width: "7px",
-            },
-            "*::-webkit-scrollbar-track": {
-              background:
-                theme.palette.mode === "dark"
-                  ? colors.primary[600]
-                  : colors.grey[800],
-            },
-            "*::-webkit-scrollbar-thumb": {
-              background:
-                theme.palette.mode === "dark"
-                  ? colors.primary[400]
-                  : colors.grey[600],
-            },
-            "*::-webkit-scrollbar-track:hover": {
-              background:
-                theme.palette.mode === "dark"
-                  ? colors.primary[700]
-                  : colors.grey[700],
-            },
-          }}
-        >
-          <Box display={sidebarOpen ? "initial" : "none"}>
-            <Sidebar />
-          </Box>
+        {maintenanceMode ? (
+          <Routes>
+            <Route
+              path="*"
+              navigationType=""
+              element={<Navigate to="/" replace />}
+            />
+            <Route path="/" element={<Maintenance />} />
+          </Routes>
+        ) : (
+          <Box
+            display="grid"
+            gridTemplateColumns={`${sidebarOpen ? "30%" : ""} ${
+              sidebarOpen ? "70%" : "1fr"
+            }`}
+            className="app"
+            sx={{
+              "*::-webkit-scrollbar": {
+                width: "7px",
+              },
+              "*::-webkit-scrollbar-track": {
+                background:
+                  theme.palette.mode === "dark"
+                    ? colors.primary[600]
+                    : colors.grey[800],
+              },
+              "*::-webkit-scrollbar-thumb": {
+                background:
+                  theme.palette.mode === "dark"
+                    ? colors.primary[400]
+                    : colors.grey[600],
+              },
+              "*::-webkit-scrollbar-track:hover": {
+                background:
+                  theme.palette.mode === "dark"
+                    ? colors.primary[700]
+                    : colors.grey[700],
+              },
+            }}
+          >
+            <Box display={sidebarOpen ? "initial" : "none"}>
+              <Sidebar />
+            </Box>
 
-          <Box width="100%">
-            <main id="main-outlet" className="content">
-              <Topbar
-                user={user}
-                sidebarOpen={sidebarOpen}
-                handleSidebar={handleSidebar}
-              />
-              <Container>
-                <Routes>
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                  <Route
-                    path="/"
-                    element={
-                      <ProtectedRoute isSignedIn={user.signedIn}>
-                        <Dashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/crear-expediente"
-                    element={
-                      <ProtectedRoute isSignedIn={user.signedIn}>
-                        <RecordCreateForm />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/listado-expedientes"
-                    element={
-                      <ProtectedRoute isSignedIn={user.signedIn}>
-                        <RecordsTable />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/expedientes/:id"
-                    element={
-                      <ProtectedRoute isSignedIn={user.signedIn}>
-                        <Record />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/user-profile"
-                    element={
-                      <ProtectedRoute isSignedIn={user.signedIn}>
-                        <UserProfile />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route path="/login" element={<Login />} />
-                </Routes>
-              </Container>
-            </main>
+            <Box width="100%">
+              <main id="main-outlet" className="content">
+                <Topbar
+                  user={user}
+                  sidebarOpen={sidebarOpen}
+                  handleSidebar={handleSidebar}
+                />
+                <Container>
+                  <Routes>
+                    <Route
+                      path="*"
+                      navigationType=""
+                      element={<Navigate to="/" replace />}
+                    />
+                    <Route
+                      path="/"
+                      element={
+                        <ProtectedRoute isSignedIn={user.signedIn}>
+                          <Dashboard />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/crear-expediente"
+                      element={
+                        <ProtectedRoute isSignedIn={user.signedIn}>
+                          <RecordCreateForm />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/listado-expedientes"
+                      element={
+                        <ProtectedRoute isSignedIn={user.signedIn}>
+                          <RecordsTable />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/expedientes/:id"
+                      element={
+                        <ProtectedRoute isSignedIn={user.signedIn}>
+                          <Record />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/user-profile"
+                      element={
+                        <ProtectedRoute isSignedIn={user.signedIn}>
+                          <UserProfile />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route path="/login" element={<Login />} />
+                  </Routes>
+                </Container>
+              </main>
+            </Box>
           </Box>
-        </Box>
+        )}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
