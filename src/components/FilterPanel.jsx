@@ -136,7 +136,7 @@ export const FilterPanel = () => {
       dispatch(getFilteredRecords(`?${searchParams.toString()}`))
       return
     }
-    // dispatch(getFilteredRecords({}))
+    dispatch(getFilteredRecords({}))
   }, [selectedFilter])
 
   return (
