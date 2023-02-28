@@ -1,9 +1,9 @@
-import { useSearchParams } from "react-router-dom";
-import { Box, Typography, useTheme } from "@mui/material";
-import { tokens } from "../theme";
-import ProgressCircle from "./ProgressCircle";
+import { useSearchParams } from "react-router-dom"
+import { Box, Typography, useTheme } from "@mui/material"
+import { tokens } from "../theme"
+import ProgressCircle from "./ProgressCircle"
 
-import { pulse } from "../utils/keyframes";
+import { pulse } from "../utils/keyframes"
 
 const StatBox = ({
   title,
@@ -14,15 +14,18 @@ const StatBox = ({
   progressSize,
   type,
 }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams()
 
   function handleClick(e) {
-    e.stopPropagation();
-    searchParams.set(type, subtitle.replaceAll(" ", "_").toUpperCase());
-    setSearchParams(searchParams);
+    if (subtitle === "Destacado") {
+      searchParams.set(type, "desc")
+    } else {
+      searchParams.set(type, subtitle.replaceAll(" ", "_").toUpperCase())
+    }
+    setSearchParams(searchParams)
   }
 
   return (
@@ -98,7 +101,7 @@ const StatBox = ({
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default StatBox;
+export default StatBox

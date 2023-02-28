@@ -7,7 +7,7 @@ import InputBase from "@mui/material/InputBase"
 import { useTheme } from "@mui/material"
 import { tokens } from "../theme"
 
-export const SearchInput = () => {
+export const SearchInput = ({ onChange }) => {
   // THEME UTILS
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
@@ -17,6 +17,7 @@ export const SearchInput = () => {
 
   const handleSearch = useCallback(
     (event) => {
+      console.log("event", event.target.value)
       setSearch(event.target.value)
     },
     [setSearch]
@@ -44,13 +45,18 @@ export const SearchInput = () => {
         .getElementById("searchbar")
         .addEventListener("keydown", escFunction, false)
     }
-  }, [escFunction, searchParams.has("search")])
+  }, [escFunction, searchParams])
 
   useEffect(() => {
     if (!!search) {
       searchParams.set("search", search)
       setSearchParams(searchParams)
+    } else {
+      handleSearch({ target: { value: "" } })
+      searchParams.delete("search")
+      setSearchParams(searchParams)
     }
+    onChange(search)
   }, [search])
 
   return (
