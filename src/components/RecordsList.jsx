@@ -185,9 +185,7 @@ const RecordsList = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" sx={{ px: 0.5 }}>
-                    <PriorityHighIcon
-                      color={favorite ? "secondary" : "neutral"}
-                    />
+                    {favorite && <PriorityHighIcon color="secondary" />}
                   </Box>
                 </Box>
                 <Typography

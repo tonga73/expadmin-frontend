@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { useDispatch } from "react-redux"
 import { useSearchParams } from "react-router-dom"
+import _debounce from "lodash/debounce"
 
 import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
@@ -54,15 +55,15 @@ const filters = [
   },
   {
     value: "priority",
-    label: "Actualizado",
-    defaultOption: "asc",
+    label: "",
+    defaultOption: "",
     icon: <SortIcon />,
     sortable: false,
   },
   {
     value: "tracing",
-    label: "Actualizado",
-    defaultOption: "asc",
+    label: "",
+    defaultOption: "",
     icon: <SortIcon />,
     sortable: false,
   },
@@ -84,6 +85,17 @@ export const FilterPanel = () => {
     setSearchParams(searchParams)
   }
 
+  const handleDeleteFilter = (value) => {
+    if (value === "priority") {
+      searchParams.delete("priority")
+    }
+    if (value === "tracing") {
+      searchParams.delete("tracing")
+    }
+    setSelectedFilter(null)
+    setSearchParams(searchParams)
+  }
+
   const handleSortBy = (value, option) => {
     const optionsSortBy = ["desc", "asc"]
 
@@ -97,33 +109,39 @@ export const FilterPanel = () => {
     setSelectedFilter([value, option])
 
     filters
-      .filter((e) => e.sortable && e.value !== selectedFilter)
-      .forEach((e) => searchParams.delete(e.value))
+      .filter((filter) => filter.sortable && filter.value !== selectedFilter)
+      .forEach((filter) => searchParams.delete(filter.value))
   }
 
-  console.log(selectedFilter)
-  useEffect(() => {
-    if (searchParams.keys().next().value === "search") {
-      dispatch(getFilteredRecords(`?${searchParams.toString()}`))
+  const doSearch = (value) => {
+    if (!value) {
+      dispatch(getFilteredRecords({}))
+      return
     }
+    dispatch(getFilteredRecords(`?search=${value}`))
+  }
+
+  const handleDebouncedSearch = useCallback(_debounce(doSearch, 300), [])
+
+  useEffect(() => {
+    if (searchParams.has("tracing") || searchParams.has("priority")) {
+      setSelectedFilter(...searchParams)
+    }
+  }, [searchParams])
+
+  useEffect(() => {
     if (!!selectedFilter) {
       searchParams.set(...selectedFilter)
       setSearchParams(searchParams)
       dispatch(getFilteredRecords(`?${searchParams.toString()}`))
       return
-    } else if (
-      !!searchParams.keys().next().value &&
-      searchParams.keys().next().value !== "search"
-    ) {
-      setSelectedFilter(searchParams.entries().next().value)
-      return
     }
     dispatch(getFilteredRecords({}))
-  }, [searchParams, setSearchParams, selectedFilter, dispatch])
+  }, [selectedFilter])
 
   return (
     <Box display="grid" gap={1} width="100%" sx={{ p: 1 }}>
-      <SearchInput clearSearch={clearSearchParams} />
+      <SearchInput onChange={handleDebouncedSearch} />
       <ButtonGroup
         disableElevation
         fullWidth
@@ -131,7 +149,7 @@ export const FilterPanel = () => {
         aria-label="Filter panel buttons"
       >
         {filters
-          .filter((e) => e.sortable)
+          .filter((filter) => filter.sortable)
           .map(({ value, label, icon, defaultOption }, index) => (
             <Tooltip
               key={index}
@@ -176,34 +194,21 @@ export const FilterPanel = () => {
         sx={{ width: "100%" }}
       >
         {filters
-          .filter((e) => !e.sortable)
+          .filter((filter) => !filter.sortable)
           .map(({ value }, index) =>
             searchParams.has(value) ? (
               <Chip
                 key={index}
                 size="small"
                 label={searchParams.get(value).replaceAll("_", " ")}
-                onDelete={() => {
-                  if (value === "priority") {
-                    searchParams.delete("priority")
-                  }
-                  if (value === "tracing") {
-                    searchParams.delete("tracing")
-                  }
-                  setSelectedFilter(null)
-                  setSearchParams(searchParams)
-                }}
+                onDelete={() => handleDeleteFilter(value)}
                 sx={{
                   width: "min-content",
                   justifyContent: "space-between",
                   bgcolor:
                     value === "priority"
-                      ? colors.priorityColors[
-                          searchParams.get(value).replaceAll("_", " ")
-                        ]
-                      : colors.tracingColors[
-                          searchParams.get(value).replaceAll("_", " ")
-                        ],
+                      ? colors.priorityColors[searchParams.get(value)]
+                      : colors.tracingColors[searchParams.get(value)],
                 }}
               />
             ) : undefined
