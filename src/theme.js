@@ -72,7 +72,7 @@ export const tokens = (mode) => ({
           MEDIA: "#F8961E",
           ALTA: "#F3722C",
           URGENTE: "#F94144",
-          INACTIVO: "#001219",
+          INACTIVO: "#331e31",
         },
         tracingColors: {
           ACEPTA_CARGO: "#626262",

@@ -1,39 +1,41 @@
-import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import Box from "@mui/material/Box"
-import Divider from "@mui/material/Divider"
-import Typography from "@mui/material/Typography"
-import { useTheme } from "@mui/material"
-import { tokens } from "../theme"
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material";
+import { tokens } from "../theme";
 
-import DonutSmallIcon from "@mui/icons-material/DonutSmall"
-import BlurCircularIcon from "@mui/icons-material/BlurCircular"
-import FolderOffIcon from "@mui/icons-material/FolderOff"
-import InventoryIcon from "@mui/icons-material/Inventory"
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment"
-import FactCheckIcon from "@mui/icons-material/FactCheck"
-import PriceCheckIcon from "@mui/icons-material/PriceCheck"
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
-import HandshakeIcon from "@mui/icons-material/Handshake"
-import NearbyErrorIcon from "@mui/icons-material/NearbyError"
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges"
+// ICONS
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import BlurCircularIcon from "@mui/icons-material/BlurCircular";
+import FolderOffIcon from "@mui/icons-material/FolderOff";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import NearbyErrorIcon from "@mui/icons-material/NearbyError";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
-import StatBox from "./StatBox"
+import StatBox from "./StatBox";
 
-import { selectRecords } from "../store/slices/records.slice"
-import { getRecords } from "../store/actions/records.actions"
+import { selectRecords } from "../store/slices/records.slice";
+import { getRecords } from "../store/actions/records.actions";
 
 const RecordsStats = () => {
-  const theme = useTheme()
-  const colors = tokens(theme.palette.mode)
-  const dispatch = useDispatch()
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const dispatch = useDispatch();
 
-  const records = useSelector(selectRecords) ?? []
+  const records = useSelector(selectRecords) ?? [];
 
   function generatePercentage(partialValue) {
-    const percentage = (100 * partialValue) / records.length
-    return percentage / 100
+    const percentage = (100 * partialValue) / records.length;
+    return percentage;
   }
 
   const generalStats = [
@@ -42,7 +44,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "PERICIA_REALIZADA"
+              return e.tracing === "PERICIA_REALIZADA";
             }).length,
       titleFontVariant: null,
       subtitle: "pericia realizada",
@@ -57,7 +59,7 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "PERICIA_REALIZADA"
+          return e.tracing === "PERICIA_REALIZADA";
         }).length
       ),
       progressSize: 50,
@@ -68,7 +70,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "COBRADO"
+              return e.tracing === "COBRADO";
             }).length,
       titleFontVariant: null,
       subtitle: "cobrado",
@@ -82,7 +84,7 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "COBRADO"
+          return e.tracing === "COBRADO";
         }).length
       ),
       progressSize: 50,
@@ -96,11 +98,11 @@ const RecordsStats = () => {
       icon: (
         <DonutSmallIcon
           sx={{
-            color: colors.greenAccent[500],
+            color: colors.blueAccent[500],
           }}
         />
       ),
-      progress: 1,
+      progress: 100,
       progressSize: 50,
       type: null,
     },
@@ -109,7 +111,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.priority === "INACTIVO"
+              return e.priority === "INACTIVO";
             }).length,
       titleFontVariant: null,
       subtitle: "inactivo",
@@ -117,16 +119,13 @@ const RecordsStats = () => {
       icon: (
         <FolderOffIcon
           sx={{
-            color:
-              theme.palette.mode === "dark"
-                ? colors.primary[400]
-                : colors.grey[600],
+            color: colors.priorityColors["INACTIVO"],
           }}
         />
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.priority === "INACTIVO"
+          return e.priority === "INACTIVO";
         }).length
       ),
       progressSize: 50,
@@ -137,27 +136,21 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.favorite === true
+              return e.favorite === true;
             }).length,
       titleFontVariant: null,
       subtitle: "Destacado",
       subtitleFontVariant: null,
-      icon: (
-        <InventoryIcon
-          sx={{
-            color: colors.grey[500],
-          }}
-        />
-      ),
+      icon: <PriorityHighIcon color="secondary" />,
       progress: generatePercentage(
         records.filter((e) => {
-          return e.favorite === true
+          return e.favorite === true;
         }).length
       ),
       progressSize: 50,
       type: "favorite",
     },
-  ]
+  ];
 
   const priorityStats = [
     {
@@ -165,7 +158,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.priority === "MEDIA"
+              return e.priority === "MEDIA";
             }).length,
       titleFontVariant: null,
       subtitle: "media",
@@ -180,7 +173,7 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.priority === "MEDIA"
+          return e.priority === "MEDIA";
         }).length
       ),
       progressSize: 50,
@@ -191,7 +184,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.priority === "ALTA"
+              return e.priority === "ALTA";
             }).length,
       titleFontVariant: null,
       subtitle: "ALTA",
@@ -206,7 +199,7 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.priority === "ALTA"
+          return e.priority === "ALTA";
         }).length
       ),
       progressSize: 50,
@@ -217,7 +210,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.priority === "URGENTE"
+              return e.priority === "URGENTE";
             }).length,
       titleFontVariant: null,
       subtitle: "URGENTE",
@@ -232,13 +225,13 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.priority === "URGENTE"
+          return e.priority === "URGENTE";
         }).length
       ),
       progressSize: 50,
       type: "priority",
     },
-  ]
+  ];
 
   const tracingStats = [
     {
@@ -246,7 +239,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES"
+              return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
             }).length,
       titleFontVariant: null,
       subtitle: "Sentencia o convenio de partes",
@@ -261,7 +254,7 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES"
+          return e.tracing === "SENTENCIA_O_CONVENIO_DE_PARTES";
         }).length
       ),
       progressSize: 50,
@@ -272,7 +265,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "HONORARIOS_REGULADOS"
+              return e.tracing === "HONORARIOS_REGULADOS";
             }).length,
       titleFontVariant: null,
       subtitle: "honorarios regulados",
@@ -287,7 +280,7 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "HONORARIOS_REGULADOS"
+          return e.tracing === "HONORARIOS_REGULADOS";
         }).length
       ),
       progressSize: 50,
@@ -298,7 +291,7 @@ const RecordsStats = () => {
         records.length <= 0
           ? null
           : records.filter((e) => {
-              return e.tracing === "EN_TRATATIVA_DE_COBRO"
+              return e.tracing === "EN_TRATATIVA_DE_COBRO";
             }).length,
       titleFontVariant: null,
       subtitle: "en tratativa de cobro",
@@ -313,17 +306,17 @@ const RecordsStats = () => {
       ),
       progress: generatePercentage(
         records.filter((e) => {
-          return e.tracing === "EN_TRATATIVA_DE_COBRO"
+          return e.tracing === "EN_TRATATIVA_DE_COBRO";
         }).length
       ),
       progressSize: 50,
       type: "tracing",
     },
-  ]
+  ];
 
   useEffect(() => {
-    dispatch(getRecords({}))
-  }, [dispatch])
+    dispatch(getRecords({}));
+  }, [dispatch]);
 
   return (
     <Box
@@ -386,7 +379,7 @@ const RecordsStats = () => {
         ))}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default RecordsStats
+export default RecordsStats;
