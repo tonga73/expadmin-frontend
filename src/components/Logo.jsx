@@ -25,6 +25,7 @@ export const Logo = () => {
   return (
     <Box
       display="flex"
+      flexDirection={{ xs: "column", lg: "row" }}
       alignItems="center"
       gap={1.5}
       sx={{ pointerEvents: "none", userSelect: "none" }}
