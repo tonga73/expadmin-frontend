@@ -1,5 +1,5 @@
-import { createContext, useState, useMemo } from "react";
-import { createTheme } from "@mui/material";
+import { createContext, useState, useMemo } from "react"
+import { createTheme } from "@mui/material"
 
 // grey 7a7a7a
 // primary 01161e
@@ -72,7 +72,7 @@ export const tokens = (mode) => ({
           MEDIA: "#F8961E",
           ALTA: "#F3722C",
           URGENTE: "#F94144",
-          INACTIVO: "#001219",
+          INACTIVO: "#331e31",
         },
         tracingColors: {
           ACEPTA_CARGO: "#626262",
@@ -158,11 +158,11 @@ export const tokens = (mode) => ({
           COBRADO: "#6e44ff",
         },
       }),
-});
+})
 
 // mui theme settings
 export const themeSettings = (mode) => {
-  const colors = tokens(mode);
+  const colors = tokens(mode)
 
   return {
     palette: {
@@ -229,16 +229,16 @@ export const themeSettings = (mode) => {
         fontSize: 14,
       },
     },
-  };
-};
+  }
+}
 
 // context for color mode
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
-});
+})
 
 export const useMode = () => {
-  const [mode, setMode] = useState(localStorage.getItem("theme") || "dark");
+  const [mode, setMode] = useState(localStorage.getItem("theme") || "dark")
 
   const colorMode = useMemo(
     () => ({
@@ -246,9 +246,9 @@ export const useMode = () => {
         setMode((prev) => (prev === "light" ? "dark" : "light")),
     }),
     []
-  );
+  )
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode])
 
-  return [theme, colorMode];
-};
+  return [theme, colorMode]
+}

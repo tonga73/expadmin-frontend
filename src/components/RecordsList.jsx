@@ -221,10 +221,6 @@ const RecordsList = () => {
                   width="14px"
                   borderRadius="50%"
                   sx={{
-                    border:
-                      priority === "INACTIVO"
-                        ? `1px solid ${colors.primary[300]}`
-                        : "",
                     "&:hover": {
                       transform: "scale(1.3)",
                       cursor: "pointer",

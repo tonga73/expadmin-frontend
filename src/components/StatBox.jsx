@@ -1,107 +1,140 @@
+import * as React from "react"
 import { useSearchParams } from "react-router-dom"
-import { Box, Typography, useTheme } from "@mui/material"
+import Box from "@mui/material/Box"
+import CircularProgress from "@mui/material/CircularProgress"
+import Fab from "@mui/material/Fab"
+import Typography from "@mui/material/Typography"
+import { useTheme, alpha } from "@mui/material"
 import { tokens } from "../theme"
-import ProgressCircle from "./ProgressCircle"
 
 import { pulse } from "../utils/keyframes"
 
-const StatBox = ({
-  title,
-  titleFontVariant,
-  subtitle,
-  icon,
-  progress,
-  progressSize,
-  type,
-}) => {
+export default function StatBox(props) {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
   const [searchParams, setSearchParams] = useSearchParams()
 
   function handleClick(e) {
-    if (subtitle === "Destacado") {
-      searchParams.set(type, "desc")
+    if (props.subtitle === "Destacado") {
+      searchParams.set(props.type, "desc")
     } else {
-      searchParams.set(type, subtitle.replaceAll(" ", "_").toUpperCase())
+      searchParams.set(
+        props.type,
+        props.subtitle.replaceAll(" ", "_").toUpperCase()
+      )
     }
     setSearchParams(searchParams)
   }
 
+  const colorSelector = (value) => {
+    switch (value) {
+      case null:
+        return colors.blueAccent[500]
+      case "priority":
+        return colors.priorityColors[
+          props.subtitle.replaceAll(" ", "_").toUpperCase()
+        ]
+      case "tracing":
+        return colors.tracingColors[
+          props.subtitle.replaceAll(" ", "_").toUpperCase()
+        ]
+      case "favorite":
+        return colors.greenAccent[500]
+
+      default:
+        break
+    }
+  }
+
   return (
     <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="start"
-      width="100%"
-      minHeight="min-content"
+      display="grid"
+      gridAutoFlow={{ xs: "column", sm: "row" }}
+      gridTemplateRows={{
+        xs: "1fr",
+        sm: "min-content 1fr 1fr",
+      }}
+      gap={1}
+      onClick={!!props.type ? handleClick : undefined}
       sx={{
+        py: "7%",
+        placeItems: "center",
+        border:
+          searchParams.get(props.type) ===
+          props.subtitle.replaceAll(" ", "_").toUpperCase()
+            ? `3px solid ${colorSelector(props.type)}`
+            : searchParams.has("favorite") && props.type === "favorite"
+            ? `3px solid ${colorSelector(props.type)}`
+            : `3px solid transparent`,
         bgcolor:
-          theme.palette.mode === "dark"
+          searchParams.get(props.type) ===
+          props.subtitle.replaceAll(" ", "_").toUpperCase()
+            ? alpha(colorSelector(props.type), 0.07)
+            : theme.palette.mode === "dark"
             ? colors.primary[600]
             : colors.grey[800],
         userSelect: "none",
-        py: "3%",
         "&:hover": {
-          bgcolor: !!type
-            ? theme.palette.mode === "dark"
-              ? colors.primary[700]
-              : colors.grey[700]
-            : undefined,
+          bgcolor:
+            searchParams.get(props.type) !==
+            props.subtitle.replaceAll(" ", "_").toUpperCase()
+              ? !!props.type
+                ? theme.palette.mode === "dark"
+                  ? colors.primary[700]
+                  : colors.grey[700]
+                : undefined
+              : null,
         },
       }}
-      onClick={!!type ? handleClick : undefined}
     >
-      <Box display="flex" justifyContent="center" height="100%">
-        <Box
-          display="grid"
-          gridAutoFlow={{ xs: "column", sm: "row" }}
-          gridTemplateRows={{
-            xs: "1fr",
-            sm: "min-content 1fr min-content",
-          }}
-          justifyContent="center"
-          alignItems="center"
-          gap={1}
+      <Box sx={{ position: "relative" }}>
+        <Fab
+          aria-label="save"
+          disableRipple
+          disableFocusRipple
+          disable
           sx={{
-            px: 3,
-            py: "3%",
+            backgroundColor: "transparent",
+            cursor: "default",
+            "&:hover": { bgcolor: "transparent" },
           }}
         >
-          <Box mx="auto">
-            <ProgressCircle
-              size={progressSize ? progressSize : 50}
-              progress={progress}
-              icon={icon}
-            />
-          </Box>
-          <Box sx={{ color: colors.grey[100] }}>
-            <Typography
-              variant={titleFontVariant ? titleFontVariant : "h5"}
-              fontWeight={300}
-              textTransform="uppercase"
-              textAlign="center"
-            >
-              {subtitle.length <= 0 ? "-" : subtitle}
-            </Typography>
-          </Box>
-          <Box sx={{ color: colors.grey[100] }}>
-            <Typography
-              variant={titleFontVariant ? titleFontVariant : "h3"}
-              fontWeight="bold"
-              textAlign="center"
-            >
-              {title === null ? (
-                <Box sx={{ animation: `${pulse} 2s linear infinite` }}>-</Box>
-              ) : (
-                title
-              )}
-            </Typography>
-          </Box>
-        </Box>
+          {props.icon}
+        </Fab>
+        <CircularProgress
+          value={props.progress}
+          variant="determinate"
+          size={68}
+          sx={{
+            color: colorSelector(props.type),
+            position: "absolute",
+            top: -6,
+            left: -6,
+            zIndex: 1,
+          }}
+        />
       </Box>
+      <Typography
+        variant={props.titleFontVariant ? props.titleFontVariant : "h5"}
+        fontWeight={300}
+        textTransform="uppercase"
+        textAlign="center"
+        sx={{ mt: { xs: 0, lg: 1.5 } }}
+      >
+        {props.subtitle.length <= 0 ? "-" : props.subtitle}
+      </Typography>
+      <Typography
+        variant={props.titleFontVariant ? props.titleFontVariant : "h3"}
+        fontWeight="bold"
+        textAlign="center"
+      >
+        {props.title === null ? (
+          <Box sx={{ animation: `${pulse} 2s linear infinite` }}>-</Box>
+        ) : (
+          props.title
+        )}
+      </Typography>
     </Box>
   )
 }
-
-export default StatBox

@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography"
 import { useTheme } from "@mui/material"
 import { tokens } from "../theme"
 
+// ICONS
 import DonutSmallIcon from "@mui/icons-material/DonutSmall"
 import BlurCircularIcon from "@mui/icons-material/BlurCircular"
 import FolderOffIcon from "@mui/icons-material/FolderOff"
@@ -18,6 +19,7 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import HandshakeIcon from "@mui/icons-material/Handshake"
 import NearbyErrorIcon from "@mui/icons-material/NearbyError"
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges"
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh"
 
 import StatBox from "./StatBox"
 
@@ -33,7 +35,7 @@ const RecordsStats = () => {
 
   function generatePercentage(partialValue) {
     const percentage = (100 * partialValue) / records.length
-    return percentage / 100
+    return percentage
   }
 
   const generalStats = [
@@ -96,11 +98,11 @@ const RecordsStats = () => {
       icon: (
         <DonutSmallIcon
           sx={{
-            color: colors.greenAccent[500],
+            color: colors.blueAccent[500],
           }}
         />
       ),
-      progress: 1,
+      progress: 100,
       progressSize: 50,
       type: null,
     },
@@ -117,10 +119,7 @@ const RecordsStats = () => {
       icon: (
         <FolderOffIcon
           sx={{
-            color:
-              theme.palette.mode === "dark"
-                ? colors.primary[400]
-                : colors.grey[600],
+            color: colors.priorityColors["INACTIVO"],
           }}
         />
       ),
@@ -142,13 +141,7 @@ const RecordsStats = () => {
       titleFontVariant: null,
       subtitle: "Destacado",
       subtitleFontVariant: null,
-      icon: (
-        <InventoryIcon
-          sx={{
-            color: colors.grey[500],
-          }}
-        />
-      ),
+      icon: <PriorityHighIcon color="secondary" />,
       progress: generatePercentage(
         records.filter((e) => {
           return e.favorite === true

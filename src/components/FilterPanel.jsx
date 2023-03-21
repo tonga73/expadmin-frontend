@@ -188,9 +188,9 @@ export const FilterPanel = () => {
         </Tooltip>
       </ButtonGroup>
       <Stack
-        direction="row"
+        direction={{ xs: "column", lg: "row" }}
         justifyContent="center"
-        spacing={3}
+        spacing={{ xs: 1, lg: 3 }}
         sx={{ width: "100%" }}
       >
         {filters
