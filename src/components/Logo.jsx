@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { tokens } from "../theme";
-import { useTheme } from "@mui/material/";
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import { tokens } from "../theme"
+import { useTheme } from "@mui/material/"
 
-import { gradient } from "../utils/keyframes";
+import { gradient } from "../utils/keyframes"
 
 export const Logo = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
 
   const styles = {
     text: {
@@ -20,7 +20,7 @@ export const Logo = () => {
       color: "transparent",
       animation: `${gradient} 1s linear infinite`,
     },
-  };
+  }
 
   return (
     <Box
@@ -47,5 +47,5 @@ export const Logo = () => {
         Hugadmin
       </Typography>
     </Box>
-  );
-};
+  )
+}

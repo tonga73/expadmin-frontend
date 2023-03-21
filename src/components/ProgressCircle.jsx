@@ -1,10 +1,10 @@
-import { Box, useTheme } from "@mui/material";
-import { tokens } from "../theme";
+import { Box, useTheme } from "@mui/material"
+import { tokens } from "../theme"
 
 const ProgressCircle = ({ progress, size, icon, type }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const angle = progress * 360;
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
+  const angle = progress * 360
 
   return (
     <Box
@@ -25,7 +25,7 @@ const ProgressCircle = ({ progress, size, icon, type }) => {
     >
       {icon}
     </Box>
-  );
-};
+  )
+}
 
-export default ProgressCircle;
+export default ProgressCircle
