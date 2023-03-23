@@ -93,7 +93,6 @@ export default function StatBox(props) {
           aria-label="save"
           disableRipple
           disableFocusRipple
-          disable
           sx={{
             backgroundColor: "transparent",
             cursor: "default",
