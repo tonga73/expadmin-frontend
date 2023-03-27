@@ -124,7 +124,11 @@ export const FilterPanel = () => {
   const handleDebouncedSearch = useCallback(_debounce(doSearch, 300), [])
 
   useEffect(() => {
-    if (searchParams.has("tracing") || searchParams.has("priority")) {
+    if (
+      searchParams.has("tracing") ||
+      searchParams.has("priority") ||
+      searchParams.has("take")
+    ) {
       setSelectedFilter(...searchParams)
     }
   }, [searchParams])

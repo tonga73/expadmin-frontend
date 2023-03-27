@@ -27,7 +27,7 @@ export const getRecords = createAsyncThunk(
 export const getFilteredRecords = createAsyncThunk(
   "records/fetchGetFilteredRecords",
   async (query, { dispatch }) => {
-    dispatch(setRecordsStatus("success"))
+    dispatch(setRecordsStatus("loading"))
     const response = await fetchGetFilteredRecords(query)
 
     dispatch(setFilteredRecords(response))
