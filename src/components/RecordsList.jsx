@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom"
 import { Box, Button, Typography, useTheme } from "@mui/material"
@@ -8,12 +8,14 @@ import { tokens } from "../theme"
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh"
 import ReplayIcon from "@mui/icons-material/Replay"
 
-import Spinner from "./Spinner"
 import CustomizedTooltip from "./CustomizedTooltip"
+import ScrollObserver from "./ScrollObserver"
+import Spinner from "./Spinner"
 
 import { getFilteredRecords } from "../store/actions/records.actions"
 
 import {
+  selectRecords,
   selectFilteredRecords,
   selectRecord,
   selectRecordsStatus,
@@ -32,12 +34,27 @@ const RecordsList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const recordsStatus = useSelector(selectRecordsStatus)
+
   const filteredRecords = useSelector(selectFilteredRecords)
   const record = useSelector(selectRecord)
+  const records = useSelector(selectRecords)
 
-  // useEffect(() => {
-  //   dispatch(filterRecords(search));
-  // }, [search]);
+  const handleIntersection = (isIntersecting) => {
+    if (
+      isIntersecting &&
+      filteredRecords.length > 0 &&
+      records.length > filteredRecords.length + 10
+    ) {
+      searchParams.set("take", filteredRecords.length + 10)
+      setSearchParams(searchParams)
+    }
+  }
+
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.5,
+  }
 
   useEffect(() => {
     if (recordsStatus === "success") {
@@ -232,14 +249,21 @@ const RecordsList = () => {
           )
         )
       )}
-      <Box
-        display="flex"
-        justifyContent="center"
-        py={1}
-        color={colors.grey[500]}
-      >
-        <Typography fontWeight={700}>·</Typography>
-      </Box>
+      <ScrollObserver options={options} onIntersection={handleIntersection}>
+        <Box
+          display="grid"
+          justifyContent="center"
+          py={1}
+          color={colors.grey[500]}
+          sx={{ placeItems: "center" }}
+        >
+          {recordsStatus === "loading" ? (
+            <Spinner size={15} />
+          ) : (
+            <Typography fontWeight={700}>·</Typography>
+          )}
+        </Box>
+      </ScrollObserver>
     </Box>
   )
 }
