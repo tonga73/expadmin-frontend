@@ -13,7 +13,7 @@ const Maintenance = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
-  const countDownDate = new Date("mar 28, 2023 16:00:00").getTime()
+  const countDownDate = new Date("mar 29, 2023 16:00:00").getTime()
 
   const x = setInterval(() => {
     // Get today's date and time
@@ -35,7 +35,8 @@ const Maintenance = () => {
 
     if (distance < 0) {
       clearInterval(x)
-      document.getElementById("countdown").innerHTML = "EXPIRED"
+      document.getElementById("countdown").innerHTML =
+        "Tiempo estimado finalizado. Si el sitio no regresa en breve consulte con el administrador."
     }
   }, 1000)
 
