@@ -1,77 +1,77 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import {
   Routes,
   Route,
   useLocation,
   useNavigate,
   Navigate,
-} from "react-router-dom";
+} from "react-router-dom"
 
-import { ColorModeContext, useMode, tokens } from "./theme";
-import { CssBaseline, Container, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode, tokens } from "./theme"
+import { CssBaseline, Container, ThemeProvider } from "@mui/material"
 
-import Box from "@mui/material/Box";
-import Topbar from "./scenes/global/Topbar";
-import Sidebar from "./scenes/global/Sidebar";
-import Dashboard from "./scenes/dashboard";
-import RecordCreateForm from "./scenes/record-create-form";
-import RecordsTable from "./scenes/records-table";
-import Record from "./scenes/record";
-import UserProfile from "./scenes/user-profile";
+import Box from "@mui/material/Box"
+import Topbar from "./scenes/global/Topbar"
+import Sidebar from "./scenes/global/Sidebar"
+import Dashboard from "./scenes/dashboard"
+import RecordCreateForm from "./scenes/record-create-form"
+import RecordsTable from "./scenes/records-table"
+import Record from "./scenes/record"
+import UserProfile from "./scenes/user-profile"
 
-import Login from "./scenes/login/Login";
-import Maintenance from "./scenes/maintenance";
-import { ProtectedRoute } from "./utils/routeGuard";
+import Login from "./scenes/login/Login"
+import Maintenance from "./scenes/maintenance"
+import { ProtectedRoute } from "./utils/routeGuard"
 
-import { setUserCondition, selectUser } from "./store/slices/users.slice";
+import { setUserCondition, selectUser } from "./store/slices/users.slice"
 
 function App() {
   // THEME UTILS
-  const [theme, colorMode] = useMode();
-  const colors = tokens(theme.palette.mode);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
+  const [theme, colorMode] = useMode()
+  const colors = tokens(theme.palette.mode)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [maintenanceMode, setMaintenanceMode] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(
     JSON.parse(localStorage.getItem("sidebar")) || false
-  );
+  )
 
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser)
 
   const validatedRedirect = () => {
-    console.log("SIPE");
-    dispatch(setUserCondition(""));
-    navigate("/");
-  };
+    console.log("SIPE")
+    dispatch(setUserCondition(""))
+    navigate("/")
+  }
 
   const handleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+    setSidebarOpen(!sidebarOpen)
+  }
 
   useEffect(() => {
-    localStorage.setItem("sidebar", sidebarOpen);
-    localStorage.setItem("theme", theme.palette.mode);
-  }, [sidebarOpen, theme.palette.mode]);
+    localStorage.setItem("sidebar", sidebarOpen)
+    localStorage.setItem("theme", theme.palette.mode)
+  }, [sidebarOpen, theme.palette.mode])
 
   useEffect(() => {
     if (location.pathname !== "/login" && user.condition === "validated") {
-      dispatch(setUserCondition(""));
-      navigate("/", { replace: true });
-      setSidebarOpen(true);
+      dispatch(setUserCondition(""))
+      navigate("/", { replace: true })
+      setSidebarOpen(true)
     }
     if (
       location.pathname === "/login" &&
       user.condition !== "verified" &&
       user.signedIn
     ) {
-      navigate("/", { replace: true });
+      navigate("/", { replace: true })
     }
     if (location.pathname === "/login") {
-      setSidebarOpen(false);
+      setSidebarOpen(false)
     }
-  }, [user.signedIn, user.condition, location.pathname, dispatch, navigate]);
+  }, [user.signedIn, user.condition, location.pathname, dispatch, navigate])
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -184,7 +184,7 @@ function App() {
         )}
       </ThemeProvider>
     </ColorModeContext.Provider>
-  );
+  )
 }
 
-export default App;
+export default App
