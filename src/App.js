@@ -33,7 +33,7 @@ function App() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const [maintenanceMode, setMaintenanceMode] = useState(true)
+  const [maintenanceMode, setMaintenanceMode] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(
     JSON.parse(localStorage.getItem("sidebar")) || false
   )
