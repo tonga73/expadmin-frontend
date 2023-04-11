@@ -39,6 +39,12 @@ const RecordsList = () => {
   const record = useSelector(selectRecord)
   const records = useSelector(selectRecords)
 
+  records.map((r) => {
+    if (r.id === 5) {
+      console.log(r)
+    }
+  })
+
   const handleIntersection = (isIntersecting) => {
     if (
       isIntersecting &&
