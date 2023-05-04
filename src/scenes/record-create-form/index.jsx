@@ -200,7 +200,6 @@ const RecordCreateForm = () => {
                   sx={{ gridColumn: "span 1" }}
                 />
                 <TextField
-                  autoFocus
                   placeholder="EJ: 1234/4321, 65574/2019, ..."
                   color="secondary"
                   fullWidth
