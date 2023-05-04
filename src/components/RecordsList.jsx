@@ -1,18 +1,18 @@
-import { useEffect, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom"
-import { Box, Button, Typography, useTheme } from "@mui/material"
-import IconButton from "@mui/material/IconButton"
-import { tokens } from "../theme"
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { Box, Button, Typography, useTheme } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { tokens } from "../theme";
 
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh"
-import ReplayIcon from "@mui/icons-material/Replay"
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import ReplayIcon from "@mui/icons-material/Replay";
 
-import CustomizedTooltip from "./CustomizedTooltip"
-import ScrollObserver from "./ScrollObserver"
-import Spinner from "./Spinner"
+import CustomizedTooltip from "./CustomizedTooltip";
+import ScrollObserver from "./ScrollObserver";
+import Spinner from "./Spinner";
 
-import { getFilteredRecords } from "../store/actions/records.actions"
+import { getFilteredRecords } from "../store/actions/records.actions";
 
 import {
   selectRecords,
@@ -20,30 +20,24 @@ import {
   selectRecord,
   selectRecordsStatus,
   setRecordsStatus,
-} from "../store/slices/records.slice"
+} from "../store/slices/records.slice";
 
 const RecordsList = () => {
   // THEME UTILS
-  const theme = useTheme()
-  const colors = tokens(theme.palette.mode)
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const location = useLocation()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const recordsStatus = useSelector(selectRecordsStatus)
+  const recordsStatus = useSelector(selectRecordsStatus);
 
-  const filteredRecords = useSelector(selectFilteredRecords)
-  const record = useSelector(selectRecord)
-  const records = useSelector(selectRecords)
-
-  records.map((r) => {
-    if (r.id === 5) {
-      console.log(r)
-    }
-  })
+  const filteredRecords = useSelector(selectFilteredRecords);
+  const record = useSelector(selectRecord);
+  const records = useSelector(selectRecords);
 
   const handleIntersection = (isIntersecting) => {
     if (
@@ -51,29 +45,40 @@ const RecordsList = () => {
       filteredRecords.length > 0 &&
       records.length > filteredRecords.length + 10
     ) {
-      searchParams.set("take", filteredRecords.length + 10)
-      setSearchParams(searchParams)
+      searchParams.set("take", filteredRecords.length + 10);
+      setSearchParams(searchParams);
     }
-  }
+  };
 
   const options = {
     root: null,
     rootMargin: "0px",
     threshold: 0.5,
-  }
+  };
 
   useEffect(() => {
     if (recordsStatus === "success") {
-      dispatch(setRecordsStatus(""))
+      dispatch(setRecordsStatus(""));
     }
     if (recordsStatus === "edited") {
-      dispatch(setRecordsStatus(""))
+      dispatch(setRecordsStatus(""));
     }
     if (recordsStatus === "deleted") {
-      dispatch(setRecordsStatus(""))
-      navigate(`/`)
+      dispatch(setRecordsStatus(""));
+      navigate(`/`);
     }
-  }, [recordsStatus, location.search, dispatch, navigate])
+  }, [recordsStatus, location.search, dispatch, navigate]);
+
+  useEffect(() => {
+    if (
+      recordsStatus === "created" ||
+      recordsStatus === "edited" ||
+      recordsStatus === "deleted"
+    ) {
+      dispatch(getFilteredRecords({}));
+      dispatch(setRecordsStatus(""));
+    }
+  }, [recordsStatus, dispatch]);
 
   return (
     <Box width="100%" overflow="auto">
@@ -199,9 +204,9 @@ const RecordsList = () => {
                         },
                       }}
                       onClick={(e) => {
-                        e.stopPropagation()
-                        searchParams.set("tracing", tracing)
-                        setSearchParams(searchParams)
+                        e.stopPropagation();
+                        searchParams.set("tracing", tracing);
+                        setSearchParams(searchParams);
                       }}
                     >
                       {order.replaceAll(" ", "")}
@@ -235,9 +240,9 @@ const RecordsList = () => {
               >
                 <Box
                   onClick={(e) => {
-                    e.stopPropagation()
-                    searchParams.set("priority", priority)
-                    setSearchParams(searchParams)
+                    e.stopPropagation();
+                    searchParams.set("priority", priority);
+                    setSearchParams(searchParams);
                   }}
                   backgroundColor={colors.priorityColors[priority]}
                   height="14px"
@@ -271,7 +276,7 @@ const RecordsList = () => {
         </Box>
       </ScrollObserver>
     </Box>
-  )
-}
+  );
+};
 
-export default RecordsList
+export default RecordsList;
