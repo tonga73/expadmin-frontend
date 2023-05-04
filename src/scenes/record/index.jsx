@@ -50,6 +50,9 @@ const Record = () => {
       if (!!values.name && values.name !== record.name) {
         dispatch(editRecord({ id: id, req: { name: values.name } }))
       }
+      if (!!values.code && values.code !== record.code) {
+        dispatch(editRecord({ id: id, req: { code: values.code } }))
+      }
     } catch (error) {
       console.log(error)
     }
@@ -58,11 +61,13 @@ const Record = () => {
   const initialValues = {
     name: record.name || "",
     order: record.order || "",
+    code: record.code || "",
   }
 
   const userSchema = yup.object().shape({
     name: yup.string(),
     order: yup.string(),
+    code: yup.string(),
   })
 
   useEffect(() => {
@@ -123,7 +128,7 @@ const Record = () => {
                   color="neutral"
                   textTransform="uppercase"
                 >
-                  Codigo
+                  Código
                 </Typography>
               </Divider>
               <Typography
@@ -187,9 +192,8 @@ const Record = () => {
                   variant="subtitle1"
                   fontWeight={100}
                   color="neutral"
-                  textTransform="uppercase"
                 >
-                  Modificar Número o Carátula
+                  MODIFICAR (Número/Carátula/Código)
                 </Typography>
               </Divider>
             </Box>
@@ -265,6 +269,24 @@ const Record = () => {
               action=""
               onSubmit={handleSubmit}
             >
+              <TextField
+                autoFocus
+                placeholder="EJ: 16, 16b, 16b2, ..."
+                color="secondary"
+                type="text"
+                width="min-content"
+                label="Código de Bibliorato"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.code}
+                name="code"
+                error={!!touched.code && !!errors.code}
+                helperText={touched.code && errors.code}
+                inputProps={{
+                  maxLength: 4,
+                  minLength: 1,
+                }}
+              />
               <TextField
                 placeholder="EJ: 1234/4321, 65574/2019, ..."
                 color="warning"
