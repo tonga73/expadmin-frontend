@@ -1,48 +1,50 @@
-import { useState, useEffect, useReducer, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../components/Header";
-import Spinner from "../../components/Spinner";
+import { useState, useEffect, useReducer, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { Box, Button, TextField, MenuItem, Typography } from "@mui/material"
+import { Formik } from "formik"
+import * as yup from "yup"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import Header from "../../components/Header"
+import Spinner from "../../components/Spinner"
 
-import { newRecord } from "../../store/actions/records.actions";
-import { getCourts } from "../../store/actions/courts.actions";
-import { getOfficesByCourtId } from "../../store/actions/offices.actions";
+import { newRecord } from "../../store/actions/records.actions"
+import { getCourts } from "../../store/actions/courts.actions"
+import { getOfficesByCourtId } from "../../store/actions/offices.actions"
 
 import {
   selectRecord,
   setRecord,
   selectRecordsStatus,
   setRecordsStatus,
-} from "../../store/slices/records.slice";
+} from "../../store/slices/records.slice"
 import {
   selectCourts,
   selectCourtStatus,
   setCourtsStatus,
-} from "../../store/slices/courts.slice";
+} from "../../store/slices/courts.slice"
 import {
   selectOffices,
   selectOfficesStatus,
   setOfficesStatus,
-} from "../../store/slices/offices.slice";
+} from "../../store/slices/offices.slice"
 
-import { dataPriorities, dataTracings } from "../../data/enumsData";
+import { dataPriorities, dataTracings } from "../../data/enumsData"
 
 const initialValues = {
   name: "",
   order: "",
+  code: "",
   priority: "NULA",
   tracing: "ACEPTA_CARGO",
   court: "",
   officeId: "",
-};
+}
 
 const userSchema = yup.object().shape({
   name: yup.string().required("Este campo es obligatorio."),
   order: yup.string().required("Este campo es obligatorio."),
+  code: yup.string().required("Este campo es obligatorio."),
   priority: yup.string().required("Este campo es obligatorio."),
   tracing: yup.string().required("Este campo es obligatorio."),
   court: yup.string().required("Este campo es obligatorio."),
@@ -51,53 +53,54 @@ const userSchema = yup.object().shape({
     .required(
       "Este campo es obligatorio. (DEBE SELECCIONAR UN JUZGADO ANTERIORMENTE)"
     ),
-});
+})
 
 const RecordCreateForm = () => {
-  const [isMounted] = useReducer((p) => !p, true);
-  const [elementRect, setElementRect] = useState();
+  const [isMounted] = useReducer((p) => !p, true)
+  const [elementRect, setElementRect] = useState()
   const handleRect = useCallback((node) => {
-    setElementRect(node?.values);
-  }, []);
+    setElementRect(node?.values)
+  }, [])
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const isNonMobile = useMediaQuery("(min-width: 600px)")
 
-  const recordsStatus = useSelector(selectRecordsStatus);
-  const record = useSelector(selectRecord);
-  const courts = useSelector(selectCourts);
-  const courtsStatus = useSelector(selectCourtStatus);
-  const offices = useSelector(selectOffices);
-  const officesStatus = useSelector(selectOfficesStatus);
+  const recordsStatus = useSelector(selectRecordsStatus)
+  const record = useSelector(selectRecord)
+  const courts = useSelector(selectCourts)
+  const courtsStatus = useSelector(selectCourtStatus)
+  const offices = useSelector(selectOffices)
+  const officesStatus = useSelector(selectOfficesStatus)
 
   const handleFormSubmit = (values) => {
-    delete values.court;
-    dispatch(newRecord(values));
-  };
+    delete values.court
+    // console.log(values)
+    dispatch(newRecord(values))
+  }
 
   useEffect(() => {
-    dispatch(setRecord({}));
-    dispatch(setRecordsStatus("creating"));
-    dispatch(getCourts({}));
-  }, [dispatch]);
+    dispatch(setRecord({}))
+    dispatch(setRecordsStatus("creating"))
+    dispatch(getCourts({}))
+  }, [dispatch])
 
   useEffect(() => {
     if (!!elementRect && elementRect.court !== "") {
-      dispatch(getOfficesByCourtId(elementRect.court));
+      dispatch(getOfficesByCourtId(elementRect.court))
     }
-  }, [elementRect, dispatch]);
+  }, [elementRect, dispatch])
 
   useEffect(() => {
     if (recordsStatus === "created") {
-      dispatch(setRecordsStatus(""));
-      navigate(`/expedientes/${record.id}`);
+      dispatch(setRecordsStatus(""))
+      navigate(`/expedientes/${record.id}`)
     }
     if (officesStatus === "success") {
-      dispatch(setOfficesStatus(""));
+      dispatch(setOfficesStatus(""))
     }
     if (courtsStatus === "success") {
-      dispatch(setCourtsStatus(""));
+      dispatch(setCourtsStatus(""))
     }
   }, [
     recordsStatus,
@@ -106,7 +109,7 @@ const RecordCreateForm = () => {
     dispatch,
     record.id,
     navigate,
-  ]);
+  ])
 
   return (
     <Box>
@@ -179,6 +182,25 @@ const RecordCreateForm = () => {
                 </TextField>
                 <TextField
                   autoFocus
+                  placeholder="EJ: 16, 16b, 16b2, ..."
+                  color="secondary"
+                  fullWidth
+                  type="text"
+                  label="Código de Bibliorato"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.code}
+                  name="code"
+                  error={!!touched.code && !!errors.code}
+                  helperText={touched.code && errors.code}
+                  inputProps={{
+                    maxLength: 4,
+                    minLength: 1,
+                  }}
+                  sx={{ gridColumn: "span 1" }}
+                />
+                <TextField
+                  autoFocus
                   placeholder="EJ: 1234/4321, 65574/2019, ..."
                   color="secondary"
                   fullWidth
@@ -190,7 +212,12 @@ const RecordCreateForm = () => {
                   name="order"
                   error={!!touched.order && !!errors.order}
                   helperText={touched.order && errors.order}
-                  sx={{ gridColumn: "span 2" }}
+                  inputProps={{
+                    maxLength: 20,
+                    minLength: 1,
+                    inputMode: "numeric",
+                  }}
+                  sx={{ gridColumn: "span 3" }}
                 />
                 <TextField
                   placeholder="EJ: Martinez c/ Empresa Explotadora, ..."
@@ -204,7 +231,7 @@ const RecordCreateForm = () => {
                   name="name"
                   error={!!touched.name && !!errors.name}
                   helperText={touched.name && errors.name}
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{ gridColumn: "span 4" }}
                 />
                 <TextField
                   color="secondary"
@@ -271,7 +298,7 @@ const RecordCreateForm = () => {
         </Box>
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default RecordCreateForm;
+export default RecordCreateForm

@@ -1,91 +1,96 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useTheme } from "@mui/material";
-import { tokens } from "../../theme";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { Formik } from "formik";
-import * as yup from "yup";
+import { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+import { useTheme } from "@mui/material"
+import { tokens } from "../../theme"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Divider from "@mui/material/Divider"
+import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
+import { Formik } from "formik"
+import * as yup from "yup"
 
-import RecordDetails from "./sections/RecordDetails";
+import RecordDetails from "./sections/RecordDetails"
 
-import Spinner from "../../components/Spinner";
-import RecordNotes from "../../components/RecordNotes";
-import RecordSelectInput from "../../components/RecordSelectInput";
-import ActionsModal from "../../components/ActionsModal";
-import RecordModalDelete from "../../components/RecordModalDelete";
+import Spinner from "../../components/Spinner"
+import RecordNotes from "../../components/RecordNotes"
+import RecordSelectInput from "../../components/RecordSelectInput"
+import ActionsModal from "../../components/ActionsModal"
+import RecordModalDelete from "../../components/RecordModalDelete"
 
-import { getRecord, editRecord } from "../../store/actions/records.actions";
+import { getRecord, editRecord } from "../../store/actions/records.actions"
 import {
   setRecords,
   setRecord,
   selectRecord,
   selectRecordsStatus,
   setRecordsStatus,
-} from "../../store/slices/records.slice";
+} from "../../store/slices/records.slice"
 
 const Record = () => {
   // THEME UTILS
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
 
-  const dispatch = useDispatch();
-  const params = useParams();
+  const dispatch = useDispatch()
+  const params = useParams()
 
-  const [editMode, setEditMode] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
-  const recordsStatus = useSelector(selectRecordsStatus);
-  const record = useSelector(selectRecord);
+  const [editMode, setEditMode] = useState(false)
+  const [deleteMode, setDeleteMode] = useState(false)
+  const recordsStatus = useSelector(selectRecordsStatus)
+  const record = useSelector(selectRecord)
 
   const handleEditRecordSubmit = (values) => {
-    const { id } = params;
+    const { id } = params
     try {
       if (!!values.order && values.order !== record.order) {
-        dispatch(editRecord({ id: id, req: { order: values.order } }));
+        dispatch(editRecord({ id: id, req: { order: values.order } }))
       }
       if (!!values.name && values.name !== record.name) {
-        dispatch(editRecord({ id: id, req: { name: values.name } }));
+        dispatch(editRecord({ id: id, req: { name: values.name } }))
+      }
+      if (!!values.code && values.code !== record.code) {
+        dispatch(editRecord({ id: id, req: { code: values.code } }))
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const initialValues = {
     name: record.name || "",
     order: record.order || "",
-  };
+    code: record.code || "",
+  }
 
   const userSchema = yup.object().shape({
     name: yup.string(),
     order: yup.string(),
-  });
+    code: yup.string(),
+  })
 
   useEffect(() => {
-    dispatch(setRecord({}));
-    dispatch(setRecords([]));
-    dispatch(setRecordsStatus("loading"));
-    dispatch(getRecord(params.id));
-  }, [params.id, dispatch]);
+    dispatch(setRecord({}))
+    dispatch(setRecords([]))
+    dispatch(setRecordsStatus("loading"))
+    dispatch(getRecord(params.id))
+  }, [params.id, dispatch])
 
   useEffect(() => {
     if (recordsStatus === "success" || recordsStatus === "edited") {
-      dispatch(setRecordsStatus(""));
-      setEditMode(false);
+      dispatch(setRecordsStatus(""))
+      setEditMode(false)
     }
-  }, [recordsStatus, dispatch]);
+  }, [recordsStatus, dispatch])
 
   useEffect(() => {
     if (editMode === true) {
-      dispatch(setRecordsStatus("edit-mode"));
+      dispatch(setRecordsStatus("edit-mode"))
     } else {
-      dispatch(setRecordsStatus(""));
+      dispatch(setRecordsStatus(""))
     }
-  }, [editMode, dispatch]);
+  }, [editMode, dispatch])
 
   return Object.values(record).length < 1 && !!record ? (
     <Box
@@ -114,25 +119,49 @@ const Record = () => {
       >
         <Box gridColumn={{ xs: "span 5", lg: "span 3" }}>
           <RecordSelectInput record={record} />
-          <Box>
-            <Divider light textAlign="right" sx={{ px: 1.5 }}>
+          <Box display="flex" gap={1} px={1.5}>
+            <Box flex="1 1 0%">
+              <Divider light textAlign="left">
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={100}
+                  color="neutral"
+                  textTransform="uppercase"
+                >
+                  Código
+                </Typography>
+              </Divider>
               <Typography
-                variant="subtitle1"
-                fontWeight={100}
-                color="neutral"
+                variant="h1"
+                fontWeight={700}
+                color={colors.grey[500]}
+                textAlign="left"
                 textTransform="uppercase"
+                sx={{ py: 1, px: 1.5 }}
               >
-                Número de expediente
+                {record.code || "----"}
               </Typography>
-            </Divider>
-            <Typography
-              variant="h1"
-              fontWeight={700}
-              textAlign="right"
-              sx={{ py: 1, px: 1.5 }}
-            >
-              {record.order}
-            </Typography>
+            </Box>
+            <Box flex="1 1 auto">
+              <Divider light textAlign="right">
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={100}
+                  color="neutral"
+                  textTransform="uppercase"
+                >
+                  Número de expediente
+                </Typography>
+              </Divider>
+              <Typography
+                variant="h1"
+                fontWeight={700}
+                textAlign="right"
+                sx={{ py: 1, px: 1.5 }}
+              >
+                {record.order}
+              </Typography>
+            </Box>
           </Box>
           <Box>
             <Divider light textAlign="right" sx={{ px: 1.5 }}>
@@ -163,9 +192,8 @@ const Record = () => {
                   variant="subtitle1"
                   fontWeight={100}
                   color="neutral"
-                  textTransform="uppercase"
                 >
-                  Modificar Número o Carátula
+                  MODIFICAR (Número/Carátula/Código)
                 </Typography>
               </Divider>
             </Box>
@@ -241,6 +269,24 @@ const Record = () => {
               action=""
               onSubmit={handleSubmit}
             >
+              <TextField
+                autoFocus
+                placeholder="EJ: 16, 16b, 16b2, ..."
+                color="secondary"
+                type="text"
+                width="min-content"
+                label="Código de Bibliorato"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.code}
+                name="code"
+                error={!!touched.code && !!errors.code}
+                helperText={touched.code && errors.code}
+                inputProps={{
+                  maxLength: 4,
+                  minLength: 1,
+                }}
+              />
               <TextField
                 placeholder="EJ: 1234/4321, 65574/2019, ..."
                 color="warning"
@@ -336,7 +382,7 @@ const Record = () => {
         />
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default Record;
+export default Record
